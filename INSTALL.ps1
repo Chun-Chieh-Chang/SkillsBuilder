@@ -14,6 +14,52 @@ if ($pathsToSync.Count -eq 0) {
     exit 1
 }
 
+# --- Auto-provision Graphifyy ---
+Write-Host "[INFO] Checking Graphifyy installation status..." -ForegroundColor Cyan
+$graphifyInstalled = $false
+try {
+    $null = Get-Command graphify -ErrorAction Stop
+    $graphifyInstalled = $true
+    Write-Host "[SUCCESS] Graphify CLI is already installed!" -ForegroundColor Green
+} catch {
+    Write-Host "[INFO] Graphify CLI not found. Attempting to install graphifyy..." -ForegroundColor Yellow
+    
+    # Try using 'uv' tool first
+    try {
+        $null = Get-Command uv -ErrorAction Stop
+        Write-Host "[INFO] Detected uv. Installing graphifyy using uv..." -ForegroundColor Cyan
+        $null = Start-Process uv -ArgumentList "tool", "install", "graphifyy" -NoNewWindow -Wait -ErrorAction Stop
+        $graphifyInstalled = $true
+        Write-Host "[SUCCESS] Graphifyy installed successfully via uv!" -ForegroundColor Green
+    } catch {
+        # Fallback to 'pip'
+        try {
+            $null = Get-Command pip -ErrorAction Stop
+            Write-Host "[INFO] Detected pip. Installing graphifyy using pip..." -ForegroundColor Cyan
+            $null = Start-Process pip -ArgumentList "install", "graphifyy" -NoNewWindow -Wait -ErrorAction Stop
+            $graphifyInstalled = $true
+            Write-Host "[SUCCESS] Graphifyy installed successfully via pip!" -ForegroundColor Green
+        } catch {
+            Write-Host "[WARNING] Neither uv nor pip was found. Skipping automatic Graphifyy installation." -ForegroundColor Yellow
+            Write-Host "[WARNING] Please manually install graphifyy using: pip install graphifyy" -ForegroundColor Yellow
+        }
+    }
+}
+
+if ($graphifyInstalled) {
+    try {
+        Write-Host "[INFO] Registering global Graphify plugins..." -ForegroundColor Cyan
+        $null = Start-Process graphify -ArgumentList "install" -NoNewWindow -Wait -ErrorAction Stop
+        
+        Write-Host "[INFO] Registering local workspace Git hooks for Graphify..." -ForegroundColor Cyan
+        $null = Start-Process graphify -ArgumentList "hook", "install" -NoNewWindow -Wait -ErrorAction Stop
+        Write-Host "[SUCCESS] Graphify registered successfully!" -ForegroundColor Green
+    } catch {
+        Write-Host "[WARNING] Graphify post-install steps failed: $_" -ForegroundColor Yellow
+    }
+}
+# --------------------------------
+
 $currentDir = Get-Location
 
 foreach ($antigravityPath in $pathsToSync) {

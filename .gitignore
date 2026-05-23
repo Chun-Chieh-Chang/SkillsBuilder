@@ -10,3 +10,7 @@ dist/
 .vscode/
 .idea/
 *.log
+
+# Graphify Local Graph Output
+graphify-out/
+graph.json

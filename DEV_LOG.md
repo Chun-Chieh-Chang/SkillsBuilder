@@ -12,6 +12,15 @@
 
 ---
 
+## [2026-05-23] Graphify 本地圖譜引擎與 AI 技能深整合
+
+### 1. 本次開發任務與核心價值
+- **Graphifyy 技能化**：建立 `skills/dev/graphify/SKILL.md`，定義 CLI 與 71.5x token 節流查詢指南。
+- **一鍵安裝與環境適配**：升級 `INSTALL.ps1`，添加 python `uv` 與 `pip` 工具自動偵測與 `graphifyy` 自動安裝模組，自動化註冊 Git Merge Driver 預防衝突。
+- **全域規範融合**：在 `wiki/global_rules.md` 與 `.gitignore` 中導入圖譜運作與忽略排除，形成極致潔淨與高效的記憶治理機制。
+
+---
+
 ## [2026-05-23] Superpowers 框架與多 IDE 原生插件深度整合
 
 ### 1. 失敗嘗試與異常記錄

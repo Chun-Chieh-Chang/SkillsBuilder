@@ -76,6 +76,11 @@ No code change should be made without following these steps:
 *   **測試驅動與系統調試**：開發中強制以 `tdd-enforcer`（測試驅動）與 `bug-diagnose`（系統化調試 4 階段）進行代碼安全隔離與根因排除，杜絕猜測性修改。
 *   **完工驗證與代碼審查**：完成時必須通過 `verification-before-completion` 的 100% 零錯誤與確效審查，並調用 `requesting-code-review` / `receiving-code-review` 閉環修正，最後由 `finishing-a-development-branch` 進行 Git Commit 規範整理與 Push。
 
+### 4.5 本地圖譜高效節流 (Graphifyy Low-Token Query Mandate)
+*   **71.5 倍 Token 節流原則**：當專案規模擴大（涉及超過 3 個不同模組或組件深度大於 3 層）時，AI 助理**強制禁止**遞迴讀取大量代碼檔案或進行盲目全域正則表達式掃描。
+*   **圖譜查詢優先**：AI 必須首先使用 `graphify query` 對本地圖譜進行語義查詢，以最低的 Token 預算精確獲取跨組件的依賴路徑與「爆炸半徑 (Blast Radius)」。
+*   **同步維護**：在每一次 Git 變更 (Commit/Checkout/Merge) 或執行 `INSTALL.ps1` 後，AI 助理必須調用 `graphify . --update` 增量同步本地圖譜，確保大腦記憶庫 (`wiki/`) 與實體代碼拓撲 100% 同步。
+
 ---
 
 ## 5. Activation

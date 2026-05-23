@@ -2,6 +2,17 @@
 
 All significant project events, wiki ingests, and architectural decisions are recorded here.
 
+## [2026-05-23] Feature | Graphify Local Graph & Low-Token Query Mandate
+*   **Action**: Integrated `graphifyy` into SkillsBuilder to provide serverless codebase indexing.
+*   **Changes**: 
+    - Created `skills/dev/graphify/SKILL.md` for AI-agent guidance.
+    - Updated `INSTALL.ps1` to detect environment, auto-provision `graphifyy` and Git hooks.
+    - Added `wiki/global_rules.md` Section 4.5 enforcing 71.5x token budget efficiency.
+    - Refined `.gitignore` to exclude `graphify-out/` outputs.
+*   **Insight**: Graph-based querying replaces blind grep or deep recursively reading code, massively optimizing token spending.
+
+---
+
 ## [2026-05-03] Ingest | ClawHub All-Star Skill Library
 *   **Source**: [resource/](file:///f:/Self-developed_Apps/SkillsBuilder/resource/) (ClawHub screenshots).
 *   **Action**: Fully populated the library with the "Top 15" industry-standard skills.
