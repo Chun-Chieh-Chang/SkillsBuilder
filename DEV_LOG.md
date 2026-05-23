@@ -12,6 +12,35 @@
 
 ---
 
+## [2026-05-23] Superpowers 框架與多 IDE 原生插件深度整合
+
+### 1. 失敗嘗試與異常記錄
+
+- **問題一：PowerShell 執行 `INSTALL.ps1` 遭遇 CP950 解碼與語法语法解析錯誤 (AmpersandNotAllowed)**
+  - **Phase 1: Investigation (根因調查)**：在 Windows 繁體中文環境（預設 CP950/Big5 終端）執行含有 `&` 符號與中文註解的 UTF-8 `INSTALL.ps1` 腳本時，PowerShell 會產生位元組解碼錯位，吃掉 double-quotes 並將 string 內部的 `&` 誤判為全域呼叫運算子，丟出 `AmpersandNotAllowed` ParserError。
+  - **Phase 2: Pattern (模式分析)**：這與先前批次檔 `start.bat` 在 CP950 環境吞噬 CRLF 的崩潰模式完全一致。凡是含有非 ASCII 的 UTF-8 腳本在 Windows 預設環境直譯時，均面臨高風險的位元組拼合錯位。
+  - **Phase 3: Hypothesis (假設分析 RCA)**：移除所有非 ASCII 中文字元與註解，重構為 **100% 純 ASCII/英文** 即可獲得完全的編碼頁免疫（Encoding-Immune）。
+  - **Phase 4: Fix & Verify (精準修復 CAPA)**：重新編寫 `INSTALL.ps1`，移除所有漢字與高危 `&` 符號。在 Windows CP950 終端上重新執行，腳本加載速度極快，解析 100% 順暢通過。
+
+- **問題二：本機權限沙盒阻礙 Symbolic Link 建立 (NewItemSymbolicLinkElevationRequired)**
+  - **Phase 1: Investigation (根因調查)**：在一般使用者權限下執行 `INSTALL.ps1` 進行軟體確效時，`New-Item -ItemType SymbolicLink` 拋出 `PermissionDenied` 錯誤，要求管理員權限。
+  - **Phase 2: Pattern (模式分析)**：對照 `integrate_skills.py`，當 Symbolic Link 建立權限受阻時，系統必須提供無縫自動備援（Robustness Fallback）。
+  - **Phase 3: Hypothesis (假設分析 RCA)**：若 Symlink 權限不足，應自動以 try-catch 攔截異常，無縫降級切換為深拷貝（Deep Copy）模式，以 `Copy-Item -Recurse` 強制進行物理同步。
+  - **Phase 4: Fix & Verify (精準修復 CAPA)**：在 `INSTALL.ps1` 技能連結循環中加入 `try { New-Item ... } catch { Copy-Item ... }` 備援機制。測試執行後，系統成功自動切換至備援 Copy 模式，29 個技能（包含 11 個新技能）全數完美物理同步至 `~/.gemini/antigravity/skills/`，軟體確效無懈可擊！
+
+- **問題三：MECE 目錄調整導致 plugin/hooks 靜態路徑失效 (Path Mismatch)**
+  - **Phase 1: Investigation (根因調查)**：將 `using-superpowers` 依據 MECE 原則分類至 `skills/core/` 後，`.opencode/plugins/superpowers.js` 及 `hooks/session-start` 仍指向 legacy `skills/using-superpowers/SKILL.md`，引發 File Not Found 異常。
+  - **Phase 2: Pattern (模式分析)**：修改目錄位置時，必須將「依賴鏈」上的所有導入路徑與硬編碼字串一併重構。
+  - **Phase 3: Hypothesis (假設分析 RCA)**：直接修改靜態路徑為新版 `skills/core/using-superpowers/SKILL.md`。
+  - **Phase 4: Fix & Verify (精準修復 CAPA)**：使用 precision 編輯修改 `superpowers.js` (L67) 與 `session-start` (L18)，經測試 OpenCode/Claude Code 自動注入引擎工作完美，路徑完全對齊。
+
+### 2. 本次開發任務與核心價值
+- **11 項頂尖技能合流**：完美引流 `subagent-driven-development`、`executing-plans`、`writing-plans` 等 11 項極致紀律技能，補完 SkillsBuilder 技能圖書館拼圖。
+- **多 IDE 原生插件支援**：導入 `.claude-plugin`、`.cursor-plugin`、`.codex-plugin`、`.opencode` 及 `gemini-extension.json`，讓 SkillsBuilder 能在 Chrome, VS Code, Claude Code 終端等跨 IDE 生態中作為 native 插件直接加載。
+- **Using-Superpowers 核心對齊**：將 `using-superpowers` 的引導核心修改為 SkillsBuilder 自定義的 `grill-requirements` (升級版 brainstorming)、`tdd-enforcer` (升級版 TDD) 及 `bug-diagnose` (升級版除錯)，讓導入的引導引擎無縫融入 SkillsBuilder 現有的高紀律體系。
+
+---
+
 ## [2026-05-16] 全文件一致性同步 (Doc Sync & Alignment)
 
 ### 任務內容

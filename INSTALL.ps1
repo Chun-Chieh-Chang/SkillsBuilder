@@ -1,27 +1,31 @@
-# SkillsBuilder 跨設備一鍵同步腳本 (Bootstrap)
-# 用法: 在新電腦 clone 本專案後，對著 PowerShell 執行: .\INSTALL.ps1
+# SkillsBuilder One-Click Sync Bootstrap Script (CP950-immune, pure ASCII)
 
 $ErrorActionPreference = "Stop"
 
-Write-Host "🚀 正在啟動 SkillsBuilder 全域中樞同步流程..." -ForegroundColor Cyan
+Write-Host "[START] Syncing SkillsBuilder global library..." -ForegroundColor Cyan
 
-# 1. 偵測 Antigravity 路徑
+# 1. Detect Antigravity Path
+# We check both antigravity-ide and antigravity path to be extremely robust!
 $antigravityPath = "$HOME\.gemini\antigravity"
 if (-not (Test-Path $antigravityPath)) {
-    Write-Host "❌ 找不到 Antigravity 安裝目錄，請確認已安裝 Antigravity。" -ForegroundColor Red
-    exit
+    $antigravityPath = "$HOME\.gemini\antigravity-ide"
+}
+
+if (-not (Test-Path $antigravityPath)) {
+    Write-Host "[ERROR] Antigravity installation folder not found." -ForegroundColor Red
+    exit 1
 }
 
 $currentDir = Get-Location
 $skillsDir = Join-Path $antigravityPath "skills"
 $knowledgeDir = Join-Path $antigravityPath "knowledge"
 
-# 2. 建立必要目錄
+# 2. Create required directories
 if (-not (Test-Path $skillsDir)) { New-Item -ItemType Directory -Path $skillsDir -Force }
 if (-not (Test-Path $knowledgeDir)) { New-Item -ItemType Directory -Path $knowledgeDir -Force }
 
-# 3. 註冊所有技能 (遞迴連結所有分類)
-Write-Host "📦 正在建立全域技能圖書館連結..." -ForegroundColor Yellow
+# 3. Register all skills (recursively link all categories)
+Write-Host "[INFO] Linking global skills library..." -ForegroundColor Yellow
 $categories = Get-ChildItem -Path (Join-Path $currentDir "skills") -Directory
 
 foreach ($category in $categories) {
@@ -30,22 +34,32 @@ foreach ($category in $categories) {
         $skillSource = $skill.FullName
         $skillDest = Join-Path $skillsDir $skill.Name
         
-        Write-Host "🔗 連結技能: $($category.Name)/$($skill.Name)" -ForegroundColor Gray
+        Write-Host "[LINK] Processing skill: $($category.Name)/$($skill.Name)" -ForegroundColor Gray
         if (Test-Path $skillDest) { Remove-Item $skillDest -Recurse -Force }
-        New-Item -ItemType SymbolicLink -Path $skillDest -Target $skillSource -Force
+        
+        try {
+            # Try to create symbolic link first
+            $null = New-Item -ItemType SymbolicLink -Path $skillDest -Target $skillSource -Force -ErrorAction Stop
+            Write-Host "[LINK] Created SymbolicLink for $($skill.Name)" -ForegroundColor DarkGray
+        } catch {
+            # Fallback to copy directory if symbolic link fails (requires admin privileges)
+            Write-Host "[FALLBACK] Symlink failed (elevation required). Copying directory..." -ForegroundColor Yellow
+            Copy-Item -Path $skillSource -Destination $skillDest -Recurse -Force
+        }
     }
 }
 
-# 4. 註冊全域知識庫 (KI)
+# 4. Register global Knowledge Item (KI)
 $kiPath = Join-Path $knowledgeDir "skills_builder"
 $kiArtifacts = Join-Path $kiPath "artifacts"
 
-Write-Host "🧠 正在建立全域知識索引 (Knowledge Item)..." -ForegroundColor Yellow
+Write-Host "[INFO] Creating global knowledge index (Knowledge Item)..." -ForegroundColor Yellow
 if (-not (Test-Path $kiArtifacts)) { New-Item -ItemType Directory -Path $kiArtifacts -Force }
 
-# 產生 metadata.json
+# Generate metadata.json (use double single-quotes or escaped double-quotes for JSON properties)
+# To avoid the & parse issue, let's keep all strings strictly simple ASCII.
 $metadata = @{
-    title = "SkillsBuilder Architecture & SOP"
+    title = "SkillsBuilder Architecture and SOP"
     summary = "The master governance system for AI-agentic development."
     created_at = (Get-Date -Format "yyyy-MM-ddTHH:mm:ssZ")
     updated_at = (Get-Date -Format "yyyy-MM-ddTHH:mm:ssZ")
@@ -55,13 +69,8 @@ $metadata = @{
 
 $metadata | Out-File -FilePath (Join-Path $kiPath "metadata.json") -Encoding UTF8
 
-# 5. 產出全域規則快照
-$rulesContent = @"
-# Global Development Rulebook (SkillsBuilder)
-- Source Repo: $($currentDir.Path)
-- Wiki Schema: file:///$($currentDir.Path.Replace('\','/'))/wiki/SCHEMA.md
-- Logic: Karpathy LLM Wiki + PDCA SOP
-"@
+# 5. Output global rules snapshot
+$rulesContent = "## Global Development Rulebook (SkillsBuilder)`r`n- Source Repo: $($currentDir.Path)`r`n- Wiki Schema: file:///$($currentDir.Path.Replace('\','/'))/wiki/SCHEMA.md`r`n- Logic: Karpathy LLM Wiki + PDCA SOP`r`n"
 $rulesContent | Out-File -FilePath (Join-Path $kiArtifacts "global_rules.md") -Encoding UTF8
 
-Write-Host "✅ 同步完成！現在你可以對 Antigravity 說:「啟動 SkillsBuilder 開發模式」" -ForegroundColor Green
+Write-Host "[SUCCESS] SkillsBuilder global sync complete!" -ForegroundColor Green

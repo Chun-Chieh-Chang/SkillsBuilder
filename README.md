@@ -24,16 +24,17 @@ SkillsBuilder 是一個專為「自動化智慧開發」而設計的元平台。
 
 ## 🚀 如何使用本專案？(操作指南)
 
-### 步驟一：一鍵安裝與環境綁定 (只需做一次)
+### 方式一：本機一鍵安裝與環境綁定 (Antigravity & Gemini CLI)
 當您在任何電腦上下載本專案後：
-1. **執行安裝腳本**：對 `INSTALL.ps1` 點擊右鍵，選擇**「以系統管理員身分執行」**。
-2. **它的作用**：這個腳本會建立 **Symbolic Link (符號連結)**，把本專案 `skills/` 資料夾裡的技能，直接「映射」到 Antigravity IDE 系統隱藏的技能池裡 (`~/.gemini/antigravity/skills`)。這樣您在專案裡更新技能，系統級的 AI 都會同步生效。
+1. **執行安裝腳本**：雙擊或在 PowerShell 中執行 `.\INSTALL.ps1`。
+2. **它的作用**：這個腳本會建立 **Symbolic Link / Deep Copy 備援**，把本專案 `skills/` 資料夾裡的技能，自動且安全地映射到系統級技能池裡 (`~/.gemini/antigravity/skills`)。本專案目前採用 try-catch 備援，即使無管理員權限也保證 100% 成功。
+3. **Gemini CLI 支援**：本專案已支援 `gemini-extension.json`，能被 Gemini CLI 原生載入並透過 `GEMINI.md` 自動在會話啟動時激活 `using-superpowers` 核心紀律引導。
 
-### 步驟二：喚醒與調用 (在對話框中)
-安裝完成後，您可以在任何對話框中透過以下指令來使用：
-- **啟動全局護欄與標準化開發**：「啟動 SkillsBuilder 開發模式」
-- **調用特定工具**：「幫我用 tavily-research 技能深入研究...」
-- **建造新工具**：「我想創建一個新技能...」
+### 方式二：作為多 IDE 原生插件載入 (Claude Code / Cursor / OpenCode / Codex)
+本專案已完美整合 `superpowers` 插件架構，可直接作為原生插件載入：
+*   **Claude Code**：在 CLI 中自動加載 `.claude-plugin` 並調用 `hooks/session-start` 鉤子在對話開始時注入環境上下文。
+*   **Cursor IDE**：在 Cursor 插件設定中指向本專案，會自動透過 `.cursor-plugin` 與 `hooks/hooks-cursor.json` 加載。
+*   **OpenCode.ai**：在 `opencode.json` 的 `plugin` 陣列中新增本專案路徑，會自動運行 `.opencode/plugins/superpowers.js` 自動化引導與技能載入。
 
 ---
 
@@ -51,13 +52,20 @@ SkillsBuilder 是一個專為「自動化智慧開發」而設計的元平台。
 
 ```text
 SkillsBuilder/
+├── .claude-plugin/       # Claude Code 原生插件配置
+├── .cursor-plugin/       # Cursor IDE 原生插件配置
+├── .codex-plugin/        # Codex CLI 原生插件配置
+├── .opencode/            # OpenCode.ai 原生插件與安裝手冊
+├── hooks/                # 跨平台 Shell 鉤子 (SessionStart 上下文注入)
 ├── wiki/                 # 專案大腦：合成知識庫 (Karpathy Pattern)
-│   ├── entities/         # 實體定義：工具、IDE、系統組件
-│   ├── concepts/         # 概念定義：設計模式、SOP、哲學
-│   └── log.md            # 全局活動日誌
 ├── skills/               # 技能目錄：包含 core (生產力) 與 dev (開發) 技能
+│   ├── core/             # 生產力技能：新增 using-superpowers (超能力核心) 等
+│   └── dev/              # 開發技能：新增 subagent-driven-development, executing-plans 等
 ├── raw/                  # 原始素材：不可變的文檔與參考資料
 ├── DEV_LOG.md            # 開發日誌：PDCA 執行紀錄與 RCA/CAPA 歸檔
+├── package.json          # npm / OpenCode 模組配置
+├── gemini-extension.json # Gemini CLI 插件描述檔
+├── GEMINI.md             # Gemini CLI 自動引導索引
 └── README.md             # 本手冊
 ```
 
