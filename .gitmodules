@@ -1,0 +1,3 @@
+[submodule "raw/external/agency-agents-zh"]
+	path = raw/external/agency-agents-zh
+	url = https://github.com/jnMetaCode/agency-agents-zh.git

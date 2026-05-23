@@ -27,6 +27,7 @@ The rules and workflows for this wiki.
 *   [skill-library](concepts/skill-library.md): Centralized management & deployment of skills.
 *   [migration](concepts/migration.md): Cross-device sync & installation.
 *   [graph-driven-dev](concepts/graph-driven-dev.md): Structural awareness & blast radius analysis.
+*   [nexus-protocols](concepts/nexus-protocols.md): Multi-agent coordination & quality gates.
 
 ### [Log](log.md)
 The timeline of this project's evolution.

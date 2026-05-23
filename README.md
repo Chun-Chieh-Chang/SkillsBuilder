@@ -20,6 +20,10 @@ SkillsBuilder 是一個專為「自動化智慧開發」而設計的元平台。
 ### 3. 生產新技能 (Skill Architect)
 - 內建 `skill-architect` 技能，您可以直接命令 AI：「幫我寫一個能夠自動化備份資料庫的 Skill」。系統會運用標準化流程（探索-執行-驗證-歸檔）為您自動生成、測試並封裝成一個新技能。
 
+### 4. 專家角色與協作協議 (Agent Personas & NEXUS)
+- **專家資源庫**：整合了 `Agency-Agents-ZH` 的 193+ 個專家角色（位於 `raw/external/agency-agents-zh`），涵蓋工程、設計、行銷、法律等領域。
+- **NEXUS 協議**：實作了 `wiki/concepts/nexus-protocols.md` 協作標準，確保多智能體任務具備標準化的交接與質量門檻。
+
 ---
 
 ## 🚀 如何使用本專案？(操作指南)

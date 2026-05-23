@@ -47,7 +47,47 @@ tk-ai/rtk 的核心哲學，將「高信號輸出」與「Token 壓縮」整合�
 
 ### 變更清單
 
-- 更新 \skills/core/using-superpowers/references/gemini-tools.md\
+- 更新 `skills/core/using-superpowers/references/gemini-tools.md`
+
+---
+
+## [2026-05-23] Agency-Agents-ZH 專家角色庫整合 (Agency-Agents Integration)
+
+### 任務內容 (PDCA)
+
+- **Plan (規劃)**：將 `jnMetaCode/agency-agents-zh` 作為專家角色資源庫引入，實現「工具 (Skills)」與「大腦 (Personas)」的解耦與協同。
+- **Do (執行)**：
+    - 以 Git Submodule 形式引入倉庫至 `raw/external/agency-agents-zh`。
+    - 繁體化並提取 NEXUS 協作協議至 `wiki/concepts/nexus-protocols.md`。
+    - 升級 `using-superpowers` 核心技能，新增「專家角色 (Agent Personas)」檢索與載入機制。
+- **Check (驗證)**：確認 `using-superpowers` 已具備動態加載專家 Markdown 檔案的指令引導，並驗證路徑正確性。
+- **Act (優化與歸檔)**：將 NEXUS 的「質量門檻」理念融入 `subagent-driven-development` 工作流。
+
+---
+
+## [2026-05-23] 專案結構整理與維護 (Codebase Cleanup & Maintenance)
+
+### 任務內容 (PDCA)
+
+- **Plan (規劃)**：清理過時、冗餘檔案，優化目錄結構，確保符合 MECE 原則。
+- **Do (執行)**：
+    - 刪除過時的 `docs/` 文件與 `raw/legacy/` 存檔。
+    - 移除根目錄下重複的 `PROJECT_DEVELOPMENT_SOP.html`。
+    - 更新 `wiki/index.md` 將新加入的 `nexus-protocols` 納入索引。
+- **Check (驗證)**：檢查檔案清單與 Git 狀態，確保無誤刪。
+- **Act (基準點)**：建立 Git Commit 作為還原基準點，推送到遠端倉庫。
+
+### 矯正與預防措施 (CAPA)
+
+- **問題**：隨著功能迭代，專案中出現大量過時文檔與重複資源。
+- **RCA**：早期開發階段的草稿與舊版 SOP 未及時清理。
+- **CAPA**：建立定期清理機制，並將文檔統一整合至 `wiki/` 或 `docs/` 結構化目錄中，保持根目錄整潔。
+
+### 矯正與預防措施 (CAPA)
+
+- **問題**：單純的工具調用缺乏領域專家的深度思維與工作流規範。
+- **RCA**：現有技能庫側重於「如何操作工具」，而忽視了「不同角色如何決策與交接」。
+- **CAPA**：引入 193+ 個專家角色庫，並將 NEXUS 協議內化為專案的協作標準，確保多智能體任務在「交接邊界」與「質量驗證」上有據可依。
 - 重構 \skills/dev/writing-skills/SKILL.md\
 - 更新 \skills/dev/subagent-driven-development/SKILL.md\
 - 更新 \skills/core/using-superpowers/SKILL.md\

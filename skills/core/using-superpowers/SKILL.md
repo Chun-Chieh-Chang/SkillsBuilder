@@ -1,4 +1,4 @@
-﻿---
+---
 name: using-superpowers
 description: Use when starting any conversation - establishes how to find and use skills, requiring Skill tool invocation before ANY response including clarifying questions
 ---
@@ -98,8 +98,21 @@ These thoughts mean STOP—you're rationalizing:
 
 When multiple skills could apply, use this order:
 
-1. **Process skills first** (grill-requirements, bug-diagnose) - these determine HOW to approach the task
-2. **Implementation skills second** (frontend-design, mcp-builder) - these guide execution
+1. **Process & Core Skills** (`using-superpowers`, `grill-requirements`, `bug-diagnose`) - these determine HOW to approach the task.
+2. **Implementation & Domain Skills** (e.g., `web-coder`, `tavily-research`, `frontend-design`) - these guide execution.
+3. **Workflow & Multi-Agent Skills** (e.g., `subagent-driven-development`) - these manage the process.
+
+## Agent Personas (專家角色)
+
+當任務涉及特定領域（如 UI 設計、行銷策略、法務審查）時，應主動檢索並載入對應的專家角色定義。
+
+- **來源目錄**：[agency-agents-zh](file:///c:/Self-developed_Apps/SkillsBuilder/raw/external/agency-agents-zh)
+- **協作協議**：[nexus-protocols.md](file:///c:/Self-developed_Apps/SkillsBuilder/wiki/concepts/nexus-protocols.md)
+- **使用規則**：
+  1. 使用 `Grep` 或 `Glob` 在 `raw/external/agency-agents-zh` 中搜尋相關角色。
+  2. 使用 `Read` 讀取該角色的 Markdown 檔案（角色身份 `SOUL`、能力 `AGENTS` 等）。
+  3. 將角色的人設與規則融入當前的對話上下文，以該專家身份執行任務。
+  4. 對於多智能體任務，遵循 `nexus-protocols.md` 的交接與門檻規範。
 
 "Let's build X" → grill-requirements first, then implementation skills.
 "Fix this bug" → bug-diagnose first, then domain-specific skills.
