@@ -10,6 +10,56 @@
 > - **Phase 4: Fix & Verify (精準修復 CAPA)** - 修復邏輯、驗證結果與預防策略
 
 
+
+
+﻿
+
+---
+
+## [2026-05-23] RTK 高信號模式整合 (RTK High-Signal Integration)
+
+### 任務內容
+
+- **RTK 模式導入**：參考 
+tk-ai/rtk 的核心哲學，將「高信號輸出」與「Token 壓縮」整合至 SkillsBuilder。
+- **自研 Python 工具集**：
+    - 	ools/rtk_read.py：代碼簽名提取器，支持 Python (AST)、JS/TS (Regex) 等多語言，平均節省 80% Token。
+    - 	ools/rtk_ls.py：Token 優化目錄樹，自動過濾噪聲並進行目錄摘要。
+- **技能工作流升級**：
+    - ug-diagnose：引入 Tee Recovery 模式，強制日誌重定向與精準過濾。
+    - subagent-driven-development：強制優先使用簽名讀取模式。
+- **全域指令 (Mandate)**：在 GEMINI.md 中加入 Token Efficiency 強制規範。
+
+### 矯正與預防措施 (CAPA)
+
+- **問題**：複雜任務中 Context 消耗極快，導致 Agent 在後期因 Context 溢出而喪失長期記憶。
+- **RCA**：Agent 過度依賴全文讀取，且測試日誌中包含大量重疊的雜訊。
+- **CAPA**：通過工具化（rtk_read/ls）與規範化（Tee Recovery）將「信噪比」提升至最高，確保核心 Context 空間用於邏輯推理而非存儲冗餘日誌。
+---
+
+## [2026-05-23] 技能庫優化與 Gemini 環境對齊 (Skill Library Optimization & Alignment)
+
+### 任務內容
+
+- **Gemini CLI 工具映射更新**：修正 \gemini-tools.md\，確保工具名稱與當前 session (\invoke_agent\, \TODO.md\) 完全一致。
+- **文檔 Token 效率優化**：重構 \writing-skills/SKILL.md\，將詳細的 TDD 測試方法論遷移至 \	esting-skills-with-subagents.md\。
+- **工作流標準化**：統一將 \TodoWrite\ 替換為 \TODO.md\ 文件追蹤，提升在不同 Agent 環境下的兼容性。
+
+### 變更清單
+
+- 更新 \skills/core/using-superpowers/references/gemini-tools.md\
+- 重構 \skills/dev/writing-skills/SKILL.md\
+- 更新 \skills/dev/subagent-driven-development/SKILL.md\
+- 更新 \skills/core/using-superpowers/SKILL.md\
+- 更新 \skills/dev/executing-plans/SKILL.md\
+- 更新 \skills/dev/writing-skills/persuasion-principles.md\
+
+### 矯正與預防措施 (CAPA)
+
+- **問題**：原本的 \gemini-tools.md\ 引用了不存在的 \write_todos\ 工具。
+- **RCA**：文檔未隨工具集更迭同步更新。
+- **CAPA**：建立「文件化任務追蹤」標準，並在 \gemini-tools.md\ 中明確標註當前可用工具，避免邏輯斷層。
+
 ---
 
 ## [2026-05-23] Graphify 本地圖譜引擎與 AI 技能深整合

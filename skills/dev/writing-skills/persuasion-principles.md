@@ -1,4 +1,4 @@
-# Persuasion Principles for Skill Design
+﻿# Persuasion Principles for Skill Design
 
 ## Overview
 
@@ -33,7 +33,7 @@ LLMs respond to the same persuasion principles as humans. Understanding this psy
 **How it works in skills:**
 - Require announcements: "Announce skill usage"
 - Force explicit choices: "Choose A, B, or C"
-- Use tracking: TodoWrite for checklists
+- Use tracking: TODO.md for checklists
 
 **When to use:**
 - Ensuring skills are actually followed
@@ -80,8 +80,8 @@ LLMs respond to the same persuasion principles as humans. Understanding this psy
 
 **Example:**
 ```markdown
-✅ Checklists without TodoWrite tracking = steps get skipped. Every time.
-❌ Some people find TodoWrite helpful for checklists.
+✅ Checklists without TODO.md tracking = steps get skipped. Every time.
+❌ Some people find TODO.md helpful for checklists.
 ```
 
 ### 5. Unity
@@ -185,3 +185,4 @@ When designing a skill, ask:
 3. **Which principle(s) apply?** (Usually authority + commitment for discipline)
 4. **Am I combining too many?** (Don't use all seven)
 5. **Is this ethical?** (Serves user's genuine interests?)
+

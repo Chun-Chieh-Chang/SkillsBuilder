@@ -1,4 +1,4 @@
----
+﻿---
 name: bug-diagnose
 description: 強制執行結構化的 Bug 診斷與修復流程。禁止盲目瞎猜與嘗試性修改，落實 PDCA 與 RCA 精神。
 ---
@@ -37,3 +37,15 @@ description: 強制執行結構化的 Bug 診斷與修復流程。禁止盲目�
 - **禁止堆疊修復**：若第一個修復無效，必須還原 (Rollback) 後再嘗試下一個。禁止在錯誤的修復上堆疊更多修復。
 - **禁止忽略 3 次失敗**：第 4 次盲目修復只會讓系統變得更脆弱。
 
+
+
+## High-Signal Debugging (Tee Recovery)
+
+**原則：禁止讓無意義的日誌淹沒 Context。**
+
+- **Tee Recovery 模式：** 執行測試或構建命令時，務必將完整輸出重新定向到文件。
+  - 
+pm test > test.log 2>&1 或 python -m pytest > test.log 2>&1
+- **精準讀取：** 僅使用 \grep\ 或 \	ail\ 讀取關鍵錯誤資訊。
+  - \grep -i "error" test.log\ 或 \	ail -n 50 test.log\
+- **全量備查：** 只有在過濾後的資訊不足以判斷原因時，才讀取 \	est.log\ 的特定部分。
