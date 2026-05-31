@@ -7,6 +7,10 @@ Welcome to the `SkillsBuilder` Knowledge Base. This index is the map of all synt
 ### [SCHEMA](SCHEMA.md)
 The rules and workflows for this wiki.
 
+### 🌐 Entry Portals & User Guides
+*   [index.html](file:///c:/Self-developed_Apps/SkillsBuilder/index.html): 專案主網頁門面，展示嚴選技能庫 (Ingested Skills) 與 LLM Wiki 導覽地圖。
+*   [instructions.html](file:///c:/Self-developed_Apps/SkillsBuilder/instructions.html): 可互動的使用說明與指令指南，支持深/淺色主題、一鍵複製與指令過濾檢索。
+
 ### [Entities](entities/)
 *   [skill-architect](entities/skill-architect.md): The core tool for building new AI skills.
 *   [antigravity-ide](entities/antigravity-ide.md): The host environment for these skills.

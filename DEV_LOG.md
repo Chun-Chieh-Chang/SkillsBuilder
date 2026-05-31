@@ -16,6 +16,20 @@
 
 ---
 
+## [2026-05-31] 互動式使用說明手冊與命令指南 (Interactive User Manual & Command Guide)
+
+### 任務內容 (PDCA)
+
+- **Plan (規劃)**：為了提升開發效率並消除命令混淆，建立一個 HTML 格式的「互動式使用手冊與指令指南」。設計上必須完全符合 HSL 色彩大師規範、毛玻璃邊緣法則（Glassmorphism）、微動畫反饋與手機優先響應式設計。
+- **Do (執行)**：
+    - 建立 `instructions.html` 檔案。
+    - 整合 IDE 斜槓命令（如 `/goal`, `/grill-me`, `/schedule`）與專案專屬魔術短語（如 `啟動 SkillsBuilder 開發模式`, `query Gemma 4`, `Research` 等）。
+    - 引入一鍵複製、實時搜尋過濾、以及一鍵切換 Light/Dark 模式。
+- **Check (驗證)**：確保 CSS 各種 Token（Day/Night 灰色與品牌藍色）在切換時保持極佳的層次與閱讀對比。確效腳本測試順利。
+- **Act (持續改進)**：為未來的 skills 工具集提供統一、可互動的引導門面，幫助提升開發與除錯的信噪比。
+
+---
+
 ## [2026-05-31] AutoResearch 閉環自主研究功能整合 (AutoResearch Integration)
 
 ### 任務內容 (PDCA)

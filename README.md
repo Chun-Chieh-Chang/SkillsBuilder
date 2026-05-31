@@ -34,7 +34,13 @@ SkillsBuilder 是一個專為「自動化智慧開發」而設計的元平台。
 2. **它的作用**：這個腳本會建立 **Symbolic Link / Deep Copy 備援**，把本專案 `skills/` 資料夾裡的技能，自動且安全地映射到系統級技能池裡 (`~/.gemini/antigravity/skills`)。本專案目前採用 try-catch 備援，即使無管理員權限也保證 100% 成功。
 3. **Gemini CLI 支援**：本專案已支援 `gemini-extension.json`，能被 Gemini CLI 原生載入並透過 `GEMINI.md` 自動在會話啟動時激活 `using-superpowers` 核心紀律引導。
 
-### 方式二：作為多 IDE 原生插件載入 (Claude Code / Cursor / OpenCode / Codex)
+### 方式二：使用「互動式使用手冊與指令指南」(instructions.html)
+本專案已內建極具視覺美感的 [instructions.html](file:///c:/Self-developed_Apps/SkillsBuilder/instructions.html)。您可以在瀏覽器中直接開啟它，獲取以下功能：
+*   **雙主題切換**：完全符合 HSL 色彩大師規範，支持白天與夜晚模式一鍵切換。
+*   **實時檢索過濾**：一鍵過濾 IDE 斜槓命令（如 `/goal`, `/grill-me`）與專案魔術短語。
+*   **一鍵複製指令**：提供精緻的微動畫互動反饋。
+
+### 方式三：作為多 IDE 原生插件載入 (Claude Code / Cursor / OpenCode / Codex)
 本專案已完美整合 `superpowers` 插件架構，可直接作為原生插件載入：
 *   **Claude Code**：在 CLI 中自動加載 `.claude-plugin` 並調用 `hooks/session-start` 鉤子在對話開始時注入環境上下文。
 *   **Cursor IDE**：在 Cursor 插件設定中指向本專案，會自動透過 `.cursor-plugin` 與 `hooks/hooks-cursor.json` 加載。
@@ -67,6 +73,8 @@ SkillsBuilder/
 │   └── dev/              # 開發技能：新增 subagent-driven-development, executing-plans 等
 ├── raw/                  # 原始素材：不可變的文檔與參考資料
 ├── DEV_LOG.md            # 開發日誌：PDCA 執行紀錄與 RCA/CAPA 歸檔
+├── index.html            # 專案主門面：嚴選技能庫與大腦地圖
+├── instructions.html     # 可互動的使用說明與指令指南 (HSL 色彩大師規範)
 ├── package.json          # npm / OpenCode 模組配置
 ├── gemini-extension.json # Gemini CLI 插件描述檔
 ├── GEMINI.md             # Gemini CLI 自動引導索引
