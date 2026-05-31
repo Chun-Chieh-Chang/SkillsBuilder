@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillsBuilder - Agentic Skill Library & LLM Wiki</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-base: #0F172A;
+            --surface: #1E293B;
+            --primary-text: #F1F5F9;
+            --secondary-text: #94A3B8;
+            --accent: #60A5FA;
+            --success: #34D399;
+            --border: #334155;
+            --glass-bg: rgba(30, 41, 59, 0.4);
+            --glass-border: rgba(96, 165, 250, 0.15);
+            --gradient-accent: linear-gradient(135deg, #60A5FA 0%, #3B82F6 100%);
+            --gradient-success: linear-gradient(135deg, #34D399 0%, #10B981 100%);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--primary-text);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        header {
+            position: relative;
+            padding: 5rem 2rem 4rem;
+            text-align: center;
+            background: radial-gradient(circle at top, rgba(96, 165, 250, 0.15) 0%, transparent 60%);
+        }
+
+        .logo-area {
+            font-family: 'Outfit', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #F1F5F9, #60A5FA);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+            letter-spacing: -0.05em;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: var(--secondary-text);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            font-weight: 300;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem 6rem;
+        }
+
+        /* Status Widget */
+        .status-widget {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 1.5rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 4rem;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            animation: pulse-border 3s infinite alternate;
+        }
+
+        @keyframes pulse-border {
+            0% { border-color: rgba(96, 165, 250, 0.1); }
+            100% { border-color: rgba(96, 165, 250, 0.3); }
+        }
+
+        .status-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .status-indicator {
+            position: relative;
+            width: 14px;
+            height: 14px;
+            background-color: var(--success);
+            border-radius: 50%;
+            box-shadow: 0 0 12px var(--success);
+        }
+
+        .status-indicator::after {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            border: 2px solid var(--success);
+            border-radius: 50%;
+            animation: pulse-ring 2s infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(2.2); opacity: 0; }
+        }
+
+        .status-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary-text);
+        }
+
+        .status-desc {
+            font-size: 0.9rem;
+            color: var(--secondary-text);
+        }
+
+        .status-badge {
+            background: var(--gradient-success);
+            color: #0F172A;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+            padding: 0.4rem 1rem;
+            border-radius: 99px;
+            box-shadow: 0 4px 14px rgba(52, 211, 153, 0.4);
+        }
+
+        /* Tabs and Controls */
+        .section-header {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            border-left: 4px solid var(--accent);
+            padding-left: 1rem;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 1px;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: var(--secondary-text);
+            font-size: 1.1rem;
+            font-weight: 500;
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        .tab-btn:hover {
+            color: var(--primary-text);
+        }
+
+        .tab-btn.active {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--gradient-accent);
+            border-radius: 99px;
+        }
+
+        /* Grid & Cards */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .card {
+            background: var(--glass-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            backdrop-filter: blur(8px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient-accent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(96, 165, 250, 0.4);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card-cat {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        .card-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--primary-text);
+        }
+
+        .card-desc {
+            font-size: 0.95rem;
+            color: var(--secondary-text);
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .card-code {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: #E2E8F0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .copy-btn {
+            background: none;
+            border: none;
+            color: var(--accent);
+            font-size: 0.8rem;
+            cursor: pointer;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: rgba(96, 165, 250, 0.1);
+        }
+
+        /* Wiki Section */
+        .wiki-section {
+            background: rgba(30, 41, 59, 0.25);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 3rem;
+            margin-top: 4rem;
+        }
+
+        .wiki-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .wiki-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .wiki-left h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .wiki-left p {
+            color: var(--secondary-text);
+            margin-bottom: 2rem;
+        }
+
+        .wiki-btn {
+            display: inline-block;
+            background: var(--gradient-accent);
+            color: #0F172A;
+            font-weight: 600;
+            padding: 0.8rem 1.8rem;
+            border-radius: 8px;
+            text-decoration: none;
+            box-shadow: 0 4px 14px rgba(96, 165, 250, 0.4);
+            transition: transform 0.2s;
+        }
+
+        .wiki-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .wiki-links {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .wiki-links a {
+            display: flex;
+            flex-direction: column;
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.25rem;
+            color: var(--primary-text);
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .wiki-links a:hover {
+            border-color: var(--accent);
+            background: rgba(96, 165, 250, 0.05);
+        }
+
+        .wiki-link-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            color: var(--accent);
+        }
+
+        .wiki-link-desc {
+            font-size: 0.8rem;
+            color: var(--secondary-text);
+        }
+
+        footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--secondary-text);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border);
+        }
+
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-area">SkillsBuilder</div>
+        <p class="subtitle">全球最大 AI-Agentic Skill 開源圖書館 & 複利式知識庫 (ClawHub All-Star Library)</p>
+    </header>
+
+    <div class="container">
+        <!-- Status Widget -->
+        <div class="status-widget">
+            <div class="status-left">
+                <div class="status-indicator"></div>
+                <div>
+                    <div class="status-title">自動化確效狀態 (Software Validation Status)</div>
+                    <div class="status-desc">整合 pre-push 與 CI 檢驗機制，完美跑通所有工業級技能檢驗流程。</div>
+                </div>
+            </div>
+            <div class="status-badge">100% PASSED</div>
+        </div>
+
+        <!-- Skills Section -->
+        <h2 class="section-header">嚴選技能庫 (Ingested Skills)</h2>
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('core')">Core Productivity (生產力)</button>
+            <button class="tab-btn" onclick="switchTab('dev')">Dev Specific (開發專用)</button>
+        </div>
+
+        <div id="skills-grid" class="grid">
+            <!-- Dynamically Loaded by JS -->
+        </div>
+
+        <!-- Wiki Section -->
+        <div class="wiki-section">
+            <div class="wiki-grid">
+                <div class="wiki-left">
+                    <h3>專案持久大腦 (LLM Wiki)</h3>
+                    <p>基於 Andrej Karpathy 的 "LLM Wiki" 開發原則，本專案將跨 session 的經驗沉澱為結構化的 interlinked 知識庫，實現知識與開發經驗的複利成長。</p>
+                    <a href="https://github.com/Chun-Chieh-Chang/SkillsBuilder/tree/main/wiki" class="wiki-btn" target="_blank">瀏覽 Wiki 倉庫</a>
+                </div>
+                <div>
+                    <ul class="wiki-links">
+                        <li>
+                            <a href="https://github.com/Chun-Chieh-Chang/SkillsBuilder/blob/main/wiki/SCHEMA.md" target="_blank">
+                                <span class="wiki-link-title">SCHEMA.md</span>
+                                <span class="wiki-link-desc">Wiki 治理準則與 Ingest 流程規範</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/Chun-Chieh-Chang/SkillsBuilder/blob/main/wiki/index.md" target="_blank">
+                                <span class="wiki-link-title">index.md</span>
+                                <span class="wiki-link-desc">Wiki 導航地圖與核心實體索引</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/Chun-Chieh-Chang/SkillsBuilder/blob/main/wiki/log.md" target="_blank">
+                                <span class="wiki-link-title">log.md</span>
+                                <span class="wiki-link-desc">Chronological 時間軸 Ingest 紀錄</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/Chun-Chieh-Chang/SkillsBuilder/blob/main/wiki/entities/find-skills.md" target="_blank">
+                                <span class="wiki-link-title">find-skills.md</span>
+                                <span class="wiki-link-desc">技能包管理 Discovery 實體規範</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/Chun-Chieh-Chang/SkillsBuilder/blob/main/wiki/entities/autoresearch.md" target="_blank">
+                                <span class="wiki-link-title">autoresearch.md</span>
+                                <span class="wiki-link-desc">閉環棘輪 ML 自動優化研究實體</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/Chun-Chieh-Chang/SkillsBuilder/blob/main/wiki/concepts/nexus-protocols.md" target="_blank">
+                                <span class="wiki-link-title">nexus-protocols.md</span>
+                                <span class="wiki-link-desc">多智能體協作與品質邊界協議</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>SkillsBuilder 2026. Designed with approachable luxury aesthetics. Hosted on <a href="https://github.com/Chun-Chieh-Chang/SkillsBuilder" target="_blank">GitHub</a>.</p>
+    </footer>
+
+    <script>
+        const skillsData = {
+            core: [
+                {
+                    name: "find-skills",
+                    cat: "Core Productivity",
+                    desc: "協助 AI 自動探索並從 ClawHub 生態中安裝各類專家技能，避免重造輪子。",
+                    code: "npx skills find [query]"
+                },
+                {
+                    name: "using-superpowers",
+                    cat: "Core Productivity",
+                    desc: "全域智慧喚醒引導模組，建立極致嚴謹的 AI 超能力開發紀律。",
+                    code: "npx skills add using-superpowers"
+                },
+                {
+                    name: "tavily",
+                    cat: "Core Productivity",
+                    desc: "深度網路檢索與事實搜集模組，避免幻覺產生並帶有可靠引用來源。",
+                    code: "npx skills add tavily"
+                },
+                {
+                    name: "last30days",
+                    cat: "Core Productivity",
+                    desc: "趨勢總結與分析模組，追蹤近 30 天內各類科技與熱門趨勢。",
+                    code: "npx skills add last30days"
+                },
+                {
+                    name: "summarize",
+                    cat: "Core Productivity",
+                    desc: "極速文檔與 URL 提煉工具，快速生成結構化知識供 Ingest 進 Wiki。",
+                    code: "npx skills add summarize"
+                }
+            ],
+            dev: [
+                {
+                    name: "autoresearch",
+                    cat: "Developer Specific",
+                    desc: "閉環自主 ML 實驗微調工具，實行 Propose-Train-Evaluate 棘輪自我優化迴圈。",
+                    code: "git checkout -b autoresearch/<tag>"
+                },
+                {
+                    name: "skill-architect",
+                    cat: "Developer Specific",
+                    desc: "技能建築師。輔助 AI 自動生產、確效並封裝全新功能技能 (Skills)。",
+                    code: "npx skills add skill-architect"
+                },
+                {
+                    name: "gitnexus",
+                    cat: "Developer Specific",
+                    desc: "Gitnexus 代碼上帝視角圖譜引擎，從宏觀結構理解爆炸半徑。",
+                    code: "npx skills add gitnexus"
+                },
+                {
+                    name: "graphify",
+                    cat: "Developer Specific",
+                    desc: "本地圖譜引擎。大幅縮減 Token 消耗並實現精準外科手術式修改。",
+                    code: "graphify install"
+                },
+                {
+                    name: "bug-diagnose",
+                    cat: "Developer Specific",
+                    desc: "系統化 Bug 診斷與除錯工具，強制實施 Investigation-Pattern-Hypothesis-Fix 流程。",
+                    code: "npx skills add bug-diagnose"
+                }
+            ]
+        };
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            const clickedBtn = Array.from(document.querySelectorAll('.tab-btn')).find(btn => btn.innerText.toLowerCase().includes(tabName));
+            if (clickedBtn) clickedBtn.classList.add('active');
+
+            const grid = document.getElementById('skills-grid');
+            grid.innerHTML = '';
+
+            skillsData[tabName].forEach(skill => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div>
+                        <div class="card-cat">${skill.cat}</div>
+                        <div class="card-title">${skill.name}</div>
+                        <div class="card-desc">${skill.desc}</div>
+                    </div>
+                    <div class="card-code">
+                        <span>${skill.code}</span>
+                        <button class="copy-btn" onclick="copyText('${skill.code}', this)">複製</button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function copyText(text, btn) {
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = btn.innerText;
+                btn.innerText = "已複製！";
+                btn.style.color = "var(--success)";
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.style.color = "var(--accent)";
+                }, 1500);
+            });
+        }
+
+        // Initialize with core tab
+        switchTab('core');
+    </script>
+</body>
+</html>

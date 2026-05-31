@@ -1,3 +1,8 @@
+---
+name: skill-architect
+description: Use when the user wants to design, build, or optimize a new AI agent skill. This skill guides you through Socratic requirements elicitation, matching appropriate Google design patterns, and outputting structured skills with verification loops.
+---
+
 # 技能建築師 (Skill Architect)
 
 ## 描述
