@@ -16,6 +16,7 @@ The rules and workflows for this wiki.
 *   [planning](entities/planning.md): Task management system.
 *   [youtube](entities/youtube.md): Visual knowledge acquisition tool.
 *   [gitnexus](entities/gitnexus.md): Code intelligence & graph engine.
+*   [find-skills](entities/find-skills.md): Discover and install agent skills.
 
 ### [Concepts](concepts/)
 *   [surgical-changes](concepts/surgical-changes.md): Precise code modifications.

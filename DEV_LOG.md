@@ -16,6 +16,21 @@
 
 ---
 
+## [2026-05-31] Find Skills 探索與安裝功能整合 (Find Skills Integration)
+
+### 任務內容 (PDCA)
+
+- **Plan (規劃)**：整合 Vercel 官方 `find-skills` 技能，將 `npx skills` 生態系統的探索與包管理能力賦予本專案，同時建立 Wiki 實體與更新專案導引。
+- **Do (執行)**：
+    - 建立 `skills/core/find-skills/SKILL.md`，導入 `npx skills find/add/check/update` 完整流程與指引。
+    - 建立專屬 Wiki 實體 `wiki/entities/find-skills.md` 與更新 Wiki 首頁 `wiki/index.md`。
+    - 於 `README.md` 中將此核心技能登錄，保持專案門面資訊同步。
+    - 執行 `INSTALL.ps1` 進行本地環境自動同步確效。
+- **Check (驗證)**：確認 Symbolic Link / Deep Copy 無縫映射至本機 `.gemini/antigravity` 與 `.gemini/antigravity-ide` 目錄，驗證無 CP950 編碼異常與路徑衝突。
+- **Act (持續改進)**：為未來的 skills 套件管理流程打下基礎，避免與現有 TDD/Debugging 規則產生衝突。
+
+---
+
 ## [2026-05-23] RTK 高信號模式整合 (RTK High-Signal Integration)
 
 ### 任務內容
