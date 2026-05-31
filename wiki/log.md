@@ -2,6 +2,17 @@
 
 All significant project events, wiki ingests, and architectural decisions are recorded here.
 
+## [2026-05-31] Ingest | Vercel Find-Skills Capability
+*   **Source**: [Vercel Find-Skills Gist/Repo](https://github.com/vercel-labs/skills/blob/main/skills/find-skills/SKILL.md).
+*   **Action**: Integrated `find-skills` package manager capability into the global library and synced locally.
+*   **Changes**: 
+    - Created `skills/core/find-skills/SKILL.md` guidance tool.
+    - Synthesized `wiki/entities/find-skills.md` entity.
+    - Updated `wiki/index.md` navigation and `README.md` core list.
+*   **Goal**: Equpping the agentic environment with the capability to autonomously discover and install modular skills.
+
+---
+
 ## [2026-05-23] Feature | Graphify Local Graph & Low-Token Query Mandate
 *   **Action**: Integrated `graphifyy` into SkillsBuilder to provide serverless codebase indexing.
 *   **Changes**: 
