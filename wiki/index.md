@@ -17,6 +17,7 @@ The rules and workflows for this wiki.
 *   [youtube](entities/youtube.md): Visual knowledge acquisition tool.
 *   [gitnexus](entities/gitnexus.md): Code intelligence & graph engine.
 *   [find-skills](entities/find-skills.md): Discover and install agent skills.
+*   [autoresearch](entities/autoresearch.md): Autonomous closed-loop ML researcher.
 
 ### [Concepts](concepts/)
 *   [surgical-changes](concepts/surgical-changes.md): Precise code modifications.

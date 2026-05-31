@@ -2,6 +2,17 @@
 
 All significant project events, wiki ingests, and architectural decisions are recorded here.
 
+## [2026-05-31] Ingest | Karpathy AutoResearch Loop
+*   **Source**: [Karpathy AutoResearch Repository](https://github.com/karpathy/autoresearch).
+*   **Action**: Integrated `autoresearch` autonomous ML experimentation capability into the developer library and synced locally.
+*   **Changes**: 
+    - Created `skills/dev/autoresearch/SKILL.md` closed-loop experimentation tool.
+    - Synthesized `wiki/entities/autoresearch.md` entity.
+    - Updated `wiki/index.md` navigation and `README.md` dev list.
+*   **Goal**: Enabling the agentic environment with the capability to autonomously modify code, run timebox experiments, and ratchet improvements.
+
+---
+
 ## [2026-05-31] Ingest | Vercel Find-Skills Capability
 *   **Source**: [Vercel Find-Skills Gist/Repo](https://github.com/vercel-labs/skills/blob/main/skills/find-skills/SKILL.md).
 *   **Action**: Integrated `find-skills` package manager capability into the global library and synced locally.

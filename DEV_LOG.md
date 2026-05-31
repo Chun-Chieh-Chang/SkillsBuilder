@@ -16,6 +16,21 @@
 
 ---
 
+## [2026-05-31] AutoResearch 閉環自主研究功能整合 (AutoResearch Integration)
+
+### 任務內容 (PDCA)
+
+- **Plan (規劃)**：整合 Andrej Karpathy 的 `autoresearch` 自主訓練與評估閉環，將 AI 代理人的「棘輪（Ratchet）研究工作流」引入專案，並登錄至 Wiki 及 repository 導引。
+- **Do (執行)**：
+    - 建立 `skills/dev/autoresearch/SKILL.md`，導入 Propose -> Edit -> Run (5-minute timebox) -> Evaluate (`val_bpb`) -> Keep or Revert 完整流程與指令。
+    - 建立專屬 Wiki 實體 `wiki/entities/autoresearch.md` 與更新 Wiki 首頁 `wiki/index.md`。
+    - 於 `README.md` 中將此開發技能登錄，保持專案門面資訊同步。
+    - 執行 `INSTALL.ps1` 進行本地環境自動同步確效。
+- **Check (驗證)**：確認 Symbolic Link / Deep Copy 無縫映射至本機全域 skills 池中，驗證無編碼、路徑或邏輯衝突。
+- **Act (持續改進)**：為未來的自動化超參數微調、代碼演化與自我重構邏輯提供強大基石，確保不與現有 Graphify 衝突。
+
+---
+
 ## [2026-05-31] Find Skills 探索與安裝功能整合 (Find Skills Integration)
 
 ### 任務內容 (PDCA)
