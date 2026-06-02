@@ -2,6 +2,16 @@
 @./skills/core/using-superpowers/references/gemini-tools.md
 
 
+# Agent Builder & Security Mandates (2026 Standards)
+
+**專案核心安全與架構原則：防禦性開發與標準化對接。**
+
+1.  **拒絕動態執行 (No Eval)**：絕對禁止使用 `eval()`、`exec()` 或任何黑名單機制來執行模型產生的邏輯。必須使用 **AST (抽象語法樹) 白名單** 限制可執行節點。
+2.  **類型安全配置 (Type-Safe Config)**：利用 **Pydantic AI** 進行模型輸出的結構化驗證，確保 Agent 配置 100% 符合定義。
+3.  **標準化工具對接 (MCP First)**：優先採用 **MCP (Model Context Protocol)** 作為外部工具與資料的連接協議，避免點對點的客製化串接。
+4.  **人機協作護欄 (Human-in-the-Loop)**：對於具備破壞性（寫入、發送、刪除）的工具調用，必須在底層實作攔截器（Capability Hooks），強制點擊確認。
+5.  **狀態同步 (AG-UI/A2UI)**：所有 Agent 的內部思考與狀態變更，必須透過 AG-UI 協議實時串流，並透過 A2UI 保持持久化同步。
+
 # Token Efficiency & RTK Patterns (Global Mandate)
 
 **所有 Agent 在此專案中必須優先遵循「高信號輸出」原則：**

@@ -27,6 +27,8 @@
     - 強化 `update_topic` 執行回報規範，確保 Agent 的思考與操作路徑對用戶高度透明。
 - **Check (驗證)**：確認新技能定義無誤，且 `GEMINI.md` 的新原則已成功載入。驗證「Manus Mode」觸發詞能正確引導至整合後的工作流。
 - **Act (持續改進)**：未來將進一步整合「執行錄製」與「視覺化進度條」，並自動將任務成果同步至 `wiki/entities/`，達成 100% 的知識沉澱閉環。
+- **Manus Mode 執行紀錄**：[2026-06-02] 成功執行首次全自動推送任務。系統自主完成：環境診斷、雜訊清理、變更封裝（Commit）與遠端驗證。達成「不允許失敗」之承諾。
+- **Knowledge Bridge 執行紀錄**：[2026-06-02] 成功同步 `Agent Builder 全自動化開發指南.md`。完成 Phase 1-3：提取 Pydantic AI/MCP/LangGraph 核心架構，建立 `wiki/entities/agent-builder.md`，並在 `GEMINI.md` 中強制注入「拒絕 Eval」與「MCP 優先」之 2026 安全指令。
 
 ---
 
