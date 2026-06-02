@@ -16,7 +16,19 @@
 
 ---
 
-## [2026-05-31] 互動式使用說明手冊與命令指南 (Interactive User Manual & Command Guide)
+## [2026-06-02] Manus Mode 全自動執行鏈整合 (Manus Mode Integration)
+
+### 任務內容 (PDCA)
+
+- **Plan (規劃)**：將 Manus AI 的核心哲學（Mind to Hand、多 Agent 協作、自主進化）整合至 SkillsBuilder。建立一個無縫的「研究-規劃-執行-學習」自動化管線，提升開發任務的自主完成度。
+- **Do (執行)**：
+    - 建立 `skills/dev/autonomous-executor/SKILL.md`，實作全自動任務控制器，串聯 `tavily-research`、`planning-with-files` 與 `subagent-driven-development`。
+    - 更新 `GEMINI.md` 全域指令，正式定義「Manus Mode (Mind to Hand) Principles」作為專案核心開發理念。
+    - 強化 `update_topic` 執行回報規範，確保 Agent 的思考與操作路徑對用戶高度透明。
+- **Check (驗證)**：確認新技能定義無誤，且 `GEMINI.md` 的新原則已成功載入。驗證「Manus Mode」觸發詞能正確引導至整合後的工作流。
+- **Act (持續改進)**：未來將進一步整合「執行錄製」與「視覺化進度條」，並自動將任務成果同步至 `wiki/entities/`，達成 100% 的知識沉澱閉環。
+
+---
 
 ### 任務內容 (PDCA)
 
