@@ -2,6 +2,47 @@
 
 All significant project events, wiki ingests, and architectural decisions are recorded here.
 
+## [2026-06-03] Integration | Hermes Agent Core Capabilities
+*   **Source**: [NousResearch/hermes-agent](https://github.com/NousResearch/hermes-agent)
+*   **Action**: Integrated Hermes Agent's core capabilities into SkillsBuilder skill library.
+*   **Changes**:
+    - Heavily upgraded `skills/dev/soul-evolution/SKILL.md` — Hermes SOUL.md dual-zone (IMMUTABLE + EVOLVABLE) architecture.
+    - Heavily upgraded `skills/dev/skill-creator/SKILL.md` — Full `skill_manage` protocol (create/patch/edit/write_file/delete).
+    - Created `skills/dev/session-memory/SKILL.md` — Dual-track persistent memory (MEMORY.md + USER.md).
+    - Created `skills/dev/cron-automations/SKILL.md` — Natural language scheduled automations + Kiro Hooks integration.
+    - Upgraded `skills/dev/knowledge-bridge/SKILL.md` — Hermes memory taxonomy + signal filtering framework.
+    - Created `wiki/entities/hermes-agent.md` — Complete capability matrix and integration map.
+*   **Goal**: Enable SkillsBuilder agents to autonomously grow through closed learning loops — creating skills from tasks, persisting memory across sessions, and scheduling recurring maintenance.
+
+---
+
+## [2026-06-03] Enhancement | Superpowers 4 Core Principles Integration
+*   **Source**: [obra/superpowers](https://github.com/obra/superpowers) + oficial docs (obra-superpowers.mintlify.app)
+*   **Action**: GAP analysis against Superpowers 4 core principles, hardened existing skills and filled missing ones.
+*   **Changes**:
+    - Upgraded `skills/dev/tdd-enforcer/SKILL.md` — Added `<HARD-GATE>`, "delete unverified code" rule, 8-item pre-completion checklist.
+    - Upgraded `skills/dev/grill-requirements/SKILL.md` — Added `<HARD-GATE>`, YAGNI pruning step, Anti-Pattern warning table.
+    - Created `skills/dev/complexity-reduction/SKILL.md` — YAGNI / DRY / Vertical Slices principles with full detection checklist.
+*   **Goal**: Ensure all 4 Superpowers principles (TDD / Systematic / Complexity Reduction / Evidence over Claims) have complete, independent skill coverage.
+
+---
+
+## [2026-06-03] Ops | Multi-IDE Auto-Loading Rules Deployment
+*   **Action**: Deployed workspace rules to 13 AI tools/IDEs simultaneously.
+*   **Changes**: Created `.cursorrules`, `CLAUDE.md`, `.github/copilot-instructions.md`, `.windsurfrules`, `.rules`, `.trae/rules/rules.md`, `.kiro/steering/steering.md`, `.qoder/rules/rules.md`, `.antigravity.md`, `AGENTS.md`, `.clinerules`, `.continue/rules/rules.md`, `INSTALL.ps1` (updated).
+*   **Goal**: Ensure SkillsBuilder development standards auto-load in every AI assistant session.
+
+---
+
+## [2026-06-02] Feature | Manus Mode Autonomous Executor Integration
+*   **Action**: Integrated Manus AI's "Mind to Hand" philosophy as autonomous execution pipeline.
+*   **Changes**:
+    - Created `skills/dev/autonomous-executor/SKILL.md` — Phase 0-4 pipeline (Socratic → Discovery → Planning → Execution → Evolution).
+    - Updated `GEMINI.md` with Manus Mode principles.
+*   **Goal**: Enable end-to-end autonomous task completion without user intervention after Phase 0 approval.
+
+---
+
 ## [2026-05-31] Ingest | Karpathy AutoResearch Loop
 *   **Source**: [Karpathy AutoResearch Repository](https://github.com/karpathy/autoresearch).
 *   **Action**: Integrated `autoresearch` autonomous ML experimentation capability into the developer library and synced locally.

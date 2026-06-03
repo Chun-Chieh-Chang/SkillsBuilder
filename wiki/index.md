@@ -22,6 +22,7 @@ The rules and workflows for this wiki.
 *   [gitnexus](entities/gitnexus.md): Code intelligence & graph engine.
 *   [find-skills](entities/find-skills.md): Discover and install agent skills.
 *   [autoresearch](entities/autoresearch.md): Autonomous closed-loop ML researcher.
+*   [hermes-agent](entities/hermes-agent.md): Self-improving AI agent — Closed Learning Loop, Persistent Memory, Skill Management (Nous Research).
 
 ### [Concepts](concepts/)
 *   [surgical-changes](concepts/surgical-changes.md): Precise code modifications.
@@ -34,6 +35,8 @@ The rules and workflows for this wiki.
 *   [migration](concepts/migration.md): Cross-device sync & installation.
 *   [graph-driven-dev](concepts/graph-driven-dev.md): Structural awareness & blast radius analysis.
 *   [nexus-protocols](concepts/nexus-protocols.md): Multi-agent coordination & quality gates.
+*   [glass-order](concepts/glass-order.md): Glassmorphism UI design system & layering standards.
+*   [pdca-evolution](concepts/pdca-evolution.md): PDCA continuous improvement loop for agentic development.
 
 ### [Log](log.md)
 The timeline of this project's evolution.

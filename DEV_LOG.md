@@ -16,6 +16,77 @@
 
 ---
 
+## [2026-06-03] Hermes Agent 核心能力整合 (Hermes Agent Core Capabilities Integration)
+
+### 任務內容 (PDCA)
+
+- **Plan (規劃)**：
+  - 目標：將 https://github.com/NousResearch/hermes-agent 的核心能力無縫整合至本專案。
+  - 研究方式：取得官方 README（15KB）+ Skills System 文件（40KB）+ Memory System 文件（12KB）+ Features Overview（10KB）。
+  - Hermes 六大核心能力識別：(1) Closed Learning Loop, (2) Persistent Memory (MEMORY.md + USER.md), (3) Subagent Delegation, (4) Scheduled Automations/Cron, (5) Skills System (agentskills.io 相容), (6) SOUL.md Personality。
+  - GAP 分析：
+    - Closed Learning Loop：`soul-evolution`（5 行輕量版）+ `skill-creator`（3 行輕量版）⚠️ 需大幅強化
+    - Persistent Memory：`knowledge-bridge` 只處理外部 raw 資料，無跨 session 記憶機制 ❌ 缺失
+    - Scheduled Automations：**完全缺失** ❌
+    - Skill Management：`skill-creator` 極輕量 ⚠️ 需強化
+    - SOUL.md Pattern：`soul-evolution` 僅提觸發詞 ⚠️ 需強化
+    - Knowledge Taxonomy：`knowledge-bridge` 缺少 Hermes 記憶哲學 ⚠️ 需強化
+
+- **Do (執行)**：
+  - 強化 `skills/dev/soul-evolution/SKILL.md`：實作 Hermes SOUL.md 的 IMMUTABLE + EVOLVABLE 雙區域架構、閉環學習觸發條件（5 種）、Hermes 記憶整合原則、PDCA 執行流程。
+  - 強化 `skills/dev/skill-creator/SKILL.md`：實作 Hermes `skill_manage` 完整協定（create/patch/edit/write_file/delete 五動作）、自動建立觸發條件（4 種）、SKILL.md 標準格式、品質門檻（4 指標）。
+  - 新建 `skills/dev/session-memory/SKILL.md`：實作 Hermes 雙軌持久記憶（MEMORY.md + USER.md）、主動儲存規則（6 種觸發）、容量管理策略（80% 警戒線）、安全防禦機制。
+  - 新建 `skills/dev/cron-automations/SKILL.md`：實作 Hermes Scheduled Automations、自然語言→排程轉換表、Kiro Hooks 整合範本（4 個）、Windows 工作排程器整合、5 種常用排程任務範本。
+  - 強化 `skills/dev/knowledge-bridge/SKILL.md`：整合 Hermes 記憶管理哲學、知識分類框架（5 種類型）、信號過濾規則（✅應保留 / ❌應跳過）、容量守衛機制。
+  - 新建 `wiki/entities/hermes-agent.md`：完整 Hermes 能力知識沉澱，含技術架構、對應關係表、參考連結。
+  - 更新 `wiki/index.md` 加入 hermes-agent 實體索引。
+
+- **Check (驗證)**：執行 `verify.ps1` 確保所有新 skills 通過 LINT 與同步確效。
+- **Act (持續改進)**：
+  - 後續可執行 `INSTALL.ps1` 將新 skills 同步至全域 skills 池。
+  - 建議建立 `wiki/MEMORY.md` 和 `wiki/USER.md` 初始文件，啟動跨 session 持久記憶系統。
+
+### RCA
+本次屬主動整合，非 Bug 修復。Hermes Agent 的 Closed Learning Loop 理念（代理從任務中自主成長）與本專案的 skills-based development 高度共鳴。本專案現有的自主執行能力缺少「記憶層」——任務完成後的知識沉澱，完全依賴人工觸發 knowledge-bridge，形成斷層。
+
+### CAPA
+整合後，代理應在每次完成複雜任務（5+ 工具調用）後，主動檢視是否需要：
+1. 新建 skill（呼叫 `skill-creator`）
+2. 更新記憶（呼叫 `session-memory`）
+3. 進化人格（呼叫 `soul-evolution`）
+4. 排程後續維護（呼叫 `cron-automations`）
+
+---
+
+## [2026-06-03] Superpowers 四大核心原則完整整合 (4 Core Principles Integration)
+
+### 任務內容 (PDCA)
+
+- **Plan (規劃)**：
+  - 目標：確認本專案是否具備 Superpowers 框架 (obra/superpowers) 的四大核心原則 skill，若缺失則無縫整合。
+  - 四大原則：(1) Test-Driven Development、(2) Systematic over Ad-hoc、(3) Complexity Reduction、(4) Evidence over Claims。
+  - GAP 分析結果：
+    - Principle 1 (TDD)：`tdd-enforcer` 存在但缺少 HARD-GATE、"delete unverified code" 硬規則、完成前驗證清單。⚠️ 需強化。
+    - Principle 2 (Systematic)：`grill-requirements` 存在但缺少 HARD-GATE 硬門檻區塊、YAGNI 剪枝步驟、anti-pattern 警示表。⚠️ 需強化。
+    - Principle 3 (Complexity Reduction)：**完全缺失**，無對應 skill。❌ 需新建。
+    - Principle 4 (Evidence over Claims)：`verification-before-completion` 完整，與 Superpowers 標準高度一致。✅ 無需變更。
+- **Do (執行)**：
+  - 強化 `skills/dev/tdd-enforcer/SKILL.md`：新增 `<HARD-GATE>` 區塊（含 "delete code, start over" 硬規則）、Verify RED/GREEN 必要確認步驟、完成前驗證清單 (8 項 checkbox)、常見藉口反駁表。
+  - 強化 `skills/dev/grill-requirements/SKILL.md`：新增 `<HARD-GATE>` 硬門檻區塊、YAGNI 剪枝作為拷問重點第 4 項、Anti-Pattern 警示表、移交 `writing-plans` 的明確銜接流程。
+  - 新建 `skills/dev/complexity-reduction/SKILL.md`：涵蓋 YAGNI / DRY / 垂直切片三大原則、HARD-GATE、複雜度偵測清單、過度設計模式識別表、與其他 skills 的整合關係。
+- **Check (驗證)**：三個 skill 文件均成功寫入，格式符合專案 SKILL.md 規範（含 frontmatter、HARD-GATE、清單結構）。
+- **Act (持續改進)**：
+  - 四大原則現已全部在本專案 skills 庫中有完整對應，形成閉環。
+  - 後續可執行 `INSTALL.ps1` 將新 `complexity-reduction` skill 同步至全域 skills 池。
+
+### RCA
+本次屬主動強化，非 Bug 修復。根本原因：本專案的 skills 庫在 2026-05-23 整合 Superpowers 框架時，採用了與 obra/superpowers 精神對齊但形式輕量化的版本，缺少硬門檻 (HARD-GATE) 機制與 Principle 3 的獨立封裝。
+
+### CAPA
+建立「四大原則覆蓋率」作為 skills 庫健康度的永久性檢核基準：每次大規模 skill 整合後，必須對照四大原則逐一驗證是否有對應 skill。
+
+---
+
 ## [2026-06-03] 全 IDE/CLI/延伸套件自動載入規則與觸發器部署 (Auto-Loading Rules Across All IDEs, CLIs & Extensions)
 
 ### 任務內容 (PDCA)
