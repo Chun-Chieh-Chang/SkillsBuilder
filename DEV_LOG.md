@@ -16,6 +16,22 @@
 
 ---
 
+## [2026-06-03] 全 IDE/CLI/延伸套件自動載入規則與觸發器部署 (Auto-Loading Rules Across All IDEs, CLIs & Extensions)
+
+### 任務內容 (PDCA)
+
+- **Plan (規劃)**：為了讓 SkillsBuilder 的全域開發規則、UI/UX 規範與 TDD 紀律在 Cursor, Claude Code, GitHub Copilot, Gemini CLI, Windsurf, Trae, Zed, Kiro, Qoder, Antigravity CLI, Codex CLI, Cline, Roo Code, Continue 等所有 IDE、CLI 與擴充套件中自動載入，部署各工具專屬的自動讀取設定檔，並加上「啟動 SkillsBuilder 開發模式」的明確觸發指令，並在 `INSTALL.ps1` 加入驗證機制。
+- **Do (執行)**：
+    - 建立 `.cursorrules` (Cursor)、`CLAUDE.md` (Claude Code)、`.github/copilot-instructions.md` (GitHub Copilot)。
+    - 建立 `.windsurfrules` (Windsurf)、`.rules` (Zed)、`.trae/rules/rules.md` (Trae)、`.kiro/steering/steering.md` (Kiro)、`.qoder/rules/rules.md` (Qoder)。
+    - 建立 `.antigravity.md` (Antigravity CLI)、`AGENTS.md` (Codex CLI)、`.clinerules` (Cline/Roo Code)、`.continue/rules/rules.md` (Continue)。
+    - 更新 `GEMINI.md` 的規則結構，加入啟動觸發器指示。
+    - 修改 `INSTALL.ps1` 底部以增添所有 13 個規則檔案的自動部署檢查與複製修補（從 `CLAUDE.md` 自動備援複製）。
+- **Check (驗證)**：執行 `.\verify.ps1` 通過 100% 確效。Console 輸出確認 13 個規則檔案均成功偵測並完成自動部署。
+- **Act (持續改進)**：未來當 Wiki 中 `global_rules.md` 更新時，`INSTALL.ps1` 可擴充為雙向同步，確保不同工具讀取的規則內容完全一致。
+
+---
+
 ## [2026-06-02] Manus Mode 全自動執行鏈整合 (Manus Mode Integration)
 
 ### 任務內容 (PDCA)

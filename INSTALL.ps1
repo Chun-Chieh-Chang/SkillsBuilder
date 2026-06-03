@@ -128,4 +128,39 @@ foreach ($antigravityPath in $pathsToSync) {
     }
 }
 
+# 6. Verify and ensure root IDE rules are deployed
+Write-Host "[INFO] Verifying workspace IDE rule configurations..." -ForegroundColor Cyan
+$ruleFiles = @(
+    @{ Path = Join-Path $currentDir ".cursorrules"; Type = "Cursor" },
+    @{ Path = Join-Path $currentDir "CLAUDE.md"; Type = "Claude Code" },
+    @{ Path = Join-Path $currentDir ".github\copilot-instructions.md"; Type = "GitHub Copilot" },
+    @{ Path = Join-Path $currentDir "GEMINI.md"; Type = "Gemini CLI / Antigravity" },
+    @{ Path = Join-Path $currentDir ".windsurfrules"; Type = "Windsurf" },
+    @{ Path = Join-Path $currentDir ".rules"; Type = "Zed" },
+    @{ Path = Join-Path $currentDir ".trae\rules\rules.md"; Type = "Trae" },
+    @{ Path = Join-Path $currentDir ".kiro\steering\steering.md"; Type = "Kiro" },
+    @{ Path = Join-Path $currentDir ".qoder\rules\rules.md"; Type = "Qoder" },
+    @{ Path = Join-Path $currentDir ".antigravity.md"; Type = "Antigravity CLI" },
+    @{ Path = Join-Path $currentDir "AGENTS.md"; Type = "Codex CLI" },
+    @{ Path = Join-Path $currentDir ".clinerules"; Type = "Cline / Roo Code" },
+    @{ Path = Join-Path $currentDir ".continue\rules\rules.md"; Type = "Continue" }
+)
+
+foreach ($rf in $ruleFiles) {
+    if (Test-Path $rf.Path) {
+        Write-Host "[SUCCESS] Deployed: $($rf.Type) rules found at $($rf.Path)" -ForegroundColor Green
+    } else {
+        Write-Host "[WARNING] Missing: $($rf.Type) rules not found at $($rf.Path)" -ForegroundColor Yellow
+        $parent = Split-Path $rf.Path
+        if (-not (Test-Path $parent)) { New-Item -ItemType Directory -Path $parent -Force | Out-Null }
+        # Auto-provision by copying from another rule file if available
+        $sourceRule = Join-Path $currentDir "CLAUDE.md"
+        if (Test-Path $sourceRule) {
+            Copy-Item -Path $sourceRule -Destination $rf.Path -Force
+            Write-Host "[INFO] Auto-provisioned: Copied CLAUDE.md to $($rf.Path)" -ForegroundColor Gray
+        }
+    }
+}
+
 Write-Host "[SUCCESS] SkillsBuilder global sync complete!" -ForegroundColor Green
+
