@@ -1,0 +1,35 @@
+{
+  "claude_code": {
+    "description": "Add this to your Claude Code config (mcp.json or ~/.claude.json)",
+    "config": {
+      "mcpServers": {
+        "skillsbuilder": {
+          "command": "node",
+          "args": ["f:/Self-developed_Apps/SkillsBuilder/tools/mcp_server.js"],
+          "cwd": "f:/Self-developed_Apps/SkillsBuilder"
+        }
+      }
+    }
+  },
+  "cursor": {
+    "description": "Configure via Cursor settings: Settings > Features > MCP",
+    "config": {
+      "name": "skillsbuilder",
+      "type": "command",
+      "command": "node f:/Self-developed_Apps/SkillsBuilder/tools/mcp_server.js"
+    }
+  },
+  "zed": {
+    "description": "Add this to your Zed settings.json",
+    "config": {
+      "context_servers": [
+        {
+          "id": "skillsbuilder",
+          "command": "node",
+          "args": ["f:/Self-developed_Apps/SkillsBuilder/tools/mcp_server.js"],
+          "cwd": "f:/Self-developed_Apps/SkillsBuilder"
+        }
+      ]
+    }
+  }
+}
