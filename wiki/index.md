@@ -23,6 +23,10 @@ The rules and workflows for this wiki.
 *   [find-skills](entities/find-skills.md): Discover and install agent skills.
 *   [autoresearch](entities/autoresearch.md): Autonomous closed-loop ML researcher.
 *   [hermes-agent](entities/hermes-agent.md): Self-improving AI agent — Closed Learning Loop, Persistent Memory, Skill Management (Nous Research).
+*   [agent-browser](entities/agent-browser.md): Browser automation capability.
+*   [office-processor](entities/office-processor.md): Excel, Word, and PDF document parser.
+*   [diagram-generator](entities/diagram-generator.md): Excalidraw JSON diagram drawer.
+*   [deep-research](entities/deep-research.md): Multi-stage web research engine.
 
 ### [Concepts](concepts/)
 *   [surgical-changes](concepts/surgical-changes.md): Precise code modifications.
@@ -37,6 +41,8 @@ The rules and workflows for this wiki.
 *   [nexus-protocols](concepts/nexus-protocols.md): Multi-agent coordination & quality gates.
 *   [glass-order](concepts/glass-order.md): Glassmorphism UI design system & layering standards.
 *   [pdca-evolution](concepts/pdca-evolution.md): PDCA continuous improvement loop for agentic development.
+*   [premium-ui-standards](concepts/premium-ui-standards.md): Color palette and typography guidelines.
+*   [automated-code-gates](concepts/automated-code-gates.md): Security, permissions, and linter check gates.
 
 ### [Log](log.md)
 The timeline of this project's evolution.

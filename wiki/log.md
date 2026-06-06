@@ -2,6 +2,22 @@
 
 All significant project events, wiki ingests, and architectural decisions are recorded here.
 
+## [2026-06-06] Ingest & Integrate | YouTube Video: 8 Essential Skills
+*   **Source**: YouTube [qNOOW1ctBCo](https://www.youtube.com/watch?v=qNOOW1ctBCo).
+*   **Action**: Researched, evaluated, and fully integrated the "8 essential AI Agent Skills" into the workspace.
+*   **Changes**: 
+    - Created missing skills: `agent-browser`, `office-processor`, `diagram-generator`, `deep-research`.
+    - Upgraded and aligned: `skill-creator`, `premium-design`, `code-reviewer`, `skill-architect`.
+    - Created wiki entities (`agent-browser`, `office-processor`, `diagram-generator`, `deep-research`) and concepts (`premium-ui-standards`, `automated-code-gates`).
+    - Fixed `INSTALL.ps1` encoding (UTF-8 BOM) and added try-catch permission fallback to copy directories when SymbolicLink fails.
+    - Verified the workspace via `verify.ps1` (100% Passed).
+*   **Artifacts**: 
+    - [eight_skills_integration_proposal.md](file:///C:/Users/3kids/.gemini/antigravity-ide/brain/5fcbbff2-e17b-408c-a358-12f426817506/eight_skills_integration_proposal.md) (Proposal)
+    - [walkthrough.md](file:///C:/Users/3kids/.gemini/antigravity-ide/brain/5fcbbff2-e17b-408c-a358-12f426817506/walkthrough.md) (Walkthrough)
+*   **Goal**: Full coverage of high-fidelity developer, automation, and research capabilities.
+
+---
+
 ## [2026-06-03] Integration | Hermes Agent Core Capabilities
 *   **Source**: [NousResearch/hermes-agent](https://github.com/NousResearch/hermes-agent)
 *   **Action**: Integrated Hermes Agent's core capabilities into SkillsBuilder skill library.
