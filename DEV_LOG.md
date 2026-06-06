@@ -16,6 +16,27 @@
 
 ---
 
+## [2026-06-06] 專案衛生清理與 MECE 整理優化 (Workspace Hygiene & MECE Doc Relocation)
+
+### 任務內容 (PDCA)
+
+- **Plan (規劃)**：
+  - 目標：根據 MECE 原則清理冗餘文檔，使根目錄結構維持極致潔淨，僅保留核心入口與系統必要配置檔案，將非直接執行之架構報告與整合指南移至專屬文檔目錄。
+  - 清理 wiki 索引中失效的非存在概念鏈接，並新增最新實作的 LM Studio 系統提示詞概念文件連結。
+
+- **Do (執行)**：
+  - 將根目錄下的 `agent_evolution_roadmap.md`、`developer_workspace_flywheel.md`、`future_roadmap.md`、`ide_assistant_capability.md` 與 `project_integration_guide.md` 等 5 個 Markdown 報告，使用 `git mv` 移動至 `docs/` 開發標準與文檔目錄下。
+  - 刪除空資料夾 `docs/plans/`。
+  - 更新 [wiki/index.md](file:///f:/Self-developed_Apps/SkillsBuilder/wiki/index.md)，移除失效的 `surgical-changes.md` 與 `verification-loops.md` 索引，並將 `wiki/concepts/lm_studio_prompt.md` 補齊至概念清單中。
+
+- **Check (驗證)**：
+  - 執行 [verify.ps1](file:///f:/Self-developed_Apps/SkillsBuilder/verify.ps1)，確保全專案沒有任何編譯或規則同步的遺漏，確效結果為 **100% SOFTWARE VALIDATION PASSED**。
+
+- **Act (持續改進)**：
+  - 建立 Git 還原基準點（Commit & Tag），並準備推送至 GitHub 倉庫。
+
+---
+
 ## [2026-06-06] 升級 GitHub 遠端一鍵無縫整合與雙模式 bootstrap (GitHub Remote NL Bootstrap Integration & Dual Mode)
 
 ### 任務內容 (PDCA)

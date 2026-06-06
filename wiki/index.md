@@ -29,9 +29,8 @@ The rules and workflows for this wiki.
 *   [deep-research](entities/deep-research.md): Multi-stage web research engine.
 
 ### [Concepts](concepts/)
-*   [surgical-changes](concepts/surgical-changes.md): Precise code modifications.
-*   [verification-loops](concepts/verification-loops.md): Automated success checking.
 *   [llm-wiki](concepts/llm-wiki.md): Compounding knowledge pattern.
+*   [lm-studio-prompt](concepts/lm_studio_prompt.md): Custom system prompt for LM Studio integration.
 *   [skill-design](concepts/skill-design.md): The 6 design patterns and Hermes/Karpathy guardrails.
 *   [skill-triggering](concepts/skill-triggering.md): Natural language commands & magic phrases.
 *   [skill-lifecycle](concepts/skill-lifecycle.md): Agent-Driven Development (ADD) & the 4-phase workflow.
