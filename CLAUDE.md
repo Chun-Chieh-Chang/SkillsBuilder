@@ -7,6 +7,10 @@ This file contains the mandatory system-level directives and standards for the S
 ## 🚀 SkillsBuilder 開發模式啟動觸發器 (Activation Trigger)
 當使用者輸入 **「啟動 SkillsBuilder 開發模式」**、**「啟動 SkillsBuilder 開發模式進行...」** 或任何相似指令時，你必須立即利用本專案的功能啟動對應的開發模式。在該模式下，你必須嚴格遵守以下所有規則與 SOP 規範。
 
+當使用者在任何新專案或既有專案中輸入 **「一鍵無縫整合 SkillsBuilder」** 或 **「一鍵初始化 SkillsBuilder 專案」** 時，你必須立刻自動定位 SkillsBuilder 本機路徑（預設為 `F:/Self-developed_Apps/SkillsBuilder`），並在當前專案根目錄中自動執行以下命令：
+`powershell -ExecutionPolicy Bypass -File F:/Self-developed_Apps/SkillsBuilder/bootstrap.ps1`
+以自動部署 13 個 IDE 規則、建立 `DEV_LOG.md` 模板與 `wiki/` 知識庫、並初始化代碼圖譜。
+
 ---
 
 ## 1. Role Persona (專家雙角色定義)

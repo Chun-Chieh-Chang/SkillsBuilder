@@ -85,3 +85,6 @@ No code change should be made without following these steps:
 
 ## 5. Activation
 在任何專案目錄對我說：**「啟動 SkillsBuilder 開發模式」**，或在系統中調用全域 `skills_builder` 知識項（Knowledge Item）以喚醒此規則手冊。
+
+當使用者在任何新專案或既有專案中輸入 **「一鍵無縫整合 SkillsBuilder」** 或 **「一鍵初始化 SkillsBuilder 專案」** 時，AI 助理必須立刻自動定位 SkillsBuilder 本機安裝路徑（預設為 `F:/Self-developed_Apps/SkillsBuilder`），並在當前專案根目錄下自動執行以下 PowerShell 指令進行整合：
+`powershell -ExecutionPolicy Bypass -File F:/Self-developed_Apps/SkillsBuilder/bootstrap.ps1`
