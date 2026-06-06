@@ -16,6 +16,29 @@
 
 ---
 
+## [2026-06-06] 一鍵整合自然語言指令與 bootstrap 部署 (One-Command NL Bootstrap Integration)
+
+### 任務內容 (PDCA)
+
+- **Plan (規劃)**：
+  - 目標：簡化 SkillsBuilder 專案導入與初始化流程，將多步驟操作優化為一個「自然語言指令」，讓 AI 助理在任何專案根目錄下自動完成一鍵整合。
+  - 觸發指令設計：`「一鍵無縫整合 SkillsBuilder」` 或 `「一鍵初始化 SkillsBuilder 專案」`。
+
+- **Do (執行)**：
+  - 建立 [bootstrap.ps1](file:///f:/Self-developed_Apps/SkillsBuilder/bootstrap.ps1) 做為後台一鍵執行腳本（部署 13 個 IDE 規則、建立 `DEV_LOG.md` 模板、初始化 `wiki/` 知識庫與 `graphify` 索引）。
+  - 更新 [CLAUDE.md](file:///f:/Self-developed_Apps/SkillsBuilder/CLAUDE.md) 與 [GEMINI.md](file:///f:/Self-developed_Apps/SkillsBuilder/GEMINI.md)，在 `Activation Trigger` 區塊中加入該自然語言指令的明確執行指令（定位 SkillsBuilder 本機路徑並執行 `bootstrap.ps1`）。
+  - 更新 [wiki/global_rules.md](file:///f:/Self-developed_Apps/SkillsBuilder/wiki/global_rules.md) 之 `Activation` 區塊以對齊規則。
+  - 執行 `INSTALL.ps1` 確保新觸發器規則同步部署至本機所有 13 個 IDE 規則檔中。
+
+- **Check (驗證)**：
+  - 新建隔離測試目錄 `test-bootstrap` 並執行 `bootstrap.ps1`，成功完成一鍵全自動部署。
+  - 執行 [verify.ps1](file:///f:/Self-developed_Apps/SkillsBuilder/verify.ps1) 通過 100% 軟體確效。
+
+- **Act (持續改進)**：
+  - 成功將一鍵無縫整合指令推送至遠端主分支。開發者在任何新/既有專案中對 AI 說 `「一鍵無縫整合 SkillsBuilder」`，AI 即可自動執行該 PowerShell 腳本，實現零人工干預的一鍵整合。
+
+---
+
 ## [2026-06-06] PydanticAI 自主 Agent 執行器實作 (PydanticAI Agent Runner Implementation)
 
 ### 任務內容 (PDCA)
