@@ -6,34 +6,64 @@ $ErrorActionPreference = "Stop"
 
 $srcDir = $PSScriptRoot
 $destDir = $pwd.Path
+$isRemote = [string]::IsNullOrEmpty($srcDir)
+$baseUrl = "https://raw.githubusercontent.com/Chun-Chieh-Chang/SkillsBuilder/main"
 
 Write-Host "=========================================================" -ForegroundColor Cyan
 Write-Host "🚀 SkillsBuilder: Bootstrapping Workspace..." -ForegroundColor Cyan
-Write-Host "Source Directory: $srcDir" -ForegroundColor Gray
+if ($isRemote) {
+    Write-Host "Mode: REMOTE (Downloading from GitHub)" -ForegroundColor Yellow
+    Write-Host "Base URL: $baseUrl" -ForegroundColor Gray
+} else {
+    Write-Host "Mode: LOCAL (Copying from source directory)" -ForegroundColor Green
+    Write-Host "Source Directory: $srcDir" -ForegroundColor Gray
+}
 Write-Host "Target Directory: $destDir" -ForegroundColor Gray
 Write-Host "=========================================================" -ForegroundColor Cyan
 
-if ($srcDir -eq $destDir) {
+if (-not $isRemote -and $srcDir -eq $destDir) {
     Write-Warning "Target directory is the same as SkillsBuilder source. Running in self-update mode."
 }
 
-# 1. Helper function to safely copy files and create directories
+# 1. Helper function to safely copy or download files and create directories
 function Copy-Safe {
     param(
         [string]$RelativePath
     )
-    $srcFile = Join-Path $srcDir $RelativePath
     $destFile = Join-Path $destDir $RelativePath
-    
-    if (Test-Path $srcFile) {
-        $destParent = Split-Path $destFile -Parent
-        if (-not (Test-Path $destParent)) {
-            New-Item -ItemType Directory -Path $destParent -Force | Out-Null
+    $destParent = Split-Path $destFile -Parent
+    if (-not (Test-Path $destParent)) {
+        New-Item -ItemType Directory -Path $destParent -Force | Out-Null
+    }
+
+    $success = $false
+    # If not remote and local source file exists, use local copy
+    if (-not $isRemote -and $srcDir) {
+        $srcFile = Join-Path $srcDir $RelativePath
+        if (Test-Path $srcFile) {
+            try {
+                Copy-Item -Path $srcFile -Destination $destFile -Force
+                Write-Host "[DEPLOYED] $RelativePath (Local)" -ForegroundColor Green
+                $success = $true
+            } catch {
+                Write-Host "[ERROR] Failed to copy local file ${RelativePath}: $_" -ForegroundColor Red
+            }
         }
-        Copy-Item -Path $srcFile -Destination $destFile -Force
-        Write-Host "[DEPLOYED] $RelativePath" -ForegroundColor Green
-    } else {
-        Write-Host "[SKIPPED] Source file not found: $RelativePath" -ForegroundColor Yellow
+    }
+
+    # If local copy didn't run or fail, try remote download
+    if (-not $success) {
+        $remoteUrl = "$baseUrl/$RelativePath".Replace('\', '/')
+        try {
+            [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
+            $webClient = New-Object System.Net.WebClient
+            $webClient.Encoding = [System.Text.Encoding]::UTF8
+            $webClient.DownloadFile($remoteUrl, $destFile)
+            Write-Host "[DEPLOYED] $RelativePath (Remote)" -ForegroundColor Green
+            $success = $true
+        } catch {
+            Write-Host "[SKIPPED] Source file not found or download failed for: $RelativePath ($_)" -ForegroundColor Yellow
+        }
     }
 }
 
@@ -98,7 +128,9 @@ if (Get-Command graphify -ErrorAction SilentlyContinue) {
     } catch {
         Write-Warning "Graphify execution encountered an issue: $_"
     } finally {
-        Set-Location $srcDir
+        if (-not $isRemote) {
+            Set-Location $srcDir
+        }
     }
 } else {
     Write-Host "[SKIPPED] graphify command not found. Skipping graph initialization." -ForegroundColor Yellow
@@ -110,5 +142,10 @@ Write-Host "🎉 SkillsBuilder Integrated Successfully!" -ForegroundColor Green
 Write-Host "All guardrails and rules are deployed." -ForegroundColor Green
 Write-Host "To connect your IDE (Cursor / Claude Code) with standard tools," -ForegroundColor Green
 Write-Host "please refer to the configuration templates in:" -ForegroundColor Green
-Write-Host "file:///$srcDir/mcp_config.template.json" -ForegroundColor Green
+if ($isRemote) {
+    Write-Host "https://github.com/Chun-Chieh-Chang/SkillsBuilder/blob/main/mcp_config.template.json" -ForegroundColor Green
+} else {
+    $formattedSrcPath = $srcDir.Replace('\', '/')
+    Write-Host "file:///$formattedSrcPath/mcp_config.template.json" -ForegroundColor Green
+}
 Write-Host "=========================================================" -ForegroundColor Green

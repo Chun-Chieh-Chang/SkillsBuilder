@@ -16,6 +16,36 @@
 
 ---
 
+## [2026-06-06] 升級 GitHub 遠端一鍵無縫整合與雙模式 bootstrap (GitHub Remote NL Bootstrap Integration & Dual Mode)
+
+### 任務內容 (PDCA)
+
+- **Plan (規劃)**：
+  - 目標：解決本地安裝路記不穩定或未預先下載 SkillsBuilder 專案的痛點，將一鍵無縫整合改為遠端下載執行模式。
+  - 設計：升級 `bootstrap.ps1` 支援「遠端/本地雙模式」執行。當 `$PSScriptRoot` 為空（`iex` 遠端記憶體執行）時，自動判定為 Remote 模式並優先從 GitHub raw 倉庫下載所屬檔案；否則判定為 Local 模式進行本機複製。
+  - 將 13 個 IDE 規則檔的無縫整合觸發指令，全部改為呼叫 GitHub 遠端單行下載執行命令。
+
+- **Do (執行)**：
+  - 更新 [bootstrap.ps1](file:///f:/Self-developed_Apps/SkillsBuilder/bootstrap.ps1)，引入 `$isRemote` 與 `$baseUrl`，在 `Copy-Safe` 實作網路下載與本地複製的無感降級 (Fallback)。
+  - 更新 [INSTALL.ps1](file:///f:/Self-developed_Apps/SkillsBuilder/INSTALL.ps1)，修改 IDE 規則的拷貝邏輯為「一般 IDE 規則強制由 `CLAUDE.md` 覆寫同步」，確保規則信源的一致性。
+  - 更新 [CLAUDE.md](file:///f:/Self-developed_Apps/SkillsBuilder/CLAUDE.md)、[GEMINI.md](file:///f:/Self-developed_Apps/SkillsBuilder/GEMINI.md) 與 [wiki/global_rules.md](file:///f:/Self-developed_Apps/SkillsBuilder/wiki/global_rules.md)，將一鍵無縫整合指令改為從 GitHub 遠端下載並執行的 PowerShell 命令。
+  - 執行 `powershell -ExecutionPolicy Bypass -File INSTALL.ps1` 將最新規則分發至所有 13 個 IDE 規則檔。
+
+- **Check (驗證)**：
+  - 建立隔離測試目錄 `test-remote-bootstrap`，使用 `Get-Content -Path ..\bootstrap.ps1 -Raw | iex` 模擬遠端執行。驗證成功在目標目錄中拉取並創建了所有 IDE 規則與 Wiki。
+  - 執行 [verify.ps1](file:///f:/Self-developed_Apps/SkillsBuilder/verify.ps1)，通過 100% 軟體確效（100% SOFTWARE VALIDATION PASSED）。
+
+- **Act (持續改進)**：
+  - 將更新推送到遠端 GitHub 倉庫，實現真正意義上的「零本地預裝、一鍵遠端整合」。
+
+### 問題分析 (RCA) 與 矯正預防 (CAPA)
+
+- **問題 1**：在模擬遠端執行 `bootstrap.ps1` 時，PowerShell 拋出語法解析錯誤：`InvalidVariableReferenceWithDrive`。
+  - **RCA**：在日誌輸出字串中寫入 `$RelativePath: $_` 時，由於 `:` 緊貼在變量名後面，PowerShell 的 parser 會誤認為是一個磁碟機引用（例如 `C:` 磁碟）。
+  - **矯正措施 (CAPA)**：將變量包裹在大括號內 `${RelativePath}: $_` 以明確界定變量邊界，避免 parsing 衝突。
+
+---
+
 ## [2026-06-06] 一鍵整合自然語言指令與 bootstrap 部署 (One-Command NL Bootstrap Integration)
 
 ### 任務內容 (PDCA)

@@ -147,18 +147,32 @@ $ruleFiles = @(
 )
 
 foreach ($rf in $ruleFiles) {
-    if (Test-Path $rf.Path) {
-        Write-Host "[SUCCESS] Deployed: $($rf.Type) rules found at $($rf.Path)" -ForegroundColor Green
+    $sourceRule = Join-Path $currentDir "CLAUDE.md"
+    
+    # Skip CLAUDE.md itself to avoid copying onto itself
+    if ($rf.Path -eq $sourceRule) {
+        Write-Host "[SUCCESS] Source: CLAUDE.md is the main source of truth." -ForegroundColor Green
+        continue
+    }
+
+    # For specialized rules (GEMINI.md and AGENTS.md), only provision if missing, do not overwrite automatically
+    if ($rf.Path.EndsWith("GEMINI.md") -or $rf.Path.EndsWith("AGENTS.md")) {
+        if (Test-Path $rf.Path) {
+            Write-Host "[SUCCESS] Found existing specialized rule: $($rf.Type)" -ForegroundColor Green
+        } else {
+            Write-Host "[WARNING] Missing specialized rule: $($rf.Type), provisioning from CLAUDE.md..." -ForegroundColor Yellow
+            $parent = Split-Path $rf.Path
+            if (-not (Test-Path $parent)) { New-Item -ItemType Directory -Path $parent -Force | Out-Null }
+            Copy-Item -Path $sourceRule -Destination $rf.Path -Force
+            Write-Host "[INFO] Provisioned $($rf.Type) from CLAUDE.md" -ForegroundColor Gray
+        }
     } else {
-        Write-Host "[WARNING] Missing: $($rf.Type) rules not found at $($rf.Path)" -ForegroundColor Yellow
+        # For general rules, always overwrite from CLAUDE.md to ensure all files are in sync
         $parent = Split-Path $rf.Path
         if (-not (Test-Path $parent)) { New-Item -ItemType Directory -Path $parent -Force | Out-Null }
-        # Auto-provision by copying from another rule file if available
-        $sourceRule = Join-Path $currentDir "CLAUDE.md"
-        if (Test-Path $sourceRule) {
-            Copy-Item -Path $sourceRule -Destination $rf.Path -Force
-            Write-Host "[INFO] Auto-provisioned: Copied CLAUDE.md to $($rf.Path)" -ForegroundColor Gray
-        }
+        
+        Copy-Item -Path $sourceRule -Destination $rf.Path -Force
+        Write-Host "[SYNCED] Updated $($rf.Type) rules at $($rf.Path) from CLAUDE.md" -ForegroundColor Green
     }
 }
 
