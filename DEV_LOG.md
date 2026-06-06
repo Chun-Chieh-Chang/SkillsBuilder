@@ -16,6 +16,29 @@
 
 ---
 
+## [2026-06-06] PydanticAI 自主 Agent 執行器實作 (PydanticAI Agent Runner Implementation)
+
+### 任務內容 (PDCA)
+
+- **Plan (規劃)**：
+  - 目標：實作 SkillsBuilder 的自主 Agent 執行引擎（Phase 2），使其能夠作為獨立 CLI 運行並對輸出進行 Pydantic 結構化校驗。
+  - 設計點：讀取 `wiki/global_rules.md` 作為 system prompt，封裝 `run_verify` 與 `run_command` 工具以銜接 SkillsBuilder 本身。
+  - 使用 PydanticAI 的 `TestModel` 進行無 API 密鑰之環境與依賴驗證。
+
+- **Do (執行)**：
+  - 新建 [requirements.txt](file:///f:/Self-developed_Apps/SkillsBuilder/requirements.txt) 宣告 Python 依賴包。
+  - 於本地虛擬環境中成功執行 `pip install -r requirements.txt` 安裝 PydanticAI。
+  - 新建 [tools/agent_runner.py](file:///f:/Self-developed_Apps/SkillsBuilder/tools/agent_runner.py) 實作 Agent Loop，修復了舊版本 PydanticAI 參數（如 `result_type` 改為 `output_type`，`result.data` 改為 `result.output`）之相容性問題。
+
+- **Check (驗證)**：
+  - 本地執行 `python tools/agent_runner.py --test` 確效通過，成功產生符合 Schema 驗證的 mock 輸出。
+  - 執行 [verify.ps1](file:///f:/Self-developed_Apps/SkillsBuilder/verify.ps1) 通過 100% 軟體確效。
+
+- **Act (持續改進)**：
+  - 順利將執行器程式碼推送到遠端分支。後續開發階段中，開發者與 AI 代理能通過此 CLI 對代碼庫進行自治診斷與 PDCA 閉環。
+
+---
+
 ## [2026-06-06] SkillsBuilder MCP Server 實作與 2026 選型確效 (SkillsBuilder MCP Server Implementation)
 
 ### 任務內容 (PDCA)
