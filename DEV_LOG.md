@@ -16,6 +16,34 @@
 
 ---
 
+## [2026-06-06] SkillsBuilder MCP Server 實作與 2026 選型確效 (SkillsBuilder MCP Server Implementation)
+
+### 任務內容 (PDCA)
+
+- **Plan (規劃)**：
+  - 目標：深度解析影片 `https://www.youtube.com/watch?v=ugVQtByRqA0`（唐國梁 2026 年 10 大 Agent 框架深度橫評）選型觀點，找出最適合 SkillsBuilder 專案的工具應用形態，並將其落實。
+  - 識別 2026 年三大關鍵變量：(1) MCP (Model Context Protocol), (2) A2A (Agent-to-Agent), (3) Context Engineering。
+  - 決定採用「三位一體」混合架構：PydanticAI (類型安全與結構化驗證)、LangGraph (複雜 Dev 流程 PDCA 編排) 與 OpenClaw (桌面/瀏覽器自動化網關)。
+  - 第一步優先落地 **標準化 MCP Server Hub**，解決現有 Symbolic Link 散發痛點。
+
+- **Do (執行)**：
+  - 更新 [package.json](file:///f:/Self-developed_Apps/SkillsBuilder/package.json) 引入官方 `@modelcontextprotocol/sdk`。
+  - 新建 [tools/mcp_server.js](file:///f:/Self-developed_Apps/SkillsBuilder/tools/mcp_server.js) 實作 Stdio 通訊，將 `graphify_query`、`gitnexus_query` 等核心技能包裝為標準的 MCP 工具。
+  - 新建 [mcp_config.template.json](file:///f:/Self-developed_Apps/SkillsBuilder/mcp_config.template.json) 提供 Cursor、Claude Code、Zed 的配置範本。
+  - 建立選型與發展分析報告 [future_roadmap.md](file:///f:/Self-developed_Apps/SkillsBuilder/future_roadmap.md)。
+  - 新建 LM Studio 系統提示詞範本 [wiki/concepts/lm_studio_prompt.md](file:///f:/Self-developed_Apps/SkillsBuilder/wiki/concepts/lm_studio_prompt.md)。
+
+- **Check (驗證)**：
+  - 本地執行測試 `node tools/mcp_server.js`，確認 StdIO 伺服器啟動無誤。
+  - 執行 [verify.ps1](file:///f:/Self-developed_Apps/SkillsBuilder/verify.ps1)，通過 100% 軟體確效，獲得 `100% SOFTWARE VALIDATION PASSED`。
+  - 獲得使用者授權，成功推送變更至 Github `origin/main`。
+
+- **Act (持續改進)**：
+  - MCP 服務現已部署完畢。後續可在 IDE 中配置使用。
+  - 未來可進一步將剩餘 of the 30+ 個技能完全註冊進 MCP Server 工具列表中。
+
+---
+
 ## [2026-06-03] Hermes Agent 核心能力整合 (Hermes Agent Core Capabilities Integration)
 
 ### 任務內容 (PDCA)
