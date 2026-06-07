@@ -73,6 +73,7 @@
 
         code {
             background-color: #F3F4F6;
+            color: #1F2937;
             padding: 2px 6px;
             border-radius: 4px;
             font-family: 'Fira Code', monospace;
@@ -80,12 +81,20 @@
         }
 
         pre {
-            background-color: #1F2937;
-            color: #F9FAFB;
-            padding: 20px;
+            background-color: #0F172A; /* Slate 900 for high contrast */
+            color: #F1F5F9; /* Slate 100 */
+            padding: 24px;
             border-radius: 8px;
             overflow-x: auto;
             margin: 20px 0;
+            border: 1px solid #334155;
+        }
+
+        pre code {
+            background-color: transparent;
+            color: inherit;
+            padding: 0;
+            font-size: 1em;
         }
 
         .badge {
