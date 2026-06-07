@@ -1,0 +1,5 @@
+{
+  "autoSyncOnClose": true,
+  "patchEnabled": true,
+  "patchHistoryLimit": 10
+}

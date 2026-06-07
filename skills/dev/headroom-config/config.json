@@ -1,0 +1,19 @@
+{
+  "apiKey": "",
+  "apiUrl": "http://localhost:4000",
+  "cloudSync": true,
+  "syncInterval": 300,
+  "autoCloseEnabled": true,
+  "autoCloseRules": {
+    "inactiveThreshold": 900,
+    "frequencyThreshold": 3,
+    "priorityGroups": [],
+    "excludePinnedTabs": true
+  },
+  "localEditConfig": {
+    "enabled": true,
+    "backupBeforeSync": true,
+    "editHistoryLimit": 100,
+    "conflictResolution": "remote_wins"
+  }
+}

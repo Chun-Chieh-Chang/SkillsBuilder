@@ -9,9 +9,9 @@ SkillsBuilder 是一個專為「自動化智慧開發」而設計的元平台。
 ## 🎯 本專案能做什麼？(核心能力)
 
 ### 1. 為 AI 裝備「工業級技能」 (Skill Library)
-專案內建了從 ClawHub 與開源社群嚴選的**頂尖 AI 技能庫**（位於 `skills/` 目錄），涵蓋三大類（共 **42 個技能**）：
+專案內建了從 ClawHub 與開源社群嚴選的**頂尖 AI 技能庫**（位於 `skills/` 目錄），涵蓋三大類（共 **57 個技能**）：
 - **Core (生產力)**：`tavily` (深度研究)、`last30days` (趨勢總結)、`skill-onboarding` (技能喚醒)、`find-skills` (技能探索)、`vetter` (安全審查)、`using-superpowers` (紀律核心)、`youtube`、`summarize`、`planning`、`x-trends`。
-- **Dev (開發專用)**：`gitnexus` (代碼圖譜)、`graphify` (低 Token 查詢)、`autoresearch` (閉環 ML)、`autonomous-executor` (Manus Mode)、`tdd-enforcer` (測試驅動)、`grill-requirements` (需求拷問)、`complexity-reduction` (複雜度削減)、`verification-before-completion` (完工驗證)、`soul-evolution` (人格進化)、`skill-creator` (技能建立)、`session-memory` (跨 Session 記憶)、`cron-automations` (排程自動化)、`knowledge-bridge` (知識橋樑)、`subagent-driven-development`、`dispatching-parallel-agents`、`writing-plans`、`executing-plans`、`bug-diagnose`、`spec-architect`、`skill-architect`、`web-coder`、`github-manager`、`requesting-code-review`、`receiving-code-review`、`finishing-a-development-branch`、`using-git-worktrees`、`writing-skills`。
+- **Dev (開發專用)**：`gitnexus` (代碼圖譜)、`graphify` (低 Token 查詢)、`autoresearch` (閉環 ML)、`autonomous-executor` (Manus Mode)、`tdd-enforcer` (測試驅動)、`grill-requirements` (需求拷問)、`complexity-reduction` (複雜度削減)、`verification-before-completion` (完工驗證)、`soul-evolution` (人格進化)、`skill-creator` (技能建立)、`session-memory` (跨 Session 記憶)、`cron-automations` (排程自動化)、`knowledge-bridge` (知識橋樑)、`subagent-driven-development`、`dispatching-parallel-agents`、`writing-plans`、`executing-plans`、`bug-diagnose`、`spec-architect`、`skill-architect`、`web-coder`、`github-manager`、`requesting-code-review`、`receiving-code-review`、`finishing-a-development-branch`、`using-git-worktrees`、`writing-skills`、`ttypescript-reviewer` (TypeScript 專家審查)、`python-reviewer` (Python 專家審查)、`go-reviewer` (Go 專家審查)、`rust-reviewer` (Rust 專家審查)、`django-reviewer` (Django 專家審查)、`kotlin-reviewer` (Kotlin 專家審查)、`typescript-build-resolver` (TypeScript 編譯問題診斷)、`python-build-resolver` (Python 編譯問題診斷)、`go-build-resolver` (Go 編譯問題診斷)、`rust-build-resolver` (Rust 編譯問題診斷)、`agent-shield` (Agent 安全防護)、`hooks-enhancer` (鉤子系統增強)、`harness-optimizer` (測試框架優化)、`ecc-migrator` (ECC 流程遷移)、`loop-operator` (循環操作優化)。
 - **UI (介面設計)**：`glass-effect` (毛玻璃效果設計系統)。
 
 ### 2. 「會學習」的專案大腦 (Karpathy LLM Wiki + Hermes 閉環學習)
@@ -73,13 +73,13 @@ SkillsBuilder/
 ├── wiki/                 # 專案大腦：合成知識庫 (Karpathy Pattern)
 │   ├── entities/         # 工具與系統實體（Hermes、Graphify、GitNexus 等）
 │   └── concepts/         # 設計模式與開發哲學
-├── skills/               # 技能目錄（42 個工業級技能）
+├── skills/               # 技能目錄（57 個工業級技能）
 │   ├── core/             # 生產力技能（10 個）
-│   ├── dev/              # 開發技能（31 個）
+│   ├── dev/              # 開發技能（46 個）
 │   └── ui/               # UI 設計技能（1 個）
 ├── raw/                  # 原始素材：不可變的文檔與參考資料
 │   └── external/         # Git Submodule（Agency-Agents-ZH 193+ 專家角色）
-├── docs/                 # 開發標準文檔（Karpathy 準則、工作流鉤子）
+├── docs/                 # ��發標準文檔（Karpathy 準則、工作流鉤子）
 ├── tools/                # Python 工具集（RTK 高信號讀取、知識橋樑）
 ├── DEV_LOG.md            # 開發日誌：PDCA 執行紀錄與 RCA/CAPA 歸檔
 ├── index.html            # 專案主門面：嚴選技能庫與大腦地圖

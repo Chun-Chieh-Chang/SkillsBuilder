@@ -74,7 +74,38 @@ foreach ($skillFile in $skillsFolders) {
 }
 Write-Host "[SUCCESS] All skill metadata frontmatter is valid!" -ForegroundColor Green
 
-# 5. Verify LLM Wiki & Schema
+# 5. ECC Skills Format Validation
+Write-Host "[STEP 4.5] Validating ECC Skills Format..." -ForegroundColor Cyan
+$eccSkills = @(
+    "typescript-reviewer", "python-reviewer", "go-reviewer", "rust-reviewer", "django-reviewer", "kotlin-reviewer",
+    "typescript-build-resolver", "python-build-resolver", "go-build-resolver", "rust-build-resolver",
+    "agent-shield", "hooks-enhancer", "harness-optimizer", "ecc-migrator", "loop-operator"
+)
+
+$eccSkillsPassed = 0
+$eccSkillsFailed = 0
+
+foreach ($skillName in $eccSkills) {
+    $skillPath = Join-Path "skills\dev" $skillName
+    $skillMdPath = Join-Path $skillPath "SKILL.md"
+    
+    if (Test-Path $skillMdPath) {
+        $content = Get-Content -Path $skillMdPath -Raw
+        if ($content -match "^---[\s\S]*?---" -and $content -match "name:\s*\S+" -and $content -match "description:\s*\S+") {
+            Write-Host "[PASSED] $skillName" -ForegroundColor Green
+            $eccSkillsPassed++
+        } else {
+            Write-Host "[FAILED: Frontmatter Missing] $skillName" -ForegroundColor Red
+            $eccSkillsFailed++
+        }
+    } else {
+        Write-Host "[略過: 目錄不存在] $skillName" -ForegroundColor Yellow
+    }
+}
+
+Write-Host "[ECC Skills Validation Result] PASSED: $eccSkillsPassed, FAILED: $eccSkillsFailed" -ForegroundColor Cyan
+
+# 6. Verify LLM Wiki & Schema
 Write-Host "[STEP 4] Validating LLM Wiki Structure..." -ForegroundColor Cyan
 if (-not (Test-Path "wiki/SCHEMA.md")) {
     Write-Host "[ERROR] wiki/SCHEMA.md is missing!" -ForegroundColor Red

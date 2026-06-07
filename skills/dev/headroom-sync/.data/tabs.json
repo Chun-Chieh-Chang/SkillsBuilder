@@ -1,0 +1,53 @@
+{
+  "version": "1.0",
+  "syncedAt": "2025-06-07T09:00:00Z",
+  "tabs": [
+    {
+      "id": "tab_001",
+      "groupId": "group_001",
+      "title": "GitHub - Chun-Chieh-Chang/SkillsBuilder",
+      "url": "https://github.com/Chun-Chieh-Chang/SkillsBuilder",
+      "favicon": "https://github.githubassets.com/favicons/favicon.svg",
+      "index": 0,
+      "active": true,
+      "pinned": false
+    },
+    {
+      "id": "tab_002",
+      "groupId": "group_001",
+      "title": "SkillsBuilder Documentation",
+      "url": "https://github.com/Chun-Chieh-Chang/SkillsBuilder/wiki",
+      "favicon": "https://github.githubassets.com/favicons/favicon.svg",
+      "index": 1,
+      "active": false,
+      "pinned": false
+    },
+    {
+      "id": "tab_003",
+      "groupId": "group_002",
+      "title": "Visual Studio Code",
+      "url": "https://code.visualstudio.com/",
+      "favicon": "https://code.visualstudio.com/favicon.ico",
+      "index": 0,
+      "active": true,
+      "pinned": true
+    }
+  ],
+  "groups": [
+    {
+      "id": "group_001",
+      "title": "Development",
+      "color": "blue"
+    },
+    {
+      "id": "group_002",
+      "title": "Tools",
+      "color": "green"
+    }
+  ],
+  "metadata": {
+    "totalTabs": 3,
+    "totalGroups": 2,
+    "source": "headroom-extension"
+  }
+}

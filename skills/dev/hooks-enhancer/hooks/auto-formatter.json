@@ -1,0 +1,9 @@
+{
+  "name": "auto-formatter",
+  "event": "onFileSave",
+  "description": "Automatically format files after save using language-specific tools.",
+  "action": "run_shell_command 'npm run format {file}'",
+  "filters": {
+    "extensions": [".ts", ".js", ".json", ".css"]
+  }
+}

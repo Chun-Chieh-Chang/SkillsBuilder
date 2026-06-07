@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "name": "Create Headroom Requirements",
+  "description": "Create requirements.md for headroom-integration feature",
+  "version": "1",
+  "when": {
+    "type": "userTriggered"
+  },
+  "then": {
+    "type": "runCommand",
+    "command": ""
+  }
+}

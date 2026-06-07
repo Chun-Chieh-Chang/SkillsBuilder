@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillsBuilder DevOS Sidecar 架構使用指南</title>
+    <style>
+        :root {
+            --bg-base: #F9FAFB;
+            --surface: #FFFFFF;
+            --text-primary: #111827;
+            --text-secondary: #6B7280;
+            --accent: #3B82F6;
+            --border: #E5E7EB;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --font-family: 'Inter', 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            font-family: var(--font-family);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: -0.025em;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 32px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-top: 0;
+            border-left: 4px solid var(--accent);
+            padding-left: 16px;
+            margin-bottom: 24px;
+        }
+
+        p {
+            margin-bottom: 16px;
+        }
+
+        code {
+            background-color: #F3F4F6;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: #1F2937;
+            color: #F9FAFB;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .badge-accent { background: #DBEAFE; color: #1E40AF; }
+        .badge-success { background: #D1FAE5; color: #065F46; }
+
+        .step-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .step-item {
+            display: flex;
+            margin-bottom: 24px;
+        }
+
+        .step-number {
+            background: var(--accent);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-right: 16px;
+            font-weight: bold;
+        }
+
+        .footer {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 60px;
+            padding-bottom: 40px;
+        }
+
+        @media (max-width: 600px) {
+            .card { padding: 20px; }
+            h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="badge badge-accent">DevOS 2026 Standard</div>
+            <h1>SkillsBuilder Sidecar 架構</h1>
+            <p class="subtitle">核心分離、極致 Token 節省、動態按需掛載</p>
+        </header>
+
+        <section class="card">
+            <h2>1. 核心理念 (The Sidecar Concept)</h2>
+            <p>SkillsBuilder DevOS 採用「邊車架構 (Sidecar Architecture)」，將複雜的技能庫 (Skills) 與開發規則與您的專案源碼完全分離。</p>
+            <p><strong>不再需要：</strong>將數百個 <code>SKILL.md</code> 檔案拷貝進您的新專案中。</p>
+            <p><strong>改為：</strong>在專案中建立一個輕量級的「導向指標 (Pointer)」，引導 AI Agent 訪問全域安裝的技能中心。</p>
+        </section>
+
+        <section class="card">
+            <h2>2. 優勢 (Benefits)</h2>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div>
+                    <strong style="color: var(--accent);">極致 Token 節省</strong>
+                    <p>Agent 不再需要掃描專案內數百個技能檔案，大幅減少 Context 佔用，開發成本降低 80% 以上。</p>
+                </div>
+                <div>
+                    <strong style="color: var(--accent);">保持專案純淨</strong>
+                    <p>專案目錄僅保留您的程式碼與一個 <code>GEMINI.md</code>，完全符合 MECE 原則。</p>
+                </div>
+                <div>
+                    <strong style="color: var(--accent);">全域同步更新</strong>
+                    <p>只要更新一次全域技能池，所有掛載 Sidecar 的專案將立即獲得最新的開發能力。</p>
+                </div>
+                <div>
+                    <strong style="color: var(--accent);">一鍵無縫整合</strong>
+                    <p>使用標準 Bootstrap 指令即可在 3 秒內完成新專案的智能化武裝。</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>3. 如何初始化 (How to Initialize)</h2>
+            <p>在任何新專案的根目錄下，執行以下 PowerShell 指令：</p>
+            <pre><code>powershell -ExecutionPolicy Bypass -Command "iex ((New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/Chun-Chieh-Chang/SkillsBuilder/main/bootstrap.ps1'))"</code></pre>
+            <p><strong>腳本行為：</strong></p>
+            <ul class="step-list">
+                <li class="step-item">
+                    <div class="step-number">1</div>
+                    <div>自動偵測環境，若非 SkillsBuilder 核心庫，則啟動 Sidecar 模式。</div>
+                </li>
+                <li class="step-item">
+                    <div class="step-number">2</div>
+                    <div>在 <code>GEMINI.md</code> 中注入全域路徑指標 (Global Pointer)。</div>
+                </li>
+                <li class="step-item">
+                    <div class="step-number">3</div>
+                    <div>配置必要的 IDE 規則，讓 Agent 具備「1% Rule」意識。</div>
+                </li>
+            </ul>
+        </section>
+
+        <section class="card">
+            <h2>4. 協作方式 (How to Collaborate)</h2>
+            <p>當您與 IDE Agent (如 Gemini CLI, Claude Code) 協作時，Agent 會讀取到 <code>GEMINI.md</code> 中的指令：</p>
+            <pre><code># 🚀 SkillsBuilder DevOS Sidecar Context
+All professional development skills are globally installed at:
+C:/Users/User/.gemini/antigravity/skills</code></pre>
+            <p><strong>Agent 行為邏輯：</strong></p>
+            <ol>
+                <li>當收到任務時，Agent 會優先檢索全域路徑。</li>
+                <li>若發現相關技能（如 <code>python-reviewer</code>），則動態讀取該檔案並執行。</li>
+                <li><strong>1% Rule</strong>：Agent 必須時刻思考是否有現成技能可用。</li>
+            </ol>
+        </section>
+
+        <section class="card">
+            <h2>5. 自我進化與檢索 (Auto-Evolution)</h2>
+            <p>如果本地與全域都沒有適合的技能怎麼辦？</p>
+            <p>SkillsBuilder 的 <code>github-skill-search</code> 功能會被觸發，Agent 會自主到 GitHub 尋找最新的開發工具、MCP Server 或技能範本，並自動將其整合進全域技能池中。</p>
+            <p><span class="badge badge-success">這意味著您的開發助理會隨著技術迭代而不斷變強。</span></p>
+        </section>
+
+        <div class="footer">
+            <p>© 2026 SkillsBuilder DevOS Architecture. All rights reserved.</p>
+            <p>Designed for Approachable Luxury & Peak Efficiency.</p>
+        </div>
+    </div>
+</body>
+</html>

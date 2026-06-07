@@ -1,0 +1,16 @@
+{
+  "enabled": true,
+  "name": "Headroom Requirements Generator",
+  "description": "Generate headroom-integration spec requirements",
+  "version": "1",
+  "when": {
+    "type": "userTriggered"
+  },
+  "then": {
+    "type": "runCommand",
+    "command": "powershell -ExecutionPolicy Bypass -File f:\\Self-developed_Apps\\SkillsBuilder\\.kiro\\specs\\headroom-integration\\generate-requirements.ps1",
+    "timeout": 120
+  },
+  "workspaceFolderName": "SkillsBuilder",
+  "shortName": "headroom-requirements-generator"
+}

@@ -591,3 +591,168 @@ tk-ai/rtk 的核心哲學，將「高信號輸出」與「Token 壓縮」整合�
 - [x] 整合 Hermes Agent 核心能力
 - [x] 完成 `Skill Architect` 核心升級 (SKILL.md & patterns.md)
 - [ ] 進行 Manual Verification 測試
+
+---
+
+## [2026-06-07] Task 2.1-2.6: 6 個 Language Reviewer Skills 實作完成 (Language Reviewer Skills Implementation Complete)
+
+### 任務內容 (PDCA)
+
+- **Plan (規劃)**：
+  - 目標：實作 6 個語言專用審查 Skills (TypeScript, Python, Go, Rust, Django, Kotlin)，符合 ECC Integration 規範。
+  - 設計：每個 Skill 必須包含 4 個審查階段 (Environment Detection, Specific Analysis, Tool Analysis, Best Practices) 與 4 段式輸出格式 (Summary, Issues Section 1, Issues Section 2, Best Practices)。
+
+- **Do (執行)**：
+  - 建立目錄結構：`skills/dev/{typescript,python,go,rust,django,kotlin}-reviewer/`
+  - 實作 SKILL.md 檔案，包含：
+    - YAML frontmatter (`name`, `description`)
+    - 4 階段審查流程
+    - 4 段式輸出格式
+    - Tool Availability Detection 表格
+    - 相關技能連結
+  - 更新 spec 檔案 `tasks.md`，標記 Tasks 2.1-2.6 為完成。
+
+- **Check (驗證)**：
+  - 檢查 6 個 SKILL.md 檔案結構是否一致。
+  - 檢查 YAML frontmatter 是否符合 `name: xxx-reviewer`, `description: 專業的 xxx 專家審查代理...`。
+  - 確認 spec tasks.md 更新後格式正確（有 `## Overview`, `## Tasks`, `## Notes`, `## Task Dependency Graph`）。
+
+- **Act (持續改進)**：
+  - 下一步：Task 3 (Language Resolvers, 4 skills)，實作編譯錯誤診斷與修復建議。
+  - 建議建立 `skills/dev/reviewers-common/SKILL.md` 作為共同模板，減少重複內容。
+
+### 問題分析 (RCA) 與 矯正預防 (CAPA)
+
+- **問題 1**：spec 檔案更新後缺少 `## Overview` 等標準 sections。
+  - **RCA**：使用 `fs_write` 覆寫時未包含所有 required sections。
+  - **CAPA**：未來更新 spec 檔案時，先 `read_file` 確認完整結構，再 `str_replace` 修改特定 tasks。
+
+- **問題 2**：6 個 Language Reviewer Skills 的內容重複性高。
+  - **RCA**：Each skill shares the same structure (4 phases, 4 sections output).
+  - **CAPA**：未來可建立 `skills/dev/reviewers-common/SKILL.md` 作為模板，每個 language-specific skill 只需 override language-specific content.
+
+### 設計總結 (Design Summary)
+
+- **Template Structure** (每個人語言 Reviewer Skill 共同遵循的結構)
+```markdown
+---
+name: xxx-reviewer
+description: 專業的 xxx 專家審查代理...
+---
+
+# xxx Reviewer
+
+## Phase 1: 環境檢測 (Environment Detection)
+- Check tool availability (tsc/eslint/pylint/mypy/etc.)
+- Fallback to semantic review mode if tools unavailable
+
+## Phase 2: xxx-specific Analysis
+- [Language-specific checks]
+
+## Phase 3: Compiler/Tool Analysis
+- [Tool-specific analysis]
+
+## Phase 4: Best Practices
+- [Language/community best practices]
+
+### Output Format (4 blocks):
+1. Summary (total issues, severity, action)
+2. [Section 1] Issues
+3. [Section 2] Issues  
+4. Best Practices
+
+### Tool Availability Detection Table
+| Tool | Detection Command | Fallback Strategy |
+
+### Related Skills
+- bug-diagnose
+- tdd-enforcer
+- verification-before-completion
+```
+
+- **Differences Between Languages**:
+  - **TypeScript**: `tsc`, `eslint`, type safety, compiler options (`strict`, `noImplicitReturns`)
+  - **Python**: `mypy`, `pylint`, type hints, PEP 8, exception handling
+  - **Django**: `flake8`, `django-lint`, models, views, URLs, authentication
+  - **Go**: `gofmt`, `go vet`, imports grouping, context.Context
+  - **Rust**: `rustc`, `clippy`, ownership, error handling, generics
+  - **Kotlin**: `kotlinc`, `detekt`, null safety, coroutines,sealed classes
+
+---
+
+## [2026-06-07] Task 3.1-3.4: 4 個 Language Resolver Skills 實作完成 (Language Resolver Skills Implementation Complete)
+
+### 任務內容 (PDCA)
+
+- **Plan (規劃)**：
+  - 目標：實作 4 個語言專用編譯問題診斷 Skills (TypeScript, Python, Go, Rust)，符合 ECC Integration 規範。
+  - 設計：每個 Skill 必須包含 4 個診斷階段 (Environment Detection, Error Parsing, Version Conflict Detection, Fix Suggestions) 與 3 段式輸出格式 (Diagnosis, Fix, Prevention)。
+
+- **Do (執行)**：
+  - 建立目錄結構：`skills/dev/{typescript,python,go,rust}-build-resolver/`
+  - 實作 SKILL.md 檔案，包含：
+    - YAML frontmatter (`name`, `description`)
+    - 4 階段診斷流程
+    - 3 段式輸出格式 (Diagnosis, Fix, Prevention)
+    - Tool Availability Detection 表格
+    - 相關技能連結
+  - 更新 spec 檔案 `tasks.md`，標記 Tasks 3.1-3.4 為完成。
+
+- **Check (驗證)**：
+  - 檢查 4 個 SKILL.md 檔案結構是否一致。
+  - 檢查 YAML frontmatter 是否符合 `name: xxx-build-resolver`, `description: 專業的 xxx 編譯問題診斷與修復代理...`。
+  - 確認 spec tasks.md 更新後格式正確（有 `## Overview`, `## Tasks`, `## Notes`, `## Task Dependency Graph`）。
+
+- **Act (持續改進)**：
+  - 下一步：Task 4 (AgentShield Security Scanner)，實作安全防護功能。
+  - 建議建立 `skills/dev/resolvers-common/SKILL.md` 作為共同模板，減少重複內容。
+
+### 問題分析 (RCA) 與 矯正預防 (CAPA)
+
+- **問題 1**：4 個 Language Resolver Skills 的內容重複性高。
+  - **RCA**：Each skill shares the same structure (4 phases, 3 sections output).
+  - **CAPA**：未來可建立 `skills/dev/resolvers-common/SKILL.md` 作為模板，每個 language-specific skill 只需 override language-specific content (e.g., tool names, common errors, package managers).
+
+### 設計總結 (Design Summary)
+
+- **Template Structure** (每個人語言 Resolver Skill 共同遵循的結構)
+```markdown
+---
+name: xxx-build-resolver
+description: 專業的 xxx 編譯問題診斷與修復代理...
+---
+
+# xxx Build Resolver
+
+## Phase 1: 環境檢測 (Environment Detection)
+- Check tool availability (tsc/pip/go/rustc)
+- Extract error messages if build fails
+
+## Phase 2: Error Parsing (Error-specific analysis)
+- [Language-specific errors: typescript/types, python/import, go/module, rust/dependency]
+
+## Phase 3: Version Conflict Detection
+- [Language-specific conflicts: npm/pip/go modules/rust crates]
+
+## Phase 4: Fix Suggestions
+- [Language-specific fixes: npm install/pip install/go get/cargo add]
+
+### Output Format (3 blocks):
+1. Diagnosis (error type, location, root cause)
+2. Fix (specific commands for each error type)
+3. Prevention (checklist to avoid similar errors)
+
+### Tool Availability Detection Table
+| Tool | Detection Command | Fallback Strategy |
+
+### Related Skills
+- xxx-reviewer (prevent issues before they happen)
+- bug-diagnose (handle specific errors found by diagnosis)
+- verification-before-completion (ensure fixes compile)
+```
+
+- **Key Differences Between Languages**:
+  - **TypeScript**: `tsc`, `npm/yarn`, package.json, tsconfig.json, type errors
+  - **Python**: `pip`, `pipdeptree`, requirements.txt, pyproject.toml, import errors
+  - **Go**: `go`, `go mod`, go.mod, go.sum, module resolution errors
+  - **Rust**: `cargo`, `cargo metadata`, Cargo.toml, Cargo.lock, dependency resolution errors
