@@ -207,20 +207,51 @@
 
         <section class="card">
             <h2>4. 協作方式 (How to Collaborate)</h2>
-            <p>當您與 IDE Agent (如 Gemini CLI, Claude Code) 協作時，Agent 會讀取到 <code>GEMINI.md</code> 中的指令：</p>
+            <p>當您與 AI Agent (如 <strong>Gemini CLI, Trae, Kiro, Cursor</strong>) 協作時，Agent 會透過 <code>CLAUDE.md</code> (或其同步的規則檔) 讀取到以下指令：</p>
             <pre><code># 🚀 SkillsBuilder DevOS Sidecar Context
 All professional development skills are globally installed at:
 C:/Users/User/.gemini/antigravity/skills</code></pre>
             <p><strong>Agent 行為邏輯：</strong></p>
             <ol>
                 <li>當收到任務時，Agent 會優先檢索全域路徑。</li>
-                <li>若發現相關技能（如 <code>python-reviewer</code>），則動態讀取該檔案並執行。</li>
-                <li><strong>1% Rule</strong>：Agent 必須時刻思考是否有現成技能可用。</li>
+                <li>若發現相關技能（如 <code>copilotkit-architect</code>），則動態讀取該檔案並執行。</li>
+                <li><strong>1% Rule</strong>：Agent 必須時刻思考是否有現成技能可用，從而節省您的時間與 Token。</li>
             </ol>
         </section>
 
         <section class="card">
-            <h2>5. 自我進化與檢索 (Auto-Evolution)</h2>
+            <h2>5. 核心能力展示：AI 應用加速器</h2>
+            <p>SkillsBuilder 不僅優化您的開發流程，更具備 **「AI 應用實作加速器」** 的高階技能，例如：</p>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div style="background: #F3F4F6; padding: 16px; border-radius: 8px;">
+                    <strong>CopilotKit 專家</strong>
+                    <p style="font-size: 0.9rem; margin-top: 8px;">自動規劃 AG-UI 協議，生成帶有 Zod 驗證的類型安全 Action，加速 Copilot 整合。</p>
+                </div>
+                <div style="background: #F3F4F6; padding: 16px; border-radius: 8px;">
+                    <strong>安全掃描 (AgentShield)</strong>
+                    <p style="font-size: 0.9rem; margin-top: 8px;">自動偵測硬編碼秘鑰、動態執行風險與依賴漏洞，守護您的代碼安全。</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>6. 全球通用相容性 (Universal Compatibility)</h2>
+            <p>SkillsBuilder 透過 **「主控同步引擎」**，完美支援以下所有工具：</p>
+            <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                <span class="badge badge-accent">Trae</span>
+                <span class="badge badge-accent">Kiro</span>
+                <span class="badge badge-accent">Gemini CLI</span>
+                <span class="badge badge-accent">Cursor</span>
+                <span class="badge badge-accent">Windsurf</span>
+                <span class="badge badge-accent">Claude Code</span>
+                <span class="badge badge-accent">OpenCode</span>
+                <span class="badge badge-accent">Hermes Agent</span>
+                <span class="badge badge-accent">Codex</span>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>7. 自我進化與檢索 (Auto-Evolution)</h2>
             <p>如果本地與全域都沒有適合的技能怎麼辦？</p>
             <p>SkillsBuilder 的 <code>github-skill-search</code> 功能會被觸發，Agent 會自主到 GitHub 尋找最新的開發工具、MCP Server 或技能範本，並自動將其整合進全域技能池中。</p>
             <p><span class="badge badge-success">這意味著您的開發助理會隨著技術迭代而不斷變強。</span></p>
