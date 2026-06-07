@@ -756,3 +756,43 @@ description: 專業的 xxx 編譯問題診斷與修復代理...
   - **Python**: `pip`, `pipdeptree`, requirements.txt, pyproject.toml, import errors
   - **Go**: `go`, `go mod`, go.mod, go.sum, module resolution errors
   - **Rust**: `cargo`, `cargo metadata`, Cargo.toml, Cargo.lock, dependency resolution errors
+
+---
+
+## [2026-06-07] Task: ECC 整合、DevOS Sidecar 架構落地與 CopilotKit 加速器實作完成 (Project Professionalization Complete)
+
+### 任務內容 (PDCA)
+
+- **Plan (規劃)**：
+  - 目標：完成 ECC 剩餘 5 個工具型 Skills，實作非侵入式 DevOS Sidecar 架構，並整合 CopilotKit 加速器能力。
+  - 設計：優化 `INSTALL.ps1` 支援環境感知；實作 `CLAUDE.md` 作為 Master Source 自動同步所有 IDE 規則；建立 CopilotKit 專家技能組。
+
+- **Do (執行)**：
+  - **ECC 核心工具**：實作 `agent-shield` (安全掃描)、`hooks-enhancer` (自動掛鉤)、`harness-optimizer` (Context優化)、`ecc-migrator` (格式遷移)、`loop-operator` (循環監控)。
+  - **DevOS 架構**：更新 `INSTALL.ps1` 實作 Sidecar 模式，注入指標至 `CLAUDE.md` 並同步至 13 種 IDE/Agent 配置。
+  - **CopilotKit 整合**：新增 `copilotkit-architect`, `copilotkit-generator`, `copilotkit-v2-bridge` 技能。
+  - **文檔專業化**：產出 `docs/devos-sidecar-guide.html` (高質感 HTML 手冊)，更新 `README.md` 與 `instructions.html` 索引至 60 個技能。
+  - **清理 (MECE)**：移除冗餘目錄與備份檔案，移動 handover 指南至 `docs/`。
+
+- **Check (驗證)**：
+  - 執行 `.\verify.ps1`：100% 通過（57 + 3 技能驗證成功，ECC 15 技能驗證成功）。
+  - 檢查 HTML 手冊：修正代碼塊文字對比度問題，強化可讀性。
+  - 檢查跨 IDE 同步：確認 `CLAUDE.md` 內容正確同步至 `.trae`, `.kiro`, `.opencode` 等路徑。
+
+- **Act (持續改進)**：
+  - 專案已達到「開發內核」級別，隨時可一鍵部署至任何新開發環境。
+  - 下一步建議：探索更深層的 MCP (Model Context Protocol) 整合，將 SkillsBuilder 轉化為標準化的 MCP Server 資源池。
+
+### 設計總結 (Design Summary)
+
+- **DevOS Sidecar Pointer**:
+```markdown
+# 🚀 SkillsBuilder DevOS Sidecar Context
+Global Mandate: Integrated with SkillsBuilder DevOS Architecture.
+Skills Path: $HOME/.gemini/antigravity/skills
+Policy: 1% Rule enforcement.
+```
+
+- **CopilotKit Accelerator**:
+  - Focus: AG-UI Protocol, Zod validation, CoAgents state-syncing.
+  - Result: Drastic reduction in token usage during AI app building.

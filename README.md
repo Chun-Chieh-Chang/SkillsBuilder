@@ -73,9 +73,9 @@ SkillsBuilder/
 ├── wiki/                 # 專案大腦：合成知識庫 (Karpathy Pattern)
 │   ├── entities/         # 工具與系統實體（Hermes、Graphify、GitNexus 等）
 │   └── concepts/         # 設計模式與開發哲學
-├── skills/               # 技能目錄（57 個工業級技能）
+├── skills/               # 技能目錄（60 個工業級技能）
 │   ├── core/             # 生產力技能（10 個）
-│   ├── dev/              # 開發技能（46 個）
+│   ├── dev/              # 開發技能（49 個）
 │   └── ui/               # UI 設計技能（1 個）
 ├── raw/                  # 原始素材：不可變的文檔與參考資料
 │   └── external/         # Git Submodule（Agency-Agents-ZH 193+ 專家角色）
