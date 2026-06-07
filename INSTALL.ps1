@@ -25,9 +25,9 @@ if ($pathsToSync.Count -eq 0) {
 
 # --- Sidecar Mode logic ---
 if (-not $isCoreRepo) {
-    Write-Host "[INFO] Non-invasive Sidecar detected. Injecting pointer into GEMINI.md..." -ForegroundColor Cyan
+    Write-Host "[INFO] Non-invasive Sidecar detected. Injecting pointer into CLAUDE.md (Master Source)..." -ForegroundColor Cyan
     
-    $geminiPath = Join-Path $currentDir "GEMINI.md"
+    $masterRulePath = Join-Path $currentDir "CLAUDE.md"
     $globalSkillsPath = "$HOME\.gemini\antigravity\skills".Replace('\', '/')
     
     $sidecarPointer = @"
@@ -38,25 +38,22 @@ if (-not $isCoreRepo) {
 > All professional development skills are globally installed and managed at:
 > `$globalSkillsPath`
 >
-> **The 1% Rule**: If there is even a 1% chance a skill from the global library applies to your current task, you MUST invoke it using the `activate_skill` tool by referencing the global path if necessary.
+> **The 1% Rule**: If there is even a 1% chance a skill from the global library applies to your current task, you MUST invoke it using the `activate_skill` tool (or your IDE's equivalent) by referencing the global path if necessary.
 ---
 "@
 
-    if (Test-Path $geminiPath) {
-        $content = Get-Content $geminiPath -Raw
+    if (Test-Path $masterRulePath) {
+        $content = Get-Content $masterRulePath -Raw
         if ($content -notmatch "SkillsBuilder DevOS Sidecar Context") {
-            $sidecarPointer | Add-Content -Path $geminiPath
-            Write-Host "[SUCCESS] Appended DevOS Sidecar pointer to GEMINI.md" -ForegroundColor Green
+            $sidecarPointer | Add-Content -Path $masterRulePath
+            Write-Host "[SUCCESS] Appended DevOS Sidecar pointer to CLAUDE.md" -ForegroundColor Green
         } else {
-            Write-Host "[INFO] DevOS Sidecar pointer already exists in GEMINI.md" -ForegroundColor Gray
+            Write-Host "[INFO] DevOS Sidecar pointer already exists in CLAUDE.md" -ForegroundColor Gray
         }
     } else {
-        $sidecarPointer | Out-File -FilePath $geminiPath -Encoding UTF8
-        Write-Host "[SUCCESS] Created GEMINI.md with DevOS Sidecar pointer" -ForegroundColor Green
+        $sidecarPointer | Out-File -FilePath $masterRulePath -Encoding UTF8
+        Write-Host "[SUCCESS] Created CLAUDE.md with DevOS Sidecar pointer" -ForegroundColor Green
     }
-    
-    Write-Host "[SUCCESS] Sidecar initialization complete. SkillsBuilder is now protecting this project." -ForegroundColor Green
-    exit 0
 }
 # ---------------------------
 
