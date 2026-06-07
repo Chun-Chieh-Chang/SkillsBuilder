@@ -228,7 +228,8 @@ $ruleFiles = @(
     @{ Path = Join-Path $currentDir ".antigravity.md"; Type = "Antigravity CLI" },
     @{ Path = Join-Path $currentDir "AGENTS.md"; Type = "Codex CLI" },
     @{ Path = Join-Path $currentDir ".clinerules"; Type = "Cline / Roo Code" },
-    @{ Path = Join-Path $currentDir ".continue\rules\rules.md"; Type = "Continue" }
+    @{ Path = Join-Path $currentDir ".continue\rules\rules.md"; Type = "Continue" },
+    @{ Path = Join-Path $currentDir ".opencode\rules\rules.md"; Type = "OpenCode" }
 )
 
 foreach ($rf in $ruleFiles) {
