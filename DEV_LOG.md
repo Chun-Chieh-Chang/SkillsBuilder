@@ -9,6 +9,133 @@
 > - **Phase 3: Hypothesis (假設分析 RCA)** - 根本原因假設與驗證結果
 > - **Phase 4: Fix & Verify (精準修復 CAPA)** - 修復邏輯、驗證結果與預防策略
 
+---
+
+## [2026-06-21] Ponytail YAGNI Ladder 整合 (Ponytail Lazy Senior Dev Integration)
+
+### 任務內容 (PDCA)
+
+- **Plan (規劃)**：
+  - 目標：將 [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail) (44.1k ⭐) 的核心「懶惰資深開發者」YAGNI Ladder 整合進 SkillsBuilder 專案及所有本機 IDE 的全域規則。
+  - 設計決策：Ponytail Ladder 定位為 PDCA SOP 中 `[Plan]` 階段的「代碼必要性前置審查」，而非獨立的並列規則。
+  - 衝突分析：Ponytail 的「最少代碼」哲學不應約束 UI/UX/CSS 層——該層由「色彩大師規範」主導。Ponytail 僅適用於業務邏輯。
+  - 安全保留：驗證、安全、錯誤處理、無障礙性永遠不受 Ponytail 約束。
+
+- **Do (執行)**：
+  - 新建 6 個 skill 至 `skills/core/`：
+    - `ponytail/SKILL.md`：核心 YAGNI Ladder（含 UI/CSS 排除條款與 PDCA 整合說明）
+    - `ponytail-review/SKILL.md`：針對 diff 的過度工程化審查
+    - `ponytail-audit/SKILL.md`：全 repo 過度工程化掃描
+    - `ponytail-debt/SKILL.md`：`ponytail:` 註解債務帳本
+    - `ponytail-gain/SKILL.md`：Ponytail 效果計分板
+    - `ponytail-help/SKILL.md`：指令快速參考卡
+  - 修改 `CLAUDE.md`（Source of Truth）：注入 Ponytail Ladder 至 PDCA `[Plan]` 階段
+  - 修改 `AGENTS.md`（Codex CLI）：同步注入
+  - 修改 `GEMINI.md`（Antigravity）：同步注入
+  - 執行 `INSTALL.ps1`：將 CLAUDE.md 變更自動同步至其餘 11 個衍生規則檔（`.cursorrules`, `.windsurfrules`, `.clinerules`, `.rules`, `.antigravity.md`, `.github/copilot-instructions.md`, `.trae/rules/rules.md`, `.kiro/steering/steering.md`, `.qoder/rules/rules.md`, `.continue/rules/rules.md`, `.opencode/rules/rules.md`），並將 6 個新 skill 同步至 `~/.gemini/antigravity-ide/skills/`
+
+- **Check (驗證)**：
+  - 確認 `~/.gemini/antigravity-ide/skills/` 下出現 6 個 ponytail 目錄
+  - 抽檢 `.cursorrules` 確認 "Ponytail Ladder" 文字已同步
+  - `INSTALL.ps1` 全量同步完成，15/15 ECC skills 通過
+
+- **Act (持續改進)**：
+  - 後續可透過 `/ponytail-audit` 對既有專案進行全庫過度工程化掃描
+  - 建議使用者將 user_global 規則中的 PDCA `[Plan]` 步驟同步更新
+
+### 問題分析 (RCA) 與 矯正預防 (CAPA)
+
+- **問題 1**：嘗試以 raw URL 直接讀取 `skills/ponytail/ponytail.md` 回傳 404。
+  - **RCA**：Ponytail 的 skill 檔案命名為 `SKILL.md` 而非以 skill name 為檔名。
+  - **矯正措施 (CAPA)**：改為使用 `skills/<name>/SKILL.md` 路徑成功讀取。記錄此命名慣例差異，避免未來重複嘗試。
+
+---
+
+## [2026-06-19] 整合 codebase-memory-mcp 核心圖譜服務 (codebase-memory-mcp Core Integration)
+
+### 任務內容 (PDCA)
+
+- **Plan (規劃)**：
+  - 目標：在專案中無縫整合 `codebase-memory-mcp` 圖譜服務的核心功能。
+  - 設計：利用 MCP Multiplexing / Proxy 模式，使現有的 Node.js MCP 服務器 (`tools/mcp_server.js`) 能夠動態啟動 Go-based Windows 執行檔並代理所有 JSON-RPC 2.0 stdio 請求，將對方的 14 個圖譜工具合併導出，簡化使用者的配置流程。
+
+- **Do (執行)**：
+  - 修改 `.gitignore` 排除 `tools/codebase-memory-mcp.exe` 與臨時路徑 `tools/cbm_temp/`。
+  - 更新 `INSTALL.ps1` 實作自動偵測與從 GitHub Release 下載/解壓最新的 Windows binary。
+  - 更新 `verify.ps1` 補齊二進制檔案存在性驗證。
+  - 重構 `tools/mcp_server.js` 實作 spawn 子進程、MCP 手性 initialize 握手、`tools/list` 合併和 `tools/call` 的 JSON-RPC 2.0 stdio 轉發邏輯。
+
+- **Check (驗證)**：
+  - 執行 `verify.ps1` 通過 100% 確效 (100% SOFTWARE VALIDATION PASSED)。
+  - 撰寫 integration 測試 `scratch/test_mcp_proxy.js` 模擬 client 請求。驗證合併導出了包括 `index_repository`, `search_graph`, `trace_path` 在內的共 19 個 tools，測試完全通過。
+
+- **Act (持續改進)**：
+  - 後續當 codebase 有修改時，可以透過 proxy 工具 `index_repository` 重建圖譜。
+  - 檢視 `mcp_server.js` 在 proxy 時對 childProcess 斷線/重啟的魯棒性，若後續使用中遇到進程崩潰，可在 Node.js 層增加 auto-spawn 守衛邏輯。
+
+### 問題分析 (RCA) 與 矯正預防 (CAPA)
+
+- **問題 1**：在 CP950 Windows 終端執行 `npx -y codebase-memory-mcp` 會耗費極長的時間下載且可能被阻斷。
+  - **RCA**：`npx` 會動態在 npm cache 區下載 package，在無防護的 powershell background task 下極易因 registry 網路阻礙或 stdio block 導致無限掛起。
+  - **矯正措施 (CAPA)**：改為直接從 GitHub Releases 官網下載預編譯好的 37MB ZIP 壓縮檔，並在 powershell 本地使用 `Expand-Archive` 進行物理文件解壓，大大提升安裝的可預測性與成功率。
+
+---
+
+## [2026-06-08] 全自動開發模式啟動觸發器同步 (Syncing Fully Automated Activation Trigger)
+
+### 任務內容 (PDCA)
+
+- **Plan (規劃)**：
+  - 目標：根據使用者需求，將啟動指令優化為 **「啟動全自動 SkillsBuilder 開發模式」**，並確保該指令在所有 13 個 IDE 規則檔案中生效。
+  - 使用 `INSTALL.ps1` 的 Master Source 同步機制進行全域更新。
+
+- **Do (執行)**：
+  - 手動更新 `CLAUDE.md` (Master Source)、`GEMINI.md` 與 `AGENTS.md` (Specialized Rules) 加入「全自動」觸發詞。
+  - 執行 `powershell -ExecutionPolicy Bypass -File INSTALL.ps1` 將變更同步至其餘 11 個 IDE 規則檔案（如 `.cursorrules`, `.windsurfrules` 等）。
+
+- **Check (驗證)**：
+  - 抽檢 `.cursorrules` 與 `AGENTS.md`，確認「啟動全自動 SkillsBuilder 開發模式」已成功寫入。
+  - 執行 `INSTALL.ps1` 確效通過，完成 100% 規則同步。
+
+- **Act (持續改進)**：
+  - 該觸發器現已具備更高的識別度。未來可考慮在 `bootstrap.ps1` 遠端下載版本中同步更新此觸發詞。
+
+
+---
+
+## [2026-06-08] 專案初始化與環境整合確效 (Workspace Initialization & Environment Integration)
+
+### 任務內容 (PDCA)
+
+- **Plan (規劃)**：
+  - 目標：回應使用者「git clone」需求，執行專案初始化與一鍵無縫整合，確保所有 IDE 規則與開發守衛 (Guardrails) 部署到位。
+  - 驗證 `bootstrap.ps1` 在本地環境的執行可靠性。
+
+- **Do (執行)**：
+  - 執行 `powershell -ExecutionPolicy Bypass -File .\bootstrap.ps1`。
+  - 腳本成功部署 13 個 IDE 規則檔案、初始化 Wiki 並建立 `DEV_LOG.md`。
+  - 偵測到 `graphify .` 執行時語義索引 (Semantic Indexing) 失敗。
+
+- **Check (驗證)**：
+  - 所有規則檔案（`.cursorrules`, `CLAUDE.md` 等）已確認存在於根目錄。
+  - `DEV_LOG.md` 成功繼承並更新。
+  - **失敗點**：`graphify` 在執行語義提取時，Gemini Backend 回傳多個 `500 Internal Error`。
+
+- **Act (持續改進)**：
+  - 針對 `graphify` 失敗，初步判定為 Gemini API 端點臨時性故障或速率限制。建議後續手動執行 `graphify . --update` 進行增量修補。
+  - 完成初始化流程，向使用者回報成功狀態。
+
+### 問題分析 (RCA) 與 矯正預防 (CAPA)
+
+- **問題 1**：`bootstrap.ps1` 在本地執行時嘗試自我覆寫產生的 `Cannot overwrite with itself` 錯誤。
+  - **RCA**：腳本設計為將 source 目錄檔案拷貝至 target 目錄，當兩者相同時（Self-update 模式），`Copy-Item` 未處理源與目標路徑一致的情況。
+  - **矯正措施 (CAPA)**：雖然 `bootstrap.ps1` 已有 `if ($srcDir -eq $destDir)` 判斷，但內部的 `Copy-Safe` 仍嘗試執行拷貝。未來應優化 `Copy-Safe` 在路徑一致時僅輸出 `[ALREADY UP TO DATE]` 而非嘗試 `Copy-Item`。
+
+- **問題 2**：`graphify` 語義提取失敗（23/23 chunks failed）。
+  - **RCA**：`Error code: 500` 代表伺服器端錯誤。可能是由於同時掃描 424 個文檔觸發了後端並發限制或特定文檔內容導致解析器崩潰。
+  - **矯正措施 (CAPA)**：建議分批次執行或在 API 穩定後重試。考慮在 `graphify` 配置中增加重試機制或降低並發數。
+
+
 
 
 

@@ -5,7 +5,7 @@ This file contains the mandatory system-level directives and standards for the S
 ---
 
 ## 🚀 SkillsBuilder 開發模式啟動觸發器 (Activation Trigger)
-當使用者輸入 **「啟動 SkillsBuilder 開發模式」**、**「啟動 SkillsBuilder 開發模式進行...」** 或任何相似指令時，你必須立即利用本專案的功能啟動對應的開發模式。在該模式下，你必須严格遵守以下所有規則與 SOP 規範。
+當使用者輸入 **「啟動全自動 SkillsBuilder 開發模式」**、**「啟動 SkillsBuilder 開發模式」**、**「啟動 SkillsBuilder 開發模式進行...」** 或任何相似指令時，你必須立即利用本專案的功能啟動對應的開發模式。在該模式下，你必須嚴格遵守以下所有規則與 SOP 規範。
 
 ---
 
@@ -17,7 +17,17 @@ This file contains the mandatory system-level directives and standards for the S
 
 ## 2. Anti-Vibe Coding & PDCA SOP (防禦性開發與確效流程)
 No code changes should be made without following this execution protocol:
-1. **[Plan] (Diagnosis)**: Scan the codebase to identify component fragility (state, async flow, dependency chains) and UI dissonance. Do not guess the root cause.
+1. **[Plan] (Ponytail Ladder + Diagnosis)**:
+   - **🐴 YAGNI Ladder Pre-Check** (for business logic, NOT UI/CSS): Before writing any code, stop at the first rung that holds:
+     1. Does this need to exist at all? → skip it (YAGNI)
+     2. Does the standard library already do this? → use it
+     3. Does a native platform feature cover it? → use it
+     4. Does an already-installed dependency solve it? → use it
+     5. Can it be one line? → make it one line
+     6. Only then: write the minimum code that works
+   - **Scope**: The Ladder applies to business logic, APIs, utilities, data processing. UI/UX/CSS follows the Color Master Palette rules instead.
+   - **Safety**: Never lazy away validation, security, error handling, or accessibility.
+   - Then scan the codebase to identify component fragility (state, async flow, dependency chains) and UI dissonance. Do not guess the root cause.
 2. **[Do] (Atomic Edits)**: Make surgical, minimal edits to resolve the issue. Record failures, root cause analysis (RCA), and corrective actions (CAPA) in `DEV_LOG.md`.
 3. **[Check] (Verification)**: Test the workspace locally (e.g., using `./verify.ps1`). The baseline is zero compiler warnings and zero Console errors.
 4. **[Act] (Defensive Regression Check)**: Scan dependencies, align UI button visibility with backend permissions (e.g., no 403 buttons visible), avoid naming clashes, and request permission before git push.
