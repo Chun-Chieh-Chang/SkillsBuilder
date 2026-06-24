@@ -1,3 +1,6 @@
 [submodule "raw/external/agency-agents-zh"]
 	path = raw/external/agency-agents-zh
 	url = https://github.com/jnMetaCode/agency-agents-zh.git
+[submodule "raw/agent-skills"]
+	path = raw/agent-skills
+	url = https://github.com/addyosmani/agent-skills.git

@@ -103,6 +103,46 @@ if ($graphifyInstalled) {
 }
 # --------------------------------
 
+# --- Auto-provision codebase-memory-mcp ---
+Write-Host "[INFO] Checking codebase-memory-mcp installation status..." -ForegroundColor Cyan
+$destExe = Join-Path $currentDir "tools\codebase-memory-mcp.exe"
+if (-not (Test-Path $destExe)) {
+    Write-Host "[INFO] codebase-memory-mcp.exe not found. Downloading latest Windows release..." -ForegroundColor Yellow
+    try {
+        $zipPath = Join-Path $currentDir "tools\codebase-memory-mcp-windows-amd64.zip"
+        $downloadUrl = "https://github.com/DeusData/codebase-memory-mcp/releases/latest/download/codebase-memory-mcp-windows-amd64.zip"
+        
+        Write-Host "[DOWNLOAD] Fetching from: $downloadUrl" -ForegroundColor Gray
+        $webClient = New-Object System.Net.WebClient
+        $webClient.DownloadFile($downloadUrl, $zipPath)
+        
+        Write-Host "[EXTRACT] Extracting binary..." -ForegroundColor Gray
+        $tempExtractDir = Join-Path $currentDir "tools\cbm_temp"
+        if (Test-Path $tempExtractDir) { Remove-Item $tempExtractDir -Recurse -Force }
+        New-Item -ItemType Directory -Path $tempExtractDir -Force | Out-Null
+        
+        Expand-Archive -Path $zipPath -DestinationPath $tempExtractDir -Force
+        
+        $extractedExe = Get-ChildItem -Path $tempExtractDir -Filter "*.exe" -Recurse | Select-Object -First 1
+        if ($extractedExe) {
+            Move-Item -Path $extractedExe.FullName -Destination $destExe -Force
+            Write-Host "[SUCCESS] codebase-memory-mcp.exe successfully installed to tools/" -ForegroundColor Green
+        } else {
+            Write-Host "[ERROR] Could not find codebase-memory-mcp.exe in extracted files!" -ForegroundColor Red
+        }
+        
+        # Cleanup
+        Remove-Item $tempExtractDir -Recurse -Force
+        Remove-Item $zipPath -Force
+    } catch {
+        Write-Host "[WARNING] Failed to download/install codebase-memory-mcp: $_" -ForegroundColor Yellow
+        Write-Host "[WARNING] You can manually download the Windows binary from GitHub and place it at tools\codebase-memory-mcp.exe" -ForegroundColor Yellow
+    }
+} else {
+    Write-Host "[SUCCESS] codebase-memory-mcp.exe is already installed!" -ForegroundColor Green
+}
+# ------------------------------------------
+
 $currentDir = Get-Location
 
 foreach ($antigravityPath in $pathsToSync) {
@@ -212,6 +252,59 @@ foreach ($skillName in $eccSkills) {
 }
 
 Write-Host "[SYNCED $syncedCount / 15 ECC Skills]" -ForegroundColor Cyan
+
+# 6b. Addy Osmani Agent Skills Submodule Sync
+Write-Host "[INFO] Synchronizing Addy Osmani Agent Skills..." -ForegroundColor Cyan
+$agentSkillsSrc = Join-Path $currentDir "raw\agent-skills"
+
+# Initialize submodule if not present
+if (-not (Test-Path (Join-Path $agentSkillsSrc "skills"))) {
+    Write-Host "[INFO] Initializing agent-skills submodule..." -ForegroundColor Yellow
+    Push-Location $currentDir
+    git submodule update --init --recursive 2>$null
+    Pop-Location
+}
+
+$addySkills = @(
+    @{ Src="spec-driven-development"; Dest="addy-spec-driven-dev"; Cat="dev" },
+    @{ Src="incremental-implementation"; Dest="addy-incremental-impl"; Cat="dev" },
+    @{ Src="api-and-interface-design"; Dest="addy-api-design"; Cat="dev" },
+    @{ Src="doubt-driven-development"; Dest="addy-doubt-driven-dev"; Cat="dev" },
+    @{ Src="source-driven-development"; Dest="addy-source-driven-dev"; Cat="dev" },
+    @{ Src="browser-testing-with-devtools"; Dest="addy-browser-testing"; Cat="dev" },
+    @{ Src="security-and-hardening"; Dest="addy-security-hardening"; Cat="dev" },
+    @{ Src="performance-optimization"; Dest="addy-performance-opt"; Cat="dev" },
+    @{ Src="ci-cd-and-automation"; Dest="addy-ci-cd-automation"; Cat="dev" },
+    @{ Src="deprecation-and-migration"; Dest="addy-deprecation-migration"; Cat="dev" },
+    @{ Src="documentation-and-adrs"; Dest="addy-docs-adrs"; Cat="dev" },
+    @{ Src="observability-and-instrumentation"; Dest="addy-observability"; Cat="dev" },
+    @{ Src="context-engineering"; Dest="addy-context-engineering"; Cat="core" }
+)
+
+$addySynced = 0
+Write-Host "[ADDY AGENT SKILLS INTEGRATION]" -ForegroundColor Cyan
+
+foreach ($s in $addySkills) {
+    $srcPath = Join-Path $agentSkillsSrc "skills\$($s.Src)"
+    $destPath = Join-Path $skillsDir $s.Dest
+
+    if (Test-Path $srcPath) {
+        if (-not (Test-Path $destPath)) {
+            try {
+                New-Item -ItemType SymbolicLink -Path $destPath -Target $srcPath -Force -ErrorAction Stop | Out-Null
+            } catch {
+                Copy-Item -Path $srcPath -Destination $destPath -Recurse -Force
+            }
+        }
+        Write-Host "[SYNCED] $($s.Dest)" -ForegroundColor Green
+        $addySynced++
+    } else {
+        Write-Host "[SKIPPED] $($s.Dest) (Source not found in submodule)" -ForegroundColor Yellow
+    }
+}
+
+Write-Host "[SYNCED $addySynced / 13 Addy Agent Skills]" -ForegroundColor Cyan
+
 
 # 7. Verify and ensure root IDE rules are deployed
 Write-Host "[INFO] Verifying workspace IDE rule configurations..." -ForegroundColor Cyan

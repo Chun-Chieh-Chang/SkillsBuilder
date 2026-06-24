@@ -187,7 +187,7 @@
         <section class="card">
             <h2>3. 如何初始化 (How to Initialize)</h2>
             <p>在任何新專案的根目錄下，執行以下 PowerShell 指令：</p>
-            <pre><code>powershell -ExecutionPolicy Bypass -Command "iex ((New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/Chun-Chieh-Chang/SkillsBuilder/main/bootstrap.ps1'))"</code></pre>
+            <pre><code>powershell -ExecutionPolicy Bypass -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; iex ((New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/Chun-Chieh-Chang/SkillsBuilder/main/bootstrap.ps1'))"</code></pre>
             <p><strong>腳本行為：</strong></p>
             <ul class="step-list">
                 <li class="step-item">

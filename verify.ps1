@@ -48,6 +48,15 @@ foreach ($p in $pathsToVerify) {
 }
 Write-Host "[SUCCESS] Sync artifact verification passed!" -ForegroundColor Green
 
+# 3.5. Verify codebase-memory-mcp binary
+Write-Host "[STEP 2.5] Verifying codebase-memory-mcp binary..." -ForegroundColor Cyan
+$cbmExePath = Join-Path (Get-Location) "tools\codebase-memory-mcp.exe"
+if (-not (Test-Path $cbmExePath)) {
+    Write-Host "[WARNING] codebase-memory-mcp.exe not found at tools/! Please run INSTALL.ps1 to download it." -ForegroundColor Yellow
+} else {
+    Write-Host "[SUCCESS] codebase-memory-mcp.exe binary found!" -ForegroundColor Green
+}
+
 # 4. Lint and Validate SKILL.md Frontmatter Formats
 Write-Host "[STEP 3] Validating all Skill Metadata Frontmatter..." -ForegroundColor Cyan
 $skillsFolders = Get-ChildItem -Path "skills" -Recurse -Filter "SKILL.md"

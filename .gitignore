@@ -14,3 +14,7 @@ dist/
 # Graphify Local Graph Output
 graphify-out/
 graph.json
+
+# codebase-memory-mcp binary and temp paths
+tools/codebase-memory-mcp.exe
+tools/cbm_temp/

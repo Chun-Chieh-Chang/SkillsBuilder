@@ -923,3 +923,43 @@ Policy: 1% Rule enforcement.
 - **CopilotKit Accelerator**:
   - Focus: AG-UI Protocol, Zod validation, CoAgents state-syncing.
   - Result: Drastic reduction in token usage during AI app building.
+
+---
+
+## [2026-06-24] 整合 addyosmani/agent-skills 核心能力與合併優化 (addyosmani/agent-skills Integration)
+
+### 任務內容 (PDCA)
+
+- **Plan (規劃)**：
+  - 目標：將 [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) 的 24 個生產級工程技能整合到 SkillsBuilder。
+  - 設計：採用「Git Submodule + 選擇性映射」方案（Q1/Q2 方案 A，Q3 方案 B）。將 13 個無衝突的新 skill 映射至 `skills/dev/` 與 `skills/core/`，並以前綴 `addy-` 命名；對於 11 個有功能重疊的 skill，將其精華合併至現有的 skill 中（如 `bug-diagnose`、`grill-requirements`、`tdd-enforcer` 等），確保現有 skill 優先，同時吸收上游最佳實踐。
+  - 規則同步：將觸發與生命週期對應關係（Lifecycle Mapping）更新至全域 IDE 規則配置。
+
+- **Do (執行)**：
+  - 掛載 git submodule `raw/agent-skills`。
+  - 複製並新增 13 個無衝突的新 skill 到專案目錄，包含 `addy-spec-driven-dev`、`addy-incremental-impl`、`addy-api-design`、`addy-context-engineering`、`addy-doubt-driven-dev`、`addy-source-driven-dev`、`addy-browser-testing`、`addy-security-hardening`、`addy-performance-opt`、`addy-ci-cd-automation`、`addy-deprecation-migration`、`addy-docs-adrs`、`addy-observability`。
+  - 合併 11 個重疊 skill 精華到 existing skills：
+    - `bug-diagnose` (併入 `debugging-and-error-recovery` 的 Stop-the-Line, bisect 等)
+    - `grill-requirements` (併入 `interview-me` 與 `idea-refine` 的 hypothesis 驗證與 one-Q-at-a-time 訪談規則)
+    - `tdd-enforcer` (併入 `test-driven-development` 的 Prove-It, test pyramid 等)
+    - `code-reviewer` (併入 `code-review-and-quality` 的 5-axis 評估與等級劃分)
+    - `complexity-reduction` (併入 `code-simplification` 的 Chesterton's Fence 與 Rule of 500)
+    - `web-coder` (併入 `frontend-ui-engineering` 的架構與無障礙 A11y 檢核)
+    - `verification-before-completion` (併入 `shipping-and-launch` 的 pre-launch checklist 與 Feature Flag 治理)
+  - 修改 [INSTALL.ps1](file:///f:/Self-developed_Apps/SkillsBuilder/INSTALL.ps1) 加入 submodule 檢測、更新及 `addy-` 新技能同步至 `$skillsDir` 的邏輯。
+  - 更新 [GEMINI.md](file:///f:/Self-developed_Apps/SkillsBuilder/GEMINI.md) 與 [AGENTS.md](file:///f:/Self-developed_Apps/SkillsBuilder/AGENTS.md) 注入 Addy Osmani 技能對照表及 Lifecycle 映射關係。
+
+- **Check (驗證)**：
+  - 執行 `verify.ps1` 進行全專案與 ECC 確效：回傳 **100% SOFTWARE VALIDATION PASSED**，無任何 lint 錯誤與檔案衝突。
+  - 驗證本地 `~/.gemini/antigravity-ide/skills/` 已成功出現 `addy-` 前綴的 13 個新 skill。
+  - 建立 `walkthrough.md` 完整記錄異動與測試。
+
+- **Act (持續改進)**：
+  - 專案已完整承接 Addy Osmani 生產級技能，未來可隨時透過 IDE 自動路由執行 spec 驅動開發或懷疑驅動開發。
+  - 在完成修改後向使用者呈報變更，並請求 Push 權限。
+
+### 問題分析 (RCA) 與 矯正預防 (CAPA)
+
+- **問題 1**：部分 IDE 中對 skill 名稱的自動補全會出現重複。
+  - **RCA**：因為 Addy 部分 skill 與本機原有 skill 名稱完全一致，若直接複製會引發檔案覆蓋或自動識別混亂。
+  - **矯正措施 (CAPA)**：強制為所有引進的 13 個新技能加上 `addy-` 前綴，而重疊的 11 個技能則採用物理代碼合併，完美隔絕命名衝突並保留兩者優勢。

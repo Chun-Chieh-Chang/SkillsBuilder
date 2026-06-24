@@ -1,10 +1,119 @@
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { CallToolRequestSchema, ListToolsRequestSchema } from "@modelcontextprotocol/sdk/types.js";
-import { exec } from "child_process";
+import { exec, spawn } from "child_process";
 import { promisify } from "util";
+import fs from "fs";
+import path from "path";
 
 const execAsync = promisify(exec);
+
+// Path to codebase-memory-mcp.exe
+const cbmPath = path.join(process.cwd(), "tools", "codebase-memory-mcp.exe");
+
+let childProcess = null;
+let childTools = [];
+const pendingRequests = new Map();
+let nextRequestId = 1;
+
+function initChildProcess() {
+  if (!fs.existsSync(cbmPath)) {
+    console.error(`[SkillsBuilder] codebase-memory-mcp.exe not found at: ${cbmPath}`);
+    return;
+  }
+
+  console.error(`[SkillsBuilder] Spawning codebase-memory-mcp.exe...`);
+  childProcess = spawn(cbmPath, ["--ui=true"], { stdio: ["pipe", "pipe", "inherit"] });
+
+  let buffer = "";
+  childProcess.stdout.on("data", (chunk) => {
+    buffer += chunk.toString();
+    const lines = buffer.split("\n");
+    buffer = lines.pop() || "";
+
+    for (const line of lines) {
+      if (line.trim()) {
+        try {
+          const message = JSON.parse(line);
+          if (message.id !== undefined) {
+            const callback = pendingRequests.get(message.id);
+            if (callback) {
+              pendingRequests.delete(message.id);
+              if (message.error) {
+                callback.reject(message.error);
+              } else {
+                callback.resolve(message.result);
+              }
+            }
+          }
+        } catch (err) {
+          console.error("[SkillsBuilder] Error parsing JSON from child:", err);
+        }
+      }
+    }
+  });
+
+  childProcess.on("error", (err) => {
+    console.error("[SkillsBuilder] child process error:", err);
+    childProcess = null;
+  });
+
+  childProcess.on("exit", (code) => {
+    console.error(`[SkillsBuilder] child process exited with code ${code}`);
+    childProcess = null;
+  });
+
+  // Perform initialization handshake with the child server
+  sendRequest("initialize", {
+    protocolVersion: "2024-11-05",
+    capabilities: {},
+    clientInfo: {
+      name: "skillsbuilder-mcp-proxy",
+      version: "1.0.0"
+    }
+  })
+    .then(() => {
+      console.error("[SkillsBuilder] codebase-memory-mcp initialized successfully.");
+      sendNotification("notifications/initialized", {});
+      return sendRequest("tools/list", {});
+    })
+    .then((result) => {
+      if (result && result.tools) {
+        childTools = result.tools;
+        console.error(`[SkillsBuilder] Loaded ${childTools.length} tools from codebase-memory-mcp.`);
+      }
+    })
+    .catch((err) => {
+      console.error("[SkillsBuilder] Failed to initialize codebase-memory-mcp:", err);
+    });
+}
+
+function sendRequest(method, params) {
+  return new Promise((resolve, reject) => {
+    if (!childProcess) {
+      return reject(new Error("codebase-memory-mcp is not running"));
+    }
+    const id = nextRequestId++;
+    const message = {
+      jsonrpc: "2.0",
+      id,
+      method,
+      params
+    };
+    pendingRequests.set(id, { resolve, reject });
+    childProcess.stdin.write(JSON.stringify(message) + "\n");
+  });
+}
+
+function sendNotification(method, params) {
+  if (!childProcess) return;
+  const message = {
+    jsonrpc: "2.0",
+    method,
+    params
+  };
+  childProcess.stdin.write(JSON.stringify(message) + "\n");
+}
 
 // Initialize MCP Server
 const server = new Server(
@@ -77,8 +186,19 @@ const TOOLS = [
 
 // Register list of tools
 server.setRequestHandler(ListToolsRequestSchema, async () => {
+  let combinedTools = [...TOOLS];
+  if (childProcess) {
+    try {
+      const result = await sendRequest("tools/list", {});
+      if (result && result.tools) {
+        childTools = result.tools;
+      }
+    } catch (err) {
+      console.error("[SkillsBuilder] Error listing tools from child:", err);
+    }
+  }
   return {
-    tools: TOOLS,
+    tools: [...combinedTools, ...childTools],
   };
 });
 
@@ -111,6 +231,28 @@ async function runCommand(cmd) {
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   const { name, arguments: args } = request.params;
 
+  // Check if it's one of codebase-memory-mcp's tools
+  const isChildTool = childTools.some((t) => t.name === name);
+  if (isChildTool) {
+    try {
+      const response = await sendRequest("tools/call", {
+        name,
+        arguments: args,
+      });
+      return response;
+    } catch (err) {
+      return {
+        isError: true,
+        content: [
+          {
+            type: "text",
+            text: `Proxy error calling tool ${name}: ${err.message || JSON.stringify(err)}`,
+          },
+        ],
+      };
+    }
+  }
+
   switch (name) {
     case "graphify_query": {
       const escapedQuery = args.query.replace(/"/g, '\\"');
@@ -137,6 +279,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
 // Run the server using stdio transport
 async function main() {
+  initChildProcess();
   const transport = new StdioServerTransport();
   await server.connect(transport);
   console.error("SkillsBuilder MCP server running on stdio");

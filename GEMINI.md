@@ -99,3 +99,37 @@ Use Morandi-style tones, card-based layering, 4px grid spacing, and modern typog
 - **No Dynamic Execution**: Never use `eval()`, `exec()`, or dynamic code execution blocks.
 - **Pydantic Validation**: Use Pydantic AI for structured configurations.
 - **No Missing Imports**: Ensure all model dependencies and functions are explicitly imported at the top of the file before usage.
+
+## 6. Addy Osmani Agent Skills Integration (SDLC Lifecycle Skills)
+
+本專案整合了 [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) 的生產級工程技能包（13 個新增 + 11 個精華合併）。
+
+### Intent → Skill Mapping (Extended)
+以下場景必須自動觸發對應 skill：
+
+| 場景 | 觸發 Skill |
+|------|-----------|
+| 新功能/專案啟動 | `addy-spec-driven-dev` → `addy-incremental-impl` |
+| API 設計 | `addy-api-design` |
+| 效能問題 | `addy-performance-opt` |
+| 安全審計 | `addy-security-hardening` |
+| CI/CD 管線 | `addy-ci-cd-automation` |
+| 上下文管理 | `addy-context-engineering` |
+| 高風險修改 | `addy-doubt-driven-dev` |
+| 棄用遷移 | `addy-deprecation-migration` |
+| 可觀測性 | `addy-observability` |
+| 文件/ADR | `addy-docs-adrs` |
+| 瀏覽器測試 | `addy-browser-testing` |
+| 源碼驗證 | `addy-source-driven-dev` |
+
+### SDLC Lifecycle Mapping
+Agent 內部須遵循以下開發生命週期路由：
+```
+DEFINE  → addy-spec-driven-dev → grill-requirements
+PLAN    → planning + writing-plans + addy-incremental-impl
+BUILD   → tdd-enforcer + complexity-reduction
+VERIFY  → bug-diagnose + addy-browser-testing
+REVIEW  → code-reviewer
+SHIP    → verification-before-completion
+```
+
