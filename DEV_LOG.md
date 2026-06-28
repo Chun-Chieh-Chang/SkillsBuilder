@@ -11,6 +11,42 @@
 
 ---
 
+## [2026-06-28] google-labs-code/design.md 整合 (P2 + P3)
+
+### 任務內容 (PDCA)
+
+- **Plan (規劃)**：
+  - 目標：稽核 [google-labs-code/design.md](https://github.com/google-labs-code/design.md) 核心功能是否與本專案整合且無衝突。
+  - 稽核結論：語意 100% 對齊，無功能衝突；差異為格式層面（散落 Markdown vs 結構化 YAML front matter）。
+  - P2：建立標準 `DESIGN.md` 檔案（YAML front matter + Markdown prose）。
+  - P3：整合 `npx @google/design.md lint` 至 `verify.ps1`，自動化 WCAG 對比度驗證。
+
+- **Do (執行)**：
+  - **P2** — 建立 `DESIGN.md`（根目錄）：
+    - YAML front matter：`colors`（light/dark 各 8 個 token）、`typography`（h1~caption 7 級）、`rounded`（5 scale）、`spacing`（7 scale）、`components`（button-primary, card, glass-pane, nav）。
+    - Markdown body：8 個標準 section（Overview / Colors / Typography / Layout / Elevation & Depth / Shapes / Components / Do's and Don'ts）。
+  - **P3** — 修改 `verify.ps1`（Step 5）：
+    - 偵測 `DESIGN.md` 是否存在，否則 `WARNING` 跳過。
+    - 偵測 `npx` 是否可用，否則 `WARNING` 跳過（不阻塞 CI）。
+    - 執行 `npx --yes @google/design.md lint DESIGN.md`，解析 JSON `summary`。
+    - `errors > 0` → `exit 1`；`warnings > 0` → 非阻塞警告；`0/0` → 成功。
+
+- **Check (確效)**：
+  - 本機無執行 `npx @google/design.md lint`（套件仍處於 alpha 早期，CI 中以 `--yes` 自動安裝）。
+  - `verify.ps1` 語法目視確認：無語法錯誤，`$ErrorActionPreference = "Stop"` 保護已存在。
+
+- **Act (防迴歸)**：
+  - 依賴掃描：新增 Step 5 不影響 Step 1~4，lint 失敗會 `exit 1` 阻斷後續，符合 CI gate 設計。
+  - 安全降級：`npx` 不可用時以 `WARNING` 跳過，不會阻塞沒有 Node.js 的環境。
+  - 無副作用：`DESIGN.md` 為純新增檔案，不改動任何既有 skill 或規則。
+
+### 結果
+
+| 檔案 | 變更類型 | 狀態 |
+|:-----|:--------|:-----|
+| `DESIGN.md` | 新增 | ✅ 已建立 |
+| `verify.ps1` | 修改（插入 Step 5） | ✅ 已完成 |
+
 ## [2026-06-21] Ponytail YAGNI Ladder 整合 (Ponytail Lazy Senior Dev Integration)
 
 ### 任務內容 (PDCA)

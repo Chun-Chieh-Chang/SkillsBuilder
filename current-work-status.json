@@ -1,16 +1,16 @@
 {
-  "specId": "b229097b-4948-44a4-a3bd-97bf704af91b",
+  "specId": "design-md-integration-2026-06-28",
   "workflowType": "requirements-first",
-  "specType": "feature",
-  "lastUpdated": "2026-06-07T12:15:00Z",
-  "totalTasks": 53,
-  "completedTasks": 53,
+  "specType": "integration",
+  "lastUpdated": "2026-06-28T13:05:00Z",
+  "totalTasks": 7,
+  "completedTasks": 7,
   "remainingTasks": 0,
   "currentPhase": "completed",
   "currentTaskId": "none",
-  "lastCompletedTaskId": "11 Checkpoint - Ensure all tests pass",
+  "lastCompletedTaskId": "Git commit baseline + push to GitHub",
   "nextTaskIds": [],
   "readyTasks": [],
   "blocks": [],
   "nextActionRequired": "none"
-}
+}

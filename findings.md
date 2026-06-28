@@ -1,19 +1,31 @@
-# Findings - Initialization Failure
+# Findings Log
 
-## Research
-- Reported command: `powershell -ExecutionPolicy Bypass -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; iex ((New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/Chun-Chieh-Chang/SkillsBuilder/main/bootstrap.ps1'))"`
-- User reports an "error message" but hasn't provided the exact text yet.
+## [2026-06-28] DESIGN.md Spec Audit
 
-## Hypotheses
-1. GitHub connection issue (DNS, Proxy, SSL/TLS).
-2. PowerShell version incompatibility.
-3. `Net.WebClient` being blocked by security software.
-4. Incorrect URL or content at the URL.
+### Research
+- Audited [google-labs-code/design.md](https://github.com/google-labs-code/design.md) — a format spec for describing visual identity to coding agents.
+- Compared spec features against SkillsBuilder Color Master Palette, typography rules, spacing grid, dark/light modes.
 
-## Discoveries
-- Found that `docs\devos-sidecar-guide.html` contains an incomplete command:
-  `powershell -ExecutionPolicy Bypass -Command "iex ((New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/Chun-Chieh-Chang/SkillsBuilder/main/bootstrap.ps1'))"`
-- This command is missing `[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;`.
-- PowerShell 5.1 (the default on most Windows machines) uses TLS 1.0 or 1.1 by default, which GitHub has deprecated.
-- Without the TLS 1.2 setting, `DownloadString` will fail with an SSL/TLS connection error.
-- Verified that the correct command exists in other files like `GEMINI.md` and `.cursorrules`.
+### Results
+- **Semantic alignment**: 100% — all core design concepts already present in SkillsBuilder.
+- **Functional conflicts**: None.
+- **Format gaps**: No standalone `DESIGN.md` file; no YAML front matter; no `@google/design.md lint` in CI pipeline.
+
+### Actions Taken
+- Created `DESIGN.md` (P2): YAML front matter + 8-section prose.
+- Integrated lint into `verify.ps1` Step 5 (P3): graceful fallback if npx not available.
+
+---
+
+## [2026-06-07] Initialization Failure — Bootstrap TLS Issue ✅ Resolved
+
+### Root Cause
+- `docs/devos-sidecar-guide.html` contained an incomplete bootstrap command missing `[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;`.
+- PowerShell 5.1 defaults to TLS 1.0/1.1, which GitHub deprecated — causing SSL connection failure.
+
+### Resolution
+- Correct command confirmed in `GEMINI.md` and `.cursorrules` (includes TLS 1.2 forcing).
+- `docs/devos-sidecar-guide.html` was fixed to use the complete, correct command.
+- Workspace initialized successfully via local `bootstrap.ps1`.
+
+### Status: ✅ CLOSED

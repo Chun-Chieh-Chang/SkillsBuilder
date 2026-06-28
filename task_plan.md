@@ -1,18 +1,17 @@
-# Task Plan - Project Initialization and Workspace Integration
+# Task Plan — MECE Baseline & DESIGN.md Integration
+
+> **Last Updated**: 2026-06-28
+> **Status**: ✅ Completed
 
 ## Goal
-Respond to the user's clone/init request by ensuring the SkillsBuilder workspace is fully integrated with all 13 IDE rule files and core guardrails.
+Audit google-labs-code/design.md, integrate its standard format into SkillsBuilder, and perform MECE cleanup for baseline commit.
 
-## Phases
-- [x] Phase 1: Research and Reproduction <!-- id: 1 -->
-- [x] Phase 2: Analysis of `bootstrap.ps1` and Documentation <!-- id: 2 -->
-- [x] Phase 3: Root Cause Identification <!-- id: 3 -->
-- [x] Phase 4: Solution Implementation and Verification <!-- id: 4 -->
+## Tasks
 
-## Progress
-- [x] Initialized planning files.
-- [x] Verified current directory is already a Git clone.
-- [x] Executed local `bootstrap.ps1` to deploy rule files and initialize Wiki.
-- [x] Identified and logged `graphify` semantic failure (Gemini 500 errors).
-- [x] Updated `DEV_LOG.md` with RCA and CAPA.
-
+- [x] Audit `google-labs-code/design.md` core features vs. SkillsBuilder
+- [x] P2: Create `DESIGN.md` with YAML front matter + 8-section Markdown prose
+- [x] P3: Integrate `npx @google/design.md lint` into `verify.ps1` (Step 5)
+- [x] Update `DEV_LOG.md` with PDCA entry
+- [x] MECE cleanup: sync submodule, update progress.md, task_plan.md, findings.md
+- [x] Append `wiki/log.md` entry for 2026-06-28
+- [x] Git commit baseline + push to GitHub

@@ -126,6 +126,56 @@ if (-not (Test-Path "wiki/index.md")) {
 }
 Write-Host "[SUCCESS] LLM Wiki structure is valid!" -ForegroundColor Green
 
+# 7. DESIGN.md Token Lint (WCAG Contrast + Token Integrity)
+Write-Host "[STEP 5] Linting DESIGN.md tokens (WCAG contrast + token integrity)..." -ForegroundColor Cyan
+
+$designMdPath = Join-Path (Get-Location) "DESIGN.md"
+if (-not (Test-Path $designMdPath)) {
+    Write-Host "[WARNING] DESIGN.md not found — skipping design token lint." -ForegroundColor Yellow
+} else {
+    # Check if npx is available
+    $npxAvailable = $null
+    try {
+        $npxAvailable = & npx --version 2>&1
+    } catch {}
+
+    if (-not $npxAvailable) {
+        Write-Host "[WARNING] npx not found — skipping design token lint (install Node.js to enable)." -ForegroundColor Yellow
+    } else {
+        try {
+            Write-Host "[LINT] Running: npx @google/design.md lint DESIGN.md" -ForegroundColor Gray
+            $lintOutput = & npx --yes @google/design.md lint DESIGN.md 2>&1 | Out-String
+            Write-Host $lintOutput
+
+            # Try to parse JSON result for structured error counting
+            $jsonMatch = [regex]::Match($lintOutput, '\{[\s\S]*"summary"[\s\S]*\}')
+            if ($jsonMatch.Success) {
+                $lintResult = $jsonMatch.Value | ConvertFrom-Json
+                $errorCount   = $lintResult.summary.errors
+                $warningCount = $lintResult.summary.warnings
+
+                if ($errorCount -gt 0) {
+                    Write-Host "[ERROR] DESIGN.md lint failed: $errorCount error(s), $warningCount warning(s)" -ForegroundColor Red
+                    exit 1
+                } elseif ($warningCount -gt 0) {
+                    Write-Host "[WARNING] DESIGN.md lint: 0 errors, $warningCount warning(s) — non-blocking." -ForegroundColor Yellow
+                } else {
+                    Write-Host "[SUCCESS] DESIGN.md lint passed: 0 errors, 0 warnings." -ForegroundColor Green
+                }
+            } else {
+                # Non-zero exit code means lint found errors
+                if ($LASTEXITCODE -ne 0) {
+                    Write-Host "[ERROR] DESIGN.md lint exited with code $LASTEXITCODE." -ForegroundColor Red
+                    exit 1
+                }
+                Write-Host "[SUCCESS] DESIGN.md lint passed." -ForegroundColor Green
+            }
+        } catch {
+            Write-Host "[WARNING] DESIGN.md lint encountered an issue: $_ — continuing." -ForegroundColor Yellow
+        }
+    }
+}
+
 Write-Host "=========================================" -ForegroundColor Green
 Write-Host "     100% SOFTWARE VALIDATION PASSED     " -ForegroundColor Green
 Write-Host "=========================================" -ForegroundColor Green

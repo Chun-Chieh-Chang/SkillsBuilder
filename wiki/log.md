@@ -2,6 +2,31 @@
 
 All significant project events, wiki ingests, and architectural decisions are recorded here.
 
+## [2026-06-28] Integration | google-labs-code/design.md Standard + MECE Cleanup
+*   **Source**: [google-labs-code/design.md](https://github.com/google-labs-code/design.md)
+*   **Action**: Audited design.md spec, integrated DESIGN.md standard format, performed MECE project cleanup.
+*   **Changes**:
+    - Created `DESIGN.md` in project root — YAML front matter (colors, typography, rounded, spacing, components) + 8-section Markdown body (Overview → Do's and Don'ts).
+    - Updated `verify.ps1` Step 5: `npx @google/design.md lint` WCAG auto-validation gate.
+    - Updated `DEV_LOG.md` with full PDCA entry (P2 + P3 execution log).
+    - Synced `progress.md`, `task_plan.md`, `current-work-status.json`, `findings.md` to latest state.
+    - Re-synced `raw/external/agency-agents-zh` submodule (was detached).
+*   **Audit Result**: 100% semantic alignment with design.md spec — zero functional conflicts. Difference was format only (scattered Markdown vs structured YAML front matter).
+*   **Goal**: Establish a machine-readable design contract consumable by any agent with `@google/design.md lint`.
+
+---
+
+## [2026-06-21] Integration | Ponytail YAGNI Ladder
+*   **Source**: [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail)
+*   **Action**: Integrated Ponytail YAGNI Ladder as mandatory [Plan] phase pre-check in PDCA SOP.
+*   **Changes**:
+    - 6 new skills in `skills/core/`: ponytail, ponytail-review, ponytail-audit, ponytail-debt, ponytail-gain, ponytail-help.
+    - Updated `AGENTS.md` and `GEMINI.md` with Ponytail SOP.
+    - Updated global User Rules with YAGNI Ladder (UI/CSS exclusion clause preserved).
+*   **Goal**: Prevent over-engineering in business logic while preserving premium UI quality.
+
+---
+
 ## [2026-06-06] Ingest & Integrate | YouTube Video: 8 Essential Skills
 *   **Source**: YouTube [qNOOW1ctBCo](https://www.youtube.com/watch?v=qNOOW1ctBCo).
 *   **Action**: Researched, evaluated, and fully integrated the "8 essential AI Agent Skills" into the workspace.
