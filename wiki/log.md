@@ -2,6 +2,19 @@
 
 All significant project events, wiki ingests, and architectural decisions are recorded here.
 
+## [2026-06-28] Cleanup + Knowledge | headroom-* Orphan Removal & headroom-ai Wiki Card
+*   **Action**: 刀一 + 刀三 — 清除孤兒 skills，建立候補技術知識卡。
+*   **Changes**:
+    - 刪除 6 個孤兒 `headroom-*` skills（headroom-api, headroom-sync, headroom-search, headroom-auto-close, headroom-local-edit, headroom-config）— 瀏覽器標籤管理工具殘留，與 headroomlabs-ai/headroom 同名異物，零外部引用，已確認無副作用。
+    - 建立 `wiki/entities/headroom-ai.md` — headroomlabs-ai/headroom（AI Context 壓縮引擎）的知識備存卡，含能力矩陣、YAGNI Gate 整合觸發條件、MCP 配置模板。
+    - 更新 `wiki/index.md` 加入 headroom-ai entity 連結。
+*   **決策依據**:
+    - 刀一：零外部引用、草稿品質、命名語意污染 → 立即清除。
+    - 刀三：YAGNI Ladder — 工具有價值但無當前需求 → 備存知識卡，不安裝工具鏈。
+*   **Goal**: 消除 False Cognate（同名異物）語意污染，保留未來整合路徑。
+
+---
+
 ## [2026-06-28] Integration | google-labs-code/design.md Standard + MECE Cleanup
 *   **Source**: [google-labs-code/design.md](https://github.com/google-labs-code/design.md)
 *   **Action**: Audited design.md spec, integrated DESIGN.md standard format, performed MECE project cleanup.

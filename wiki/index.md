@@ -27,6 +27,7 @@ The rules and workflows for this wiki.
 *   [office-processor](entities/office-processor.md): Excel, Word, and PDF document parser.
 *   [diagram-generator](entities/diagram-generator.md): Excalidraw JSON diagram drawer.
 *   [deep-research](entities/deep-research.md): Multi-stage web research engine.
+*   [headroom-ai](entities/headroom-ai.md): AI Agent Context Compression Layer (候補技術 — 60–95% token reduction, MCP-native).
 
 ### [Concepts](concepts/)
 *   [llm-wiki](concepts/llm-wiki.md): Compounding knowledge pattern.

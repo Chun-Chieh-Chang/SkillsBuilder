@@ -11,6 +11,51 @@
 
 ---
 
+## [2026-06-28] headroom False Cognate 清除 + 知識卡建立 (刀一 + 刀三)
+
+### 任務內容 (PDCA)
+
+- **Plan (規劃)**：
+  - 目標：稽核 `headroomlabs-ai/headroom` 核心功能是否與本專案整合且無衝突。
+  - 診斷：發現 SkillsBuilder 中存在 6 個 `headroom-*` skills，與 headroomlabs-ai/headroom 同名但功能完全不同（瀏覽器標籤管理 vs. AI Token 壓縮引擎）。
+  - 決策：刀一（立即刪除孤兒 skills）+ 刀三（建立候補知識卡）。暫不整合工具鏈（YAGNI）。
+
+- **Do (執行)**：
+  - **副作用防禦掃描**：grep 全專案所有 `.md/.json/.ps1/.html/.js` 檔案，確認 6 個 headroom-* skills 零外部引用（所有引用皆在 skills 資料夾內部互相引用）。
+  - **刀一**：`Remove-Item -Recurse -Force` 刪除 6 個資料夾：headroom-api, headroom-sync, headroom-search, headroom-auto-close, headroom-local-edit, headroom-config。
+  - **刀三**：建立 `wiki/entities/headroom-ai.md`，含能力矩陣、實測壓縮率、YAGNI Gate 整合觸發條件、MCP 配置模板。
+  - 更新 `wiki/index.md`、`wiki/log.md`、`findings.md`。
+
+- **Check (確效)**：
+  - `verify.ps1` ECC skills list 不含任何 headroom-*，刪除後 Step 4.5 不受影響。
+  - `git status` 確認：6 個 skill 目錄全部從 tracked 移除，新增 wiki entity。
+
+- **Act (防迴歸)**：
+  - 刪除前確認零外部依賴 → 無任何 skill routing、AGENTS.md、GEMINI.md 受影響。
+  - DESIGN.md lint（verify.ps1 Step 5）不受影響（headroom-* 與 DESIGN.md 無關）。
+
+### RCA
+- **根本原因**：6 個 skills 為某未記錄開發 session 的孤兒草稿，從未被路由、從未建立 wiki entry、從未寫入 DEV_LOG。品質為草稿級（最短 20 行，最長 144 行）。此類孤兒檔案屬於 MECE 術語「無主紀錄」，違反「每個檔案都有明確歸屬」原則。
+
+### CAPA
+- **矯正措施**：刪除 6 個孤兒 skills，建立候補知識卡。
+- **預防措施**：新建 skill 時必須同步建立 DEV_LOG 記錄 + wiki entry，否則視為無效 skill。
+
+### 結果
+
+| 檔案 | 變更 | 狀態 |
+|:-----|:-----|:-----|
+| `skills/dev/headroom-api/` | 刪除 | ✅ |
+| `skills/dev/headroom-sync/` | 刪除 | ✅ |
+| `skills/dev/headroom-search/` | 刪除 | ✅ |
+| `skills/dev/headroom-auto-close/` | 刪除 | ✅ |
+| `skills/dev/headroom-local-edit/` | 刪除 | ✅ |
+| `skills/dev/headroom-config/` | 刪除 | ✅ |
+| `wiki/entities/headroom-ai.md` | 新增 | ✅ |
+| `wiki/index.md` | 更新（新增 entity 連結） | ✅ |
+
+---
+
 ## [2026-06-28] google-labs-code/design.md 整合 (P2 + P3)
 
 ### 任務內容 (PDCA)

@@ -1,6 +1,24 @@
 # Findings Log
 
-## [2026-06-28] DESIGN.md Spec Audit
+## [2026-06-28] headroom-* Naming Collision — False Cognate ✅ Resolved
+
+### Discovery
+- SkillsBuilder contained 6 `headroom-*` skills (headroom-api, headroom-sync, headroom-search, headroom-auto-close, headroom-local-edit, headroom-config).
+- These described a **browser tab manager** (`npm install -g headroom-cli`, `localhost:8080`).
+- `headroomlabs-ai/headroom` is a completely different product: an **AI Agent Context Compression Layer** (`pip install headroom-ai`, `localhost:8787`).
+- This is a **False Cognate (同名異物)** — same name, entirely different products.
+
+### Root Cause
+- The 6 `headroom-*` skills were orphaned artifacts from an unknown prior development session. No DEV_LOG entry, no wiki entry, no external references. Draft-quality (20–144 lines each).
+
+### Resolution
+- **刀一**: Deleted all 6 skills. Dependency scan confirmed zero external references — no regression risk.
+- **刀三**: Created `wiki/entities/headroom-ai.md` as a reserved knowledge card for the real headroomlabs-ai/headroom tool, with YAGNI Gate conditions for future integration.
+
+### Status: ✅ CLOSED
+
+---
+
 
 ### Research
 - Audited [google-labs-code/design.md](https://github.com/google-labs-code/design.md) — a format spec for describing visual identity to coding agents.
