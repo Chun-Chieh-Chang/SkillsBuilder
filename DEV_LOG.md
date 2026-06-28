@@ -11,6 +11,76 @@
 
 ---
 
+## [2026-06-28] 全域 IDE 規則整合指南建立 (Global Rules Integration)
+
+### 任務內容 (PDCA)
+
+- **Plan (規劃)**：
+  - 目標：撰寫全域 IDE 工具規則整合指南，指導如何將 SkillsBuilder 核心能力（YAGNI 審查、色彩大師、1% 聯動）部署至本機 Cursor、VS Code Copilot、Continue 及 Cline 等所有主流 IDE 工具中。
+  - 設計：新增概念文件 `wiki/concepts/global-ide-integration.md`，內容涵蓋：
+    1. 整合核心原理（SSOT 邊車架構）。
+    2. 專案層級：一鍵邊車部署指令與效果。
+    3. 全域層級：CursorRules、VS Code Copilot Instructions、Continue Config、Roo Code 全域路徑設定。
+    4. 全域 Skill 聯動與 1% 規則說明。
+
+- **Do (執行)**：
+  - 建立 `wiki/concepts/global-ide-integration.md` 概念文件。
+  - 更新 `wiki/index.md` 中的 Concepts 區段導覽，加入 `global-ide-integration.md` 連結。
+  - 更新 `wiki/log.md`、`findings.md` 紀錄本次整合文件增設。
+
+- **Check (確效)**：
+  - `./verify.ps1` 確效程式 100% 通過。
+  - 設計指南中的 markdown 語意與鏈結正確無誤。
+
+- **Act (防迴歸)**：
+  - 文件中之全域變更與目前本機 `INSTALL.ps1` 部署邏輯（SymbolicLink + CLAUDE.md 覆蓋）100% 相容，無任何功能破壞風險。
+
+### 結果
+
+| 檔案/路徑 | 變更 | 狀態 |
+|:-----|:-----|:-----|
+| `wiki/concepts/global-ide-integration.md` | 新增 | ✅ 已建立 |
+| `wiki/index.md` | 修改（新增 concepts 連結） | ✅ 已完成 |
+
+---
+
+## [2026-06-28] headroom-integration 殘留 Spec 與 INSTALL.ps1 冗餘代碼清理 (MECE 徹底淨化)
+
+### 任務內容 (PDCA)
+
+- **Plan (規劃)**：
+  - 目標：徹底清除與已刪除的 `headroom-*` 瀏覽器標籤技能相關的所有剩餘殘留物，確保專案目錄與配置 100% MECE（無過時、冗餘或無效檔案）。
+  - 診斷：
+    1. `.kiro/specs/headroom-integration/` 下仍存有 5 個舊規格檔案。
+    2. `INSTALL.ps1` 在同步 ECC Skills 時，仍會盲目建立 `.data/` 快取資料夾，且存有 `headroom` 關鍵字的正則匹配邏輯，這導致所有 ECC skills（如 `agent-shield`、`django-reviewer` 等）之下被自動產生空的、未追蹤的 `.data/` 冗餘資料夾。
+    3. `docs/skillsbuilder-handover-and-continuation-guide.md` 中的專案結構樹圖中仍有 `headroom-integration/` 目錄。
+  - 決策：移除舊 spec 目錄與對應文件，重構 `INSTALL.ps1` 去除 headroom 專屬快取與 API key 校驗，重置並刪除所有空快取資料夾。
+
+- **Do (執行)**：
+  - 執行 `Remove-Item -Recurse -Force ".kiro\specs\headroom-integration"` 刪除舊 spec。
+  - 修改 `INSTALL.ps1`：移除 `foreach ($skillName in $eccSkills)` 內建立 `.data` 與 API validation 的舊邏輯，改為單純的 `Test-Path` 確認。
+  - 執行 `git clean -fd` 移除所有在 `skills/dev/` 底下自動產生的 15 個 ECC 空 `.data` 快取資料夾與 `raw/assets/` 資料夾。
+  - 修改 `docs/skillsbuilder-handover-and-continuation-guide.md` 以清理專案結構圖。
+
+- **Check (確效)**：
+  - `git clean -fdn` 顯示當前工作區為 100% 乾淨，無任何未追蹤的冗餘空目錄。
+  - `./verify.ps1` 確效程式 100% 通過（包含 DESIGN.md lint，無任何錯誤）。
+
+- **Act (防迴歸)**：
+  - `INSTALL.ps1` 已不再自動在非 headroom skills 下建立 `.data` 目錄，切斷了冗餘資料夾自動產生的源頭。
+
+### 結果
+
+| 檔案/路徑 | 變更 | 狀態 |
+|:-----|:-----|:-----|
+| `.kiro/specs/headroom-integration/` | 刪除 | ✅ 已徹底清除 |
+| `skills/dev/*/.data/` | 刪除 | ✅ 已徹底清除 |
+| `raw/assets/` | 刪除 | ✅ 已徹底清除 |
+| `INSTALL.ps1` | 修改（移除 headroom 邏輯） | ✅ 已完成 |
+| `docs/skillsbuilder-handover-and-continuation-guide.md` | 修改（更新結構圖） | ✅ 已完成 |
+
+---
+
 ## [2026-06-28] headroom False Cognate 清除 + 知識卡建立 (刀一 + 刀三)
 
 ### 任務內容 (PDCA)

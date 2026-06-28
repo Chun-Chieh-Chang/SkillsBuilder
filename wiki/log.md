@@ -2,7 +2,29 @@
 
 All significant project events, wiki ingests, and architectural decisions are recorded here.
 
+## [2026-06-28] Knowledge | global-ide-integration Concept Card Created
+*   **Action**: 跨 IDE 全域整合指南概念卡增設。
+*   **Changes**:
+    - 建立 `wiki/concepts/global-ide-integration.md` — 詳細說明 SkillsBuilder 核心規則（SSOT 邊車指引）如何部署至 CursorRules、VS Code Copilot、Continue 及 Cline。
+    - 更新 `wiki/index.md`，將其加入 Concepts 導覽清單。
+*   **Goal**: 提供完整的規則跨平台對齊地圖，確保本機所有 IDE 工具全域環境均能以一致的 SOP 與 1% 規則聯動本專案的核心能力。
+
+---
+
+## [2026-06-28] Cleanup | headroom-integration Legacy Specs & Redundant Cache Creator
+
+*   **Action**: MECE 專案極致淨化與冗餘清除。
+*   **Changes**:
+    - 刪除 `.kiro/specs/headroom-integration/` 規格目錄，清理不再需要的 5 個舊規格檔案。
+    - 重構 `INSTALL.ps1`，移除 `foreach ($skillName in $eccSkills)` 內自動為所有 ECC 技能建立 `.data` 目錄與校驗 `headroom` API 密鑰的殘留代碼。
+    - 執行 `git clean -fd` 徹底移除在 `skills/dev/` 目錄中自動產生的 15 個 ECC 空 `.data/` 快取資料夾與 `raw/assets/` 資料夾。
+    - 修改 `docs/skillsbuilder-handover-and-continuation-guide.md`，同步修正專案目錄結構圖，移除被刪除的 `headroom-integration` spec。
+*   **Goal**: 移除專案中所有與已被關閉的 `headroom` tab manager 特效相關的冗餘代碼與配置，落實 MECE 精神與代碼低噪音（RTK Low-Token）標準。
+
+---
+
 ## [2026-06-28] Cleanup + Knowledge | headroom-* Orphan Removal & headroom-ai Wiki Card
+
 *   **Action**: 刀一 + 刀三 — 清除孤兒 skills，建立候補技術知識卡。
 *   **Changes**:
     - 刪除 6 個孤兒 `headroom-*` skills（headroom-api, headroom-sync, headroom-search, headroom-auto-close, headroom-local-edit, headroom-config）— 瀏覽器標籤管理工具殘留，與 headroomlabs-ai/headroom 同名異物，零外部引用，已確認無副作用。

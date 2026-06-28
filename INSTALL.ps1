@@ -224,27 +224,9 @@ Write-Host "[ECC INTEGRATION]" -ForegroundColor Cyan
 
 foreach ($skillName in $eccSkills) {
     $skillSource = Join-Path $currentDir "skills\dev\$skillName"
-    $skillDest = Join-Path $skillsDir $skillName
     
     if (Test-Path $skillSource) {
-        # Create headroom-cache directory if it doesn't exist
-        $headroomCache = Join-Path $skillSource ".data"
-        if (-not (Test-Path $headroomCache)) {
-            New-Item -ItemType Directory -Path $headroomCache -Force | Out-Null
-            Write-Host "[Headroom Cache Created] $skillName" -ForegroundColor Green
-        }
-        
-        # Check API key format for headroom skills
-        if ($skillName -match "headroom") {
-            $apiKey = $env:HEADROOM_API_KEY
-            if ($apiKey -and $apiKey -match "^[a-zA-Z0-9]{8,64}$") {
-                Write-Host "[PASSED] HEADROOM_API_KEY Format Validation ($($skillName))" -ForegroundColor Green
-            } else {
-                Write-Host "[FAILED] HEADROOM_API_KEY Format Validation ($($skillName))" -ForegroundColor Red
-            }
-        }
-        
-        Write-Host "[SYNCED] $skillName" -ForegroundColor Green
+        Write-Host "[VERIFIED] ECC Skill: $skillName" -ForegroundColor Green
         $syncedCount++
     } else {
         Write-Host "[SKIPPED] $skillName (Directory Not Found)" -ForegroundColor Yellow

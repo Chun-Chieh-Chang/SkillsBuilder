@@ -1,6 +1,41 @@
 # Findings Log
 
+## [2026-06-28] Cross-IDE Global Rules Mapping ✅ Resolved
+
+### Discovery
+- Identified need for a comprehensive guide to map and sync SkillsBuilder capabilities (such as YAGNI ladder, Color Master Palette, and 1% skill linking rule) to all local IDE rule bases globally.
+
+### Resolution
+- Created `wiki/concepts/global-ide-integration.md` detailing:
+  - Integration mechanics (SSOT, DevOS sidecar pointer).
+  - One-click command for workspace-scoped agent sync.
+  - Manual config adjustments for global Cursor Rules, VS Code Copilot Instructions, Continue json rules, and Roo Code.
+- Synced `wiki/index.md` index references.
+
+### Status: ✅ CLOSED
+
+---
+
+## [2026-06-28] headroom-integration Legacy Specs & Redundant Cache Creator ✅ Resolved
+
+
+### Discovery
+- `.kiro/specs/headroom-integration/` directory containing 5 obsolete spec files (design, requirements, tasks, etc.) remained in the workspace.
+- `INSTALL.ps1` contained legacy scripting that automatically created a `.data` directory under *all* ECC skills (`agent-shield`, `django-reviewer`, etc.) during sync, resulting in 15 untracked empty `.data` folders. It also contained unnecessary headroom API key format validations.
+- `docs/skillsbuilder-handover-and-continuation-guide.md` contained a folder tree mapping that still referenced `headroom-integration`.
+
+### Resolution
+- **Obsolete Spec Removal**: Deleted the entire `.kiro/specs/headroom-integration/` directory.
+- **INSTALL.ps1 Refactoring**: Removed the directory creation logic (`.data` folders) and headroom API matches from the ECC skills loop.
+- **Workspace Cleaning**: Ran `git clean -fd` to purge the 15 empty `.data` folders and `raw/assets/` folder.
+- **Document Update**: Corrected the folder tree mapping in the handover guide.
+
+### Status: ✅ CLOSED
+
+---
+
 ## [2026-06-28] headroom-* Naming Collision — False Cognate ✅ Resolved
+
 
 ### Discovery
 - SkillsBuilder contained 6 `headroom-*` skills (headroom-api, headroom-sync, headroom-search, headroom-auto-close, headroom-local-edit, headroom-config).

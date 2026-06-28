@@ -24,12 +24,11 @@
 SkillsBuilder/
 ├── .kiro/
 │   ├── specs/
-│   │   ├── ecc-integration/           # Current Spec
-│   │   │   ├── .config.kiro          # Spec metadata (workflow, type)
-│   │   │   ├── requirements.md       # Acceptance criteria
-│   │   │   ├── design.md             # Technical design
-│   │   │   └── tasks.md              # Implementation tasks
-│   │   └── headroom-integration/
+│   │   └── ecc-integration/           # Current Spec
+│   │       ├── .config.kiro          # Spec metadata (workflow, type)
+│   │       ├── requirements.md       # Acceptance criteria
+│   │       ├── design.md             # Technical design
+│   │       └── tasks.md              # Implementation tasks
 │   ├── hooks/                         # IDE hooks configuration
 │   └── steering/                      # Steering files (e.g., steering.md)
 ├── skills/

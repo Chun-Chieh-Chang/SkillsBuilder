@@ -43,6 +43,7 @@ The rules and workflows for this wiki.
 *   [pdca-evolution](concepts/pdca-evolution.md): PDCA continuous improvement loop for agentic development.
 *   [premium-ui-standards](concepts/premium-ui-standards.md): Color palette and typography guidelines.
 *   [automated-code-gates](concepts/automated-code-gates.md): Security, permissions, and linter check gates.
+*   [global-ide-integration](concepts/global-ide-integration.md): Cross-IDE global and workspace rules synchronization guide.
 
 ### [Log](log.md)
 The timeline of this project's evolution.
