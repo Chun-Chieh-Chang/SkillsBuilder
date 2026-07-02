@@ -5,7 +5,10 @@ This file contains the mandatory system-level directives and standards for the S
 ---
 
 ## 🚀 SkillsBuilder 開發模式啟動觸發器 (Activation Trigger)
-當使用者輸入 **「啟動全自動 SkillsBuilder 開發模式」**、**「啟動 SkillsBuilder 開發模式」**、**「啟動 SkillsBuilder 開發模式進行...」** 或任何相似指令時，你必須立即利用本專案的功能啟動對應的開發模式。在該模式下，你必須嚴格遵守以下所有規則與 SOP 規範。
+當使用者輸入 **「啟動全自動 SkillsBuilder 開發模式」**、**「啟動 SkillsBuilder 開發模式」**、**「啟動 SkillsBuilder 開發模式進行...」** 或任何相似指令時，你必須立即利用本專案的功能啟動對應的開發模式。在該模式下：
+1. **AI 全自動適配 (Auto-Adaptation)**：你（AI 助理）必須**主動且自動地**透過你的工具（MCP 或終端機）呼叫所需的腳本（例如：`sb understand` / `understand_bridge.py`、`sb verify`、`graphify` 或其他相關 Skill），來為當前專案建立上下文與圖譜。
+2. **零手動指令 (Zero Manual Commands)**：絕對不要要求使用者手動輸入這些繁瑣的指令。你的職責是「一鍵包辦」，在背景靜默調用所需的工具，分析完成後直接輸出高價值的洞察或開始執行任務。
+3. **嚴格遵守 SOP**：你必須嚴格遵守以下所有的防禦性開發與 UI/UX 規範。
 
 ---
 
@@ -76,6 +79,10 @@ Use Morandi-style tones, card-based layering, 4px grid spacing, and modern typog
 - **No Dynamic Execution**: Never use `eval()`, `exec()`, or dynamic code execution blocks.
 - **Pydantic Validation**: Use Pydantic AI for structured configurations.
 - **No Missing Imports**: Ensure all model dependencies and functions are explicitly imported at the top of the file before usage.
+
+## 7. Self-Evolution (夜間自我進化機制)
+> **SkillOpt-Sleep Rule**: Whenever you (the AI) complete a long, complex coding session—especially if you have extensively updated `DEV_LOG.md` with failures and root cause analyses—you MUST proactively ask the user: *"Would you like me to trigger `SkillOpt-Sleep` (`sb sleep run`) to consolidate today's lessons into our permanent skills?"* 
+> Never run it silently as it incurs API costs. Always wait for explicit user approval.
 
 ---
 

@@ -103,6 +103,29 @@ if ($graphifyInstalled) {
 }
 # --------------------------------
 
+# --- Auto-provision SkillOpt ---
+Write-Host "[INFO] Checking SkillOpt installation status..." -ForegroundColor Cyan
+$skilloptInstalled = $false
+try {
+    $null = python -c "import skillopt" 2>$null
+    if ($LASTEXITCODE -eq 0) {
+        $skilloptInstalled = $true
+        Write-Host "[SUCCESS] SkillOpt is already installed!" -ForegroundColor Green
+    } else {
+        throw "Not installed"
+    }
+} catch {
+    Write-Host "[INFO] SkillOpt not found. Attempting to install skillopt..." -ForegroundColor Yellow
+    try {
+        $null = Start-Process pip -ArgumentList "install", "skillopt" -NoNewWindow -Wait -ErrorAction Stop
+        $skilloptInstalled = $true
+        Write-Host "[SUCCESS] SkillOpt installed successfully via pip!" -ForegroundColor Green
+    } catch {
+        Write-Host "[WARNING] pip install skillopt failed. Please manually install skillopt." -ForegroundColor Yellow
+    }
+}
+# --------------------------------
+
 # --- Auto-provision codebase-memory-mcp ---
 Write-Host "[INFO] Checking codebase-memory-mcp installation status..." -ForegroundColor Cyan
 $destExe = Join-Path $currentDir "tools\codebase-memory-mcp.exe"
@@ -337,5 +360,72 @@ foreach ($rf in $ruleFiles) {
     }
 }
 
-Write-Host "[SUCCESS] SkillsBuilder global sync complete!" -ForegroundColor Green
+# 8. Auto-provision MCP Server Configuration
+Write-Host "[INFO] Registering SkillsBuilder MCP Server into global configs..." -ForegroundColor Cyan
+$mcpScriptPath = (Join-Path $currentDir "tools\mcp_server.js").Replace('\', '/')
+$claudeConfigPaths = @(
+    "$HOME\.claude.json",
+    "$HOME\.claude-desktop\mcp.json"
+)
 
+foreach ($cp in $claudeConfigPaths) {
+    if (Test-Path $cp) {
+        try {
+            $config = Get-Content -Path $cp -Raw | ConvertFrom-Json
+            if (-not $config.mcpServers) {
+                $config | Add-Member -MemberType NoteProperty -Name "mcpServers" -Value (New-Object PSObject)
+            }
+            # Only update if there isn't a conflict or if it's missing
+            $skillConfig = @{
+                command = "node"
+                args = @($mcpScriptPath)
+                cwd = $currentDir.Path.Replace('\', '/')
+            }
+            if (-not $config.mcpServers.skillsbuilder) {
+                $config.mcpServers | Add-Member -MemberType NoteProperty -Name "skillsbuilder" -Value $skillConfig
+            } else {
+                $config.mcpServers.skillsbuilder = $skillConfig
+            }
+            $config | ConvertTo-Json -Depth 10 | Out-File -FilePath $cp -Encoding UTF8
+            Write-Host "[SUCCESS] Registered MCP in Claude config: $cp" -ForegroundColor Green
+        } catch {
+            Write-Host "[WARNING] Failed to update Claude config at $cp : $_" -ForegroundColor Yellow
+        }
+    }
+}
+
+# 9. Install Global CLI Router
+Write-Host "[INFO] Installing 'sb' global CLI..." -ForegroundColor Cyan
+$globalBin = "$HOME\.gemini\antigravity\bin"
+if (-not (Test-Path $globalBin)) { New-Item -ItemType Directory -Path $globalBin -Force | Out-Null }
+
+$sbContent = @"
+# SkillsBuilder Global CLI Router
+`$ErrorActionPreference = "Stop"
+`$sbPath = "$($currentDir.Path)"
+if (`$args.Count -eq 0) {
+    Write-Host "SkillsBuilder CLI (sb) - Configured Path: `$sbPath" -ForegroundColor Cyan
+    Write-Host "Usage: sb <command> [args]"
+    Write-Host "Available commands: verify, understand, install, or any script in tools/"
+    exit 0
+}
+`$command = `$args[0]
+`$passArgs = if (`$args.Count -gt 1) { `$args[1..(`$args.Count-1)] } else { @() }
+switch (`$command) {
+    "verify" { powershell -ExecutionPolicy Bypass -File (Join-Path `$sbPath "verify.ps1") `$passArgs }
+    "understand" { python (Join-Path `$sbPath "tools\understand_bridge.py") `$passArgs }
+    "install" { powershell -ExecutionPolicy Bypass -File (Join-Path `$sbPath "INSTALL.ps1") `$passArgs }
+    default {
+        `$pyTool = Join-Path `$sbPath "tools\`$command.py"
+        `$psTool = Join-Path `$sbPath "tools\`$command.ps1"
+        if (Test-Path `$pyTool) { python `$pyTool `$passArgs }
+        elseif (Test-Path `$psTool) { powershell -ExecutionPolicy Bypass -File `$psTool `$passArgs }
+        else { Write-Host "[ERROR] Unknown command: `$command" -ForegroundColor Red; exit 1 }
+    }
+}
+"@
+$sbContent | Out-File -FilePath (Join-Path $globalBin "sb.ps1") -Encoding UTF8
+Write-Host "[SUCCESS] Global CLI installed at $globalBin\sb.ps1" -ForegroundColor Green
+Write-Host "[INFO] Ensure $globalBin is in your system PATH to use 'sb' from anywhere." -ForegroundColor Yellow
+
+Write-Host "[SUCCESS] SkillsBuilder global sync complete!" -ForegroundColor Green

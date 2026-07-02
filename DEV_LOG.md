@@ -1114,3 +1114,35 @@ Policy: 1% Rule enforcement.
 - **問題 1**：部分 IDE 中對 skill 名稱的自動補全會出現重複。
   - **RCA**：因為 Addy 部分 skill 與本機原有 skill 名稱完全一致，若直接複製會引發檔案覆蓋或自動識別混亂。
   - **矯正措施 (CAPA)**：強制為所有引進的 13 個新技能加上 `addy-` 前綴，而重疊的 11 個技能則採用物理代碼合併，完美隔絕命名衝突並保留兩者優勢。
+
+---
+
+## [2026-07-02] Understand-Anything 圖譜生成與 Wiki 橋樑整合
+
+### 任務內容 (PDCA)
+
+- **Plan (規劃)**：
+  - 目標：整合 `Understand-Anything` 代碼圖譜分析工具到 SkillsBuilder，使被其他專案調用時能以視覺化圖譜與變更影響分析強化該專案。
+  - 設計：
+    1. 新建 `skills/dev/understand-anything/SKILL.md` 定義引導規則與觸發指令（`/understand`, `/understand-dashboard`）。
+    2. 新建 `tools/understand_bridge.py` 實作將生成的知識圖譜 JSON 自動同步轉化為 `wiki/concepts/codebase_architecture.md` 的橋樑腳本。
+    3. 利用現有的 `INSTALL.ps1` 自動掃描並部署此技能至本機全域技能庫中。
+
+- **Do (執行)**：
+  - 建立 `skills/dev/understand-anything/SKILL.md`。
+  - 建立 `tools/understand_bridge.py` 腳本。
+  - 執行 `INSTALL.ps1` 將技能同步部署至 `C:\Users\3kids\.gemini\antigravity\skills\` 及 `C:\Users\3kids\.gemini\antigravity-ide\skills\`。
+
+- **Check (驗證)**：
+  - 執行 `./verify.ps1` 完成自動化驗證：所有 `SKILL.md` 元數據驗證（LINT）與 `INSTALL.ps1` 確效流程皆成功通過，新技能順利複製與掛載。
+
+- **Act (持續改進)**：
+  - 開發者在其他專案調用 `SkillsBuilder` 的邊車模式時，即可一鍵調用 `/understand` 繪製該專案圖譜，並透過橋樑工具寫入該專案的 Wiki，達到代碼的可讀性與記憶複利成長。
+
+### 結果
+
+| 檔案 | 變更類型 | 狀態 |
+|:-----|:--------|:-----|
+| `skills/dev/understand-anything/SKILL.md` | 新增 | ✅ 已建立並全域同步 |
+| `tools/understand_bridge.py` | 新增 | ✅ 已建立 |
+| `DEV_LOG.md` | 修改（新增日誌） | ✅ 已完成 |

@@ -72,7 +72,13 @@ Before applying ANY code change:
 3.  **Type Collision Check**: Prevent naming conflicts (e.g., `Icon User` vs `Type User`).
 
 ## 4. SkillsBuilder Activation & Source
-When triggered, explicitly state: **「SkillsBuilder 開發模式已啟動。正在調用全域 Knowledge Item 並同步 f:\Self-developed_Apps\SkillsBuilder 的架構師視角...」**
+When triggered (e.g. by "啟動全自動 SkillsBuilder 開發模式"), explicitly state: **「SkillsBuilder 開發模式已啟動。正在自動為您建立全域架構與圖譜上下文...」**
+
+> [!IMPORTANT]
+> **AI 全自動執行指令 (Auto-Adaptation Rule)**
+> As the AI Assistant, you MUST take the initiative upon hearing this trigger.
+> DO NOT ask the user to type manual CLI commands (like `sb verify`, `sb understand`, `/understand`).
+> INSTEAD, you must autonomously use your tool-calling capabilities (MCP, terminal) to run the necessary scripts in the background (e.g., `understand_bridge.py`, `graphify query`, `verify.ps1`) to build up your own context and execute the user's implicit intent. Act as an active agent, not a passive terminal.
 
 ### Knowledge Reference
 - **Global KI**: `C:\Users\3kids\.gemini\antigravity\knowledge\skills_builder`

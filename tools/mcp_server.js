@@ -145,6 +145,24 @@ const TOOLS = [
     },
   },
   {
+    name: "invoke_sb_tool",
+    description: "Execute a SkillsBuilder Python or PowerShell script from the tools/ directory.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        script_name: {
+          type: "string",
+          description: "Name of the script in the tools directory (e.g. 'understand_bridge.py', 'sb.ps1').",
+        },
+        args: {
+          type: "string",
+          description: "Arguments to pass to the script.",
+        }
+      },
+      required: ["script_name"],
+    },
+  },
+  {
     name: "graphify_update",
     description: "Update the project's local knowledge graph incrementally to reflect recent code modifications.",
     inputSchema: {
@@ -257,6 +275,23 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     case "graphify_query": {
       const escapedQuery = args.query.replace(/"/g, '\\"');
       return await runCommand(`graphify query "${escapedQuery}"`);
+    }
+    case "invoke_sb_tool": {
+      const scriptName = args.script_name;
+      const scriptArgs = args.args || "";
+      const scriptPath = path.join(process.cwd(), "tools", scriptName);
+      if (!fs.existsSync(scriptPath)) {
+        throw new Error(`Tool script not found: ${scriptPath}`);
+      }
+      let cmd = "";
+      if (scriptName.endsWith(".py")) {
+        cmd = `python "${scriptPath}" ${scriptArgs}`;
+      } else if (scriptName.endsWith(".ps1")) {
+        cmd = `powershell -ExecutionPolicy Bypass -File "${scriptPath}" ${scriptArgs}`;
+      } else {
+        throw new Error(`Unsupported script type: ${scriptName}`);
+      }
+      return await runCommand(cmd);
     }
     case "graphify_update": {
       return await runCommand("graphify . --update");
