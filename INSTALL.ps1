@@ -19,8 +19,12 @@ if (Test-Path "$HOME\.gemini\antigravity") { $pathsToSync += "$HOME\.gemini\anti
 if (Test-Path "$HOME\.gemini\antigravity-ide") { $pathsToSync += "$HOME\.gemini\antigravity-ide" }
 
 if ($pathsToSync.Count -eq 0) {
-    Write-Host "[ERROR] Antigravity installation folder not found." -ForegroundColor Red
-    exit 1
+    if ($env:GITHUB_ACTIONS -eq "true") {
+        Write-Host "[CI MODE] No Antigravity paths found. Skipping global sync (CI mode)." -ForegroundColor Yellow
+    } else {
+        Write-Host "[ERROR] Antigravity installation folder not found." -ForegroundColor Red
+        exit 1
+    }
 }
 
 # --- Sidecar Mode logic ---
@@ -98,7 +102,7 @@ if ($graphifyInstalled) {
         $null = Start-Process graphify -ArgumentList "hook", "install" -NoNewWindow -Wait -ErrorAction Stop
         Write-Host "[SUCCESS] Graphify registered successfully!" -ForegroundColor Green
     } catch {
-        Write-Host "[WARNING] Graphify post-install steps failed: $_" -ForegroundColor Yellow
+        Write-Host "[WARN] Graphify post-install steps failed: $_ (non-blocking)" -ForegroundColor Yellow
     }
 }
 # --------------------------------
@@ -175,8 +179,18 @@ foreach ($antigravityPath in $pathsToSync) {
     $knowledgeDir = Join-Path $antigravityPath "knowledge"
 
     # 2. Create required directories
-    if (-not (Test-Path $skillsDir)) { New-Item -ItemType Directory -Path $skillsDir -Force }
-    if (-not (Test-Path $knowledgeDir)) { New-Item -ItemType Directory -Path $knowledgeDir -Force }
+    if (-not (Test-Path $skillsDir)) { 
+        try { New-Item -ItemType Directory -Path $skillsDir -Force } catch { 
+            Write-Host "[WARN] Cannot create skills dir at ${skillsDir}: $_" -ForegroundColor Yellow
+            continue 
+        }
+    }
+    if (-not (Test-Path $knowledgeDir)) { 
+        try { New-Item -ItemType Directory -Path $knowledgeDir -Force } catch { 
+            Write-Host "[WARN] Cannot create knowledge dir at ${knowledgeDir}: $_" -ForegroundColor Yellow
+            continue 
+        }
+    }
 
     # 3. Register all skills (recursively link all categories)
     Write-Host "[INFO] Linking global skills library..." -ForegroundColor Yellow
@@ -198,7 +212,11 @@ foreach ($antigravityPath in $pathsToSync) {
             } catch {
                 # Fallback to copy directory if symbolic link fails (requires admin privileges)
                 Write-Host "[FALLBACK] Symlink failed (elevation required). Copying directory..." -ForegroundColor Yellow
-                Copy-Item -Path $skillSource -Destination $skillDest -Recurse -Force
+                try {
+                    Copy-Item -Path $skillSource -Destination $skillDest -Recurse -Force
+                } catch {
+                    Write-Host "[WARN] Failed to sync skill $($category.Name)/$($skill.Name): $_" -ForegroundColor Yellow
+                }
             }
         }
     }
