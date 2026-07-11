@@ -18,3 +18,7 @@ graph.json
 # codebase-memory-mcp binary and temp paths
 tools/codebase-memory-mcp.exe
 tools/cbm_temp/
+
+# Ignore massive template icons and untracked skills
+skills/dev/ppt-master/templates/icons/
+

@@ -103,3 +103,7 @@ SkillsBuilder/
 
 ## ðŸ“œ è¨±å¯è­‰
 MIT License
+> [!WARNING]
+> **¥~³¡¤l¼Ò²Õ»P§Þ¯àÂX¥R³W½d**
+> ½Ð¤Å¤â°Ê±N¥~³¡±M®×¡]¨Ò¦p ddyosmani/agent-skills ©Î¤j«¬¼ÒªO±M®×¡^ªºÀÉ®×ª½±µ¸ÑÀ£ÁY©Î½Æ»s¨ì skills/ ¥Ø¿ý©³¤U¡C
+> skills/ ¥Ø¿ýÄY®æ¿í´` skills/<¤ÀÃþ>/<§Þ¯à¦WºÙ> ªº MECE ¬[ºc¡C¥ô¦ó¥~³¡¤l¼Ò²ÕÀ³µù¥U©ó aw/ ¸ê®Æ§¨¤U¡A¨Ã¥æ¥Ñ INSTALL.ps1 ¸}¥»¦Û°Ê¶i¦æ°ÊºA¸ÑªR»P¤À¬£¡C±NÀÉ®×ª½±µ¶É¦L¨ì skills/ ®Ú¥Ø¿ý±N¾É­P Git °lÂÜ±Y¼ì»P¦w¸Ë¸}¥»¸ÑªR¥¢±Ñ¡C

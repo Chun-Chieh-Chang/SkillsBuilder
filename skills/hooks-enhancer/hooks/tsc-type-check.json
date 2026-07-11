@@ -1,0 +1,9 @@
+{
+  "name": "tsc-type-check",
+  "event": "onFileSave",
+  "description": "Run TypeScript type check after saving .ts files.",
+  "action": "run_shell_command 'tsc --noEmit'",
+  "filters": {
+    "extensions": [".ts", ".tsx"]
+  }
+}

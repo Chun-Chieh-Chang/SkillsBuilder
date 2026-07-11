@@ -1,0 +1,9 @@
+{
+  "name": "import-validator",
+  "event": "onFileSave",
+  "description": "Validate imports and detect missing dependencies.",
+  "action": "activate_skill hooks-enhancer validate-imports {file}",
+  "filters": {
+    "extensions": [".ts", ".js", ".py", ".go"]
+  }
+}
