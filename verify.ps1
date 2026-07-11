@@ -170,8 +170,8 @@ if (-not (Test-Path $designMdPath)) {
         Write-Host "[WARNING] npx not found — skipping design token lint (install Node.js to enable)." -ForegroundColor Yellow
     } else {
         try {
-            Write-Host "[LINT] Running: npx @google/design.md lint DESIGN.md" -ForegroundColor Gray
-            $lintOutput = & npx --yes @google/design.md lint DESIGN.md 2>&1 | Out-String
+            Write-Host "[LINT] Running: npx -p @google/design.md designmd lint DESIGN.md" -ForegroundColor Gray
+            $lintOutput = & npx --yes -p @google/design.md designmd lint DESIGN.md 2>&1 | Out-String
             Write-Host $lintOutput
 
             # Try to parse JSON result for structured error counting
