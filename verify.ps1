@@ -8,13 +8,10 @@ Write-Host "=========================================" -ForegroundColor Cyan
 # 1. Environment Mocking for CI (if running in GitHub Actions)
 if ($env:GITHUB_ACTIONS -eq "true") {
     Write-Host "[CI DETECTED] Mocking Antigravity environment paths..." -ForegroundColor Yellow
-    $mockPath1 = Join-Path $Home ".gemini\antigravity-ide"
-    $mockPath2 = Join-Path $Home ".gemini\antigravity"
-    foreach ($mockPath in @($mockPath1, $mockPath2)) {
-        if (-not (Test-Path $mockPath)) {
-            New-Item -ItemType Directory -Path $mockPath -Force | Out-Null
-            Write-Host "[SUCCESS] Created mock directory at: $mockPath" -ForegroundColor Green
-        }
+    $mockPath = Join-Path $Home ".gemini\antigravity-ide"
+    if (-not (Test-Path $mockPath)) {
+        New-Item -ItemType Directory -Path $mockPath -Force | Out-Null
+        Write-Host "[SUCCESS] Created mock Antigravity-ide directory at: $mockPath" -ForegroundColor Green
     }
 }
 
@@ -33,50 +30,56 @@ try {
     }
 }
 
-# 3. Verify Sync Artifact Integrity
+# 3. Verify Sync Artifact Integrity (skip in CI - no IDE paths needed)
 Write-Host "[STEP 2] Verifying Sync Artifact Integrity..." -ForegroundColor Cyan
 $pathsToVerify = @()
-if (Test-Path "$HOME\.gemini\antigravity") { $pathsToVerify += "$HOME\.gemini\antigravity" }
-if (Test-Path "$HOME\.gemini\antigravity-ide") { $pathsToVerify += "$HOME\.gemini\antigravity-ide" }
+if ($env:GITHUB_ACTIONS -eq "true") {
+    Write-Host "[CI MODE] Skipping IDE sync verification (not applicable in CI)." -ForegroundColor Yellow
+} else {
+    if (Test-Path "$HOME\.gemini\antigravity") { $pathsToVerify += "$HOME\.gemini\antigravity" }
+    if (Test-Path "$HOME\.gemini\antigravity-ide") { $pathsToVerify += "$HOME\.gemini\antigravity-ide" }
+}
 
 $verificationPassed = $true
-foreach ($p in $pathsToVerify) {
-    Write-Host "[CHECK] Verifying installation path: $p" -ForegroundColor Gray
-    
-    # Check for any SKILL.md files recursively in the synced skills directory
-    $syncedSkillsDir = Join-Path $p "skills"
-    if (-not (Test-Path $syncedSkillsDir)) {
-        Write-Host "[ERROR] skills/ directory not found in synced path: $p" -ForegroundColor Red
-        $verificationPassed = $false
-        continue
+if ($env:GITHUB_ACTIONS -ne "true") {
+    foreach ($p in $pathsToVerify) {
+        Write-Host "[CHECK] Verifying installation path: $p" -ForegroundColor Gray
+        
+        # Check for any SKILL.md files recursively in the synced skills directory
+        $syncedSkillsDir = Join-Path $p "skills"
+        if (-not (Test-Path $syncedSkillsDir)) {
+            Write-Host "[ERROR] skills/ directory not found in synced path: $p" -ForegroundColor Red
+            $verificationPassed = $false
+            continue
+        }
+        
+        $syncedSkillFiles = Get-ChildItem -Path $syncedSkillsDir -Filter "SKILL.md" -Recurse -ErrorAction SilentlyContinue
+        if ($syncedSkillFiles.Count -eq 0) {
+            Write-Host "[ERROR] No SKILL.md files found in synced path! Install may have failed." -ForegroundColor Red
+            Write-Host "[INFO] Check that INSTALL.ps1 completed successfully and symlinks/copies were created." -ForegroundColor Yellow
+            $verificationPassed = $false
+            continue
+        }
+        
+        Write-Host "[OK] Found $($syncedSkillFiles.Count) skill(s) in synced path." -ForegroundColor Green
+        
+        # Also verify specific critical skills exist (for local dev, not strictly required in CI)
+        $findSkillsPath = Join-Path $p "skills\find-skills\SKILL.md"
+        $autoresearchPath = Join-Path $p "skills\autoresearch\SKILL.md"
+        
+        if ((Test-Path $findSkillsPath) -and (Test-Path $autoresearchPath)) {
+            Write-Host "[OK] Critical skills (find-skills, autoresearch) verified." -ForegroundColor Green
+        } else {
+            Write-Host "[WARN] Some critical skills may be missing (non-blocking in CI)." -ForegroundColor Yellow
+        }
     }
     
-    $syncedSkillFiles = Get-ChildItem -Path $syncedSkillsDir -Filter "SKILL.md" -Recurse -ErrorAction SilentlyContinue
-    if ($syncedSkillFiles.Count -eq 0) {
-        Write-Host "[ERROR] No SKILL.md files found in synced path! Install may have failed." -ForegroundColor Red
-        Write-Host "[INFO] Check that INSTALL.ps1 completed successfully and symlinks/copies were created." -ForegroundColor Yellow
-        $verificationPassed = $false
-        continue
+    if (-not $verificationPassed) {
+        Write-Host "[FATAL] Sync artifact verification failed!" -ForegroundColor Red
+        exit 1
     }
-    
-    Write-Host "[OK] Found $($syncedSkillFiles.Count) skill(s) in synced path." -ForegroundColor Green
-    
-    # Also verify specific critical skills exist (for local dev, not strictly required in CI)
-    $findSkillsPath = Join-Path $p "skills\find-skills\SKILL.md"
-    $autoresearchPath = Join-Path $p "skills\autoresearch\SKILL.md"
-    
-    if ((Test-Path $findSkillsPath) -and (Test-Path $autoresearchPath)) {
-        Write-Host "[OK] Critical skills (find-skills, autoresearch) verified." -ForegroundColor Green
-    } else {
-        Write-Host "[WARN] Some critical skills may be missing (non-blocking in CI)." -ForegroundColor Yellow
-    }
+    Write-Host "[SUCCESS] Sync artifact verification passed!" -ForegroundColor Green
 }
-
-if (-not $verificationPassed) {
-    Write-Host "[FATAL] Sync artifact verification failed!" -ForegroundColor Red
-    exit 1
-}
-Write-Host "[SUCCESS] Sync artifact verification passed!" -ForegroundColor Green
 
 # 3.5. Verify codebase-memory-mcp binary
 Write-Host "[STEP 2.5] Verifying codebase-memory-mcp binary..." -ForegroundColor Cyan
@@ -173,8 +176,8 @@ if (-not (Test-Path $designMdPath)) {
         Write-Host "[WARNING] npx not found — skipping design token lint (install Node.js to enable)." -ForegroundColor Yellow
     } else {
         try {
-            Write-Host "[LINT] Running: npx -p @google/design.md designmd lint DESIGN.md" -ForegroundColor Gray
-            $lintOutput = & npx --yes -p @google/design.md designmd lint DESIGN.md 2>&1 | Out-String
+            Write-Host "[LINT] Running: npx @google/design.md lint DESIGN.md" -ForegroundColor Gray
+            $lintOutput = & npx --yes @google/design.md lint DESIGN.md 2>&1 | Out-String
             Write-Host $lintOutput
 
             # Try to parse JSON result for structured error counting
