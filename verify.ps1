@@ -8,10 +8,13 @@ Write-Host "=========================================" -ForegroundColor Cyan
 # 1. Environment Mocking for CI (if running in GitHub Actions)
 if ($env:GITHUB_ACTIONS -eq "true") {
     Write-Host "[CI DETECTED] Mocking Antigravity environment paths..." -ForegroundColor Yellow
-    $mockPath = Join-Path $Home ".gemini\antigravity-ide"
-    if (-not (Test-Path $mockPath)) {
-        New-Item -ItemType Directory -Path $mockPath -Force | Out-Null
-        Write-Host "[SUCCESS] Created mock Antigravity-ide directory at: $mockPath" -ForegroundColor Green
+    $mockPath1 = Join-Path $Home ".gemini\antigravity-ide"
+    $mockPath2 = Join-Path $Home ".gemini\antigravity"
+    foreach ($mockPath in @($mockPath1, $mockPath2)) {
+        if (-not (Test-Path $mockPath)) {
+            New-Item -ItemType Directory -Path $mockPath -Force | Out-Null
+            Write-Host "[SUCCESS] Created mock directory at: $mockPath" -ForegroundColor Green
+        }
     }
 }
 
