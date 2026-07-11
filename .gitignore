@@ -22,3 +22,7 @@ tools/cbm_temp/
 # Ignore massive template icons and untracked skills
 skills/dev/ppt-master/templates/icons/
 
+# Test directories and temporary exports
+test_*/
+*.txt
+
