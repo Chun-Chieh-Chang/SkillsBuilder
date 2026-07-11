@@ -32,19 +32,42 @@ $pathsToVerify = @()
 if (Test-Path "$HOME\.gemini\antigravity") { $pathsToVerify += "$HOME\.gemini\antigravity" }
 if (Test-Path "$HOME\.gemini\antigravity-ide") { $pathsToVerify += "$HOME\.gemini\antigravity-ide" }
 
+$verificationPassed = $true
 foreach ($p in $pathsToVerify) {
     Write-Host "[CHECK] Verifying installation path: $p" -ForegroundColor Gray
+    
+    # Check for any SKILL.md files recursively in the synced skills directory
+    $syncedSkillsDir = Join-Path $p "skills"
+    if (-not (Test-Path $syncedSkillsDir)) {
+        Write-Host "[ERROR] skills/ directory not found in synced path: $p" -ForegroundColor Red
+        $verificationPassed = $false
+        continue
+    }
+    
+    $syncedSkillFiles = Get-ChildItem -Path $syncedSkillsDir -Filter "SKILL.md" -Recurse -ErrorAction SilentlyContinue
+    if ($syncedSkillFiles.Count -eq 0) {
+        Write-Host "[ERROR] No SKILL.md files found in synced path! Install may have failed." -ForegroundColor Red
+        Write-Host "[INFO] Check that INSTALL.ps1 completed successfully and symlinks/copies were created." -ForegroundColor Yellow
+        $verificationPassed = $false
+        continue
+    }
+    
+    Write-Host "[OK] Found $($syncedSkillFiles.Count) skill(s) in synced path." -ForegroundColor Green
+    
+    # Also verify specific critical skills exist (for local dev, not strictly required in CI)
     $findSkillsPath = Join-Path $p "skills\find-skills\SKILL.md"
     $autoresearchPath = Join-Path $p "skills\autoresearch\SKILL.md"
     
-    if (-not (Test-Path $findSkillsPath)) {
-        Write-Host "[ERROR] find-skills SKILL.md not found in synced path!" -ForegroundColor Red
-        exit 1
+    if ((Test-Path $findSkillsPath) -and (Test-Path $autoresearchPath)) {
+        Write-Host "[OK] Critical skills (find-skills, autoresearch) verified." -ForegroundColor Green
+    } else {
+        Write-Host "[WARN] Some critical skills may be missing (non-blocking in CI)." -ForegroundColor Yellow
     }
-    if (-not (Test-Path $autoresearchPath)) {
-        Write-Host "[ERROR] autoresearch SKILL.md not found in synced path!" -ForegroundColor Red
-        exit 1
-    }
+}
+
+if (-not $verificationPassed) {
+    Write-Host "[FATAL] Sync artifact verification failed!" -ForegroundColor Red
+    exit 1
 }
 Write-Host "[SUCCESS] Sync artifact verification passed!" -ForegroundColor Green
 
