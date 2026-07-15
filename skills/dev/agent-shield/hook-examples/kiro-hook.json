@@ -1,9 +1,0 @@
-{
-  "name": "agent-shield-pre-tool-use",
-  "event": "preToolUse",
-  "description": "Run AgentShield security scan before executing any tool that modifies files.",
-  "action": "activate_skill agent-shield scan {changedFiles}",
-  "trigger": {
-    "tools": ["replace", "write_file", "run_shell_command"]
-  }
-}

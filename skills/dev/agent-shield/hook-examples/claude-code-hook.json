@@ -1,9 +1,0 @@
-{
-  "hooks": [
-    {
-      "event": "pre-push",
-      "command": "powershell -Command \"activate_skill agent-shield scan --staged\"",
-      "description": "AgentShield pre-push security scan"
-    }
-  ]
-}

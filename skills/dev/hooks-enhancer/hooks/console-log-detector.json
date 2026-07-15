@@ -1,7 +1,0 @@
-{
-  "name": "console-log-detector",
-  "event": "preCommit",
-  "description": "Detect console.log statements before commit.",
-  "action": "grep_search 'console\\.log' {stagedFiles}",
-  "severity": "warning"
-}

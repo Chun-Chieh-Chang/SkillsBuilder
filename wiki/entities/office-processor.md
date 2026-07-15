@@ -9,7 +9,7 @@ A data processing skill designed to read, parse, process, and write Microsoft Of
 *   **Formatting Guardrails**: Enforcing strict styling rules (font sizes, layout margins) on generated outputs.
 
 ## Integration
-*   **Location**: `skills/core/office-processor/`
+*   **Location**: `skills/utils/office-processor/`
 *   **Dependencies**: Python (`pandas`, `openpyxl`, `python-docx`) or Node.js (`xlsx`, `docx`, `pdf-parse`).
 
 ## Verification

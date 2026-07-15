@@ -10,7 +10,7 @@ An autonomous search and research pipeline that deconstructs complex topics, exe
 *   **Wiki Ingest**: Auto-registering results into the project's wiki entries to support compounding workspace memory.
 
 ## Integration
-*   **Location**: `skills/core/deep-research/`
+*   **Location**: `skills/agents/deep-research/`
 *   **Dependencies**: Tavily CLI (`tvly`), internet connectivity.
 
 ## Verification

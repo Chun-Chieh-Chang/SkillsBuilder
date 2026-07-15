@@ -26,3 +26,6 @@ skills/dev/ppt-master/templates/icons/
 test_*/
 *.txt
 
+# Ignore security pentest run outputs
+strix_runs/
+

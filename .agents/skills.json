@@ -1,0 +1,9 @@
+{
+  "entries": [
+    { "path": "skills/core" },
+    { "path": "skills/sdlc" },
+    { "path": "skills/agents" },
+    { "path": "skills/design" },
+    { "path": "skills/utils" }
+  ]
+}

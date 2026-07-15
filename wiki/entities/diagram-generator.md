@@ -9,7 +9,7 @@ A code-based graphics synthesis tool that allows the agent to build flowcharts, 
 *   **Copy-Paste Portability**: Direct imports of files generated at `scratch/diagram.excalidraw` on [Excalidraw](https://excalidraw.com/).
 
 ## Integration
-*   **Location**: `skills/dev/diagram-generator/`
+*   **Location**: `skills/utils/diagram-generator/`
 *   **Dependencies**: None.
 
 ## Verification

@@ -1,0 +1,33 @@
+# EditorConfig: https://editorconfig.org
+# All editors (VS Code, Cursor, Windsurf, etc.) must respect UTF-8 encoding.
+# This prevents the CP950/ANSI vs UTF-8 mixed-encoding corruption issue.
+
+root = true
+
+[*]
+charset = utf-8
+end_of_line = crlf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 2
+
+[*.md]
+charset = utf-8
+trim_trailing_whitespace = false
+
+[*.ps1]
+# PowerShell scripts MUST be UTF-8 BOM to handle CJK correctly on zh-TW Windows
+charset = utf-8-bom
+end_of_line = crlf
+
+[*.py]
+charset = utf-8
+indent_size = 4
+
+[*.json]
+charset = utf-8
+indent_size = 2
+
+[Makefile]
+indent_style = tab

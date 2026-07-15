@@ -8,7 +8,7 @@ ECC（Everything Claude Code）框架的核心能力已整合至 SkillsBuilder �
 
 Skills 是 SkillsBuilder 中的最小技能單元，以目錄形式存放於 `skills/{category}/{skill-name}/`。每個 Skill 包含 `SKILL.md` 文件，定義技能的名稱、描述、觸發關鍵詞與前置條件。
 
-本次整合新增 15 個技能至 `skills/dev/` 目錄，涵蓋語言專屬 Reviewer/Resolver、安全掃描、Hooks 增強、Harness Optimizer、Loop Operator 等範疇。
+本次整合新增 15 個技能至 `skills/sdlc/` 與 `skills/agents/` 目錄，涵蓋語言專屬 Reviewer/Resolver、安全掃描、Hooks 增強、Harness Optimizer、Loop Operator 等範疇。
 
 ### Subagents
 
@@ -88,11 +88,11 @@ powershell -ExecutionPolicy Bypass -File INSTALL.ps1
 
 ### 配置 Hook
 
-`hooks-enhancer` 技能提供 IDE 專屬的 Hook 配置範本，請參閱 `skills/dev/hooks-enhancer/` 目錄下的範例文件。
+`hooks-enhancer` 技能提供 IDE 專屬... 目錄下（現在為 `skills/sdlc/hooks-enhancer/`）的範例文件。
 
 ### 啟用 AgentShield
 
-將 AgentShield 掛載至 git push 事件前，請參閱 `skills/dev/agent-shield/hook-examples/` 目錄下的 Hook 配置範例。
+將 AgentShield 掛載至 git push 事件前，請參閱 `skills/agents/agent-shield/hook-examples/` 目錄下的 Hook 配置範例。
 
 ## 相關文件
 

@@ -128,7 +128,10 @@ $eccSkillsPassed = 0
 $eccSkillsFailed = 0
 
 foreach ($skillName in $eccSkills) {
-    $skillPath = Join-Path "skills\dev" $skillName
+    $skillPath = Join-Path "skills\sdlc" $skillName
+    if (-not (Test-Path $skillPath)) {
+        $skillPath = Join-Path "skills\agents" $skillName
+    }
     $skillMdPath = Join-Path $skillPath "SKILL.md"
     
     if (Test-Path $skillMdPath) {

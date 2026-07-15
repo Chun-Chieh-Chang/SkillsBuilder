@@ -97,6 +97,7 @@ Use Morandi-style tones, card-based layering, 4px grid spacing, and modern typog
 | API 設計 | `addy-api-design` |
 | 效能問題 | `addy-performance-opt` |
 | 安全審計 | `addy-security-hardening` |
+| 安全滲透測試 | `strix-pentest` → `addy-security-hardening` |
 | CI/CD 管線 | `addy-ci-cd-automation` |
 | 上下文管理 | `addy-context-engineering` |
 | 高風險修改 | `addy-doubt-driven-dev` |
@@ -111,8 +112,40 @@ Use Morandi-style tones, card-based layering, 4px grid spacing, and modern typog
 DEFINE  → addy-spec-driven-dev → grill-requirements
 PLAN    → planning + writing-plans + addy-incremental-impl
 BUILD   → tdd-enforcer + complexity-reduction
-VERIFY  → bug-diagnose + addy-browser-testing
+VERIFY  → bug-diagnose + addy-browser-testing + strix-pentest
 REVIEW  → code-reviewer
 SHIP    → verification-before-completion
 ```
+
+---
+
+## 8. File Encoding & Script Safety Rules (編碼與腳本鐵律)
+
+> **Root Cause**: Chinese (CJK) characters inside PowerShell `.ps1` script code-strings cause `ParserError` when the shell reads the file with non-UTF-8-BOM encoding. This crashed the `pentest.ps1` script during the 2026-07-16 Strix pentest session. Furthermore, mixing CP950 and UTF-8 writes caused massive corruption in `DEV_LOG.md`.
+
+### A. Mandatory Rules for ANY `.ps1` script:
+
+1. **No CJK characters in executable code strings.**
+   - ❌ `Write-Host "掃描完成"` — CJK inside a code string
+   - ✅ `Write-Host "Scan complete"` — ASCII only in strings
+   - ✅ `# 掃描完成` — CJK is allowed in **comments only**
+
+2. **Always save `.ps1` files with UTF-8 BOM encoding.**
+   When generating a `.ps1` file programmatically, use `[System.IO.File]::WriteAllText(path, content, [System.Text.UTF8Encoding]::new($true))`.
+   Never rely on the default editor encoding (may be ANSI/CP950 on zh-TW Windows).
+
+3. **Avoid special shell metacharacters unescaped inside double-quoted strings.**
+   Characters `<`, `>`, `&` inside `"..."` must be escaped or rephrased:
+   - ❌ `"context < 600K"` → PowerShell treats `<` as redirect
+   - ✅ `"context window smaller than 600K"`
+
+4. **Validate syntax before shipping any `.ps1`.**
+   Run: `powershell -ExecutionPolicy Bypass -Command "Get-Content script.ps1 | Out-Null; Write-Host 'Syntax OK'"`
+   This must return `Syntax OK` with exit code 0 before committing or executing.
+
+### B. Mandatory Rules for Markdown & Text Files (`DEV_LOG.md`, etc.):
+
+1. **UTF-8 Enforcement**: All documentation and text files MUST be saved in UTF-8. 
+2. **AI Tooling First**: To prevent CP950 encoding pollution from local terminal redirects (e.g., `echo "..." >> DEV_LOG.md`), **always use AI IDE tools (`write_to_file` or `replace_file_content`)** to edit `DEV_LOG.md` and other markdown files.
+3. **EditorConfig**: Always respect the `.editorconfig` settings which enforce `charset = utf-8`.
 

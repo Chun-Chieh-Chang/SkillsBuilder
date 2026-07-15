@@ -9,7 +9,7 @@ A browser automation capability enabling the agent to execute visual workflows, 
 *   **JSON Scraping**: Converting raw HTML DOM pages into structured JSON payloads.
 
 ## Integration
-*   **Location**: `skills/core/agent-browser/`
+*   **Location**: `skills/agents/agent-browser/`
 *   **Dependencies**: Playwright or Puppeteer installed in Node.js runtime.
 
 ## Verification

@@ -4,9 +4,11 @@
 The Skill Library is the centralized repository for all AI agent capabilities in the `SkillsBuilder` ecosystem. It follows a "Single Source of Truth" model where skills are version-controlled in one place and deployed to the system via symbolic links.
 
 ## Directory Structure
-- `skills/core/`: Essential productivity tools (Search, Summarize, Planning, YouTube).
-- `skills/dev/`: Advanced development-specific tools (Skill Architect, GitNexus).
-- `skills/experimental/`: New logic patterns under testing.
+- `skills/core/`: Meta governance and bootstrapping tools (superpowers, skill-architect).
+- `skills/sdlc/`: Software development life cycle tools (reviewers, build resolvers, CI/CD automation).
+- `skills/agents/`: Autonomous workflows and penetration testing (strix-pentest, autoresearch, deep-research).
+- `skills/design/`: UI/UX standards and theme managers (glass-effect, premium-design).
+- `skills/utils/`: Common utilities and parsers (youtube, tavily, summarize, office-processor).
 
 ## Deployment Strategy (Symbolic Links)
 Instead of copying files, the `INSTALL.ps1` script creates **Symbolic Links** from the system skills folder to the `SkillsBuilder` project.

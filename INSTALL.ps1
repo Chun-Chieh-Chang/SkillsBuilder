@@ -264,7 +264,10 @@ $syncedCount = 0
 Write-Host "[ECC INTEGRATION]" -ForegroundColor Cyan
 
 foreach ($skillName in $eccSkills) {
-    $skillSource = Join-Path $currentDir "skills\dev\$skillName"
+    $skillSource = Join-Path $currentDir "skills\sdlc\$skillName"
+    if (-not (Test-Path $skillSource)) {
+        $skillSource = Join-Path $currentDir "skills\agents\$skillName"
+    }
     
     if (Test-Path $skillSource) {
         Write-Host "[VERIFIED] ECC Skill: $skillName" -ForegroundColor Green
@@ -289,19 +292,19 @@ if (-not (Test-Path (Join-Path $agentSkillsSrc "skills"))) {
 }
 
 $addySkills = @(
-    @{ Src="spec-driven-development"; Dest="addy-spec-driven-dev"; Cat="dev" },
-    @{ Src="incremental-implementation"; Dest="addy-incremental-impl"; Cat="dev" },
-    @{ Src="api-and-interface-design"; Dest="addy-api-design"; Cat="dev" },
-    @{ Src="doubt-driven-development"; Dest="addy-doubt-driven-dev"; Cat="dev" },
-    @{ Src="source-driven-development"; Dest="addy-source-driven-dev"; Cat="dev" },
-    @{ Src="browser-testing-with-devtools"; Dest="addy-browser-testing"; Cat="dev" },
-    @{ Src="security-and-hardening"; Dest="addy-security-hardening"; Cat="dev" },
-    @{ Src="performance-optimization"; Dest="addy-performance-opt"; Cat="dev" },
-    @{ Src="ci-cd-and-automation"; Dest="addy-ci-cd-automation"; Cat="dev" },
-    @{ Src="deprecation-and-migration"; Dest="addy-deprecation-migration"; Cat="dev" },
-    @{ Src="documentation-and-adrs"; Dest="addy-docs-adrs"; Cat="dev" },
-    @{ Src="observability-and-instrumentation"; Dest="addy-observability"; Cat="dev" },
-    @{ Src="context-engineering"; Dest="addy-context-engineering"; Cat="core" }
+    @{ Src="spec-driven-development"; Dest="addy-spec-driven-dev"; Cat="sdlc" },
+    @{ Src="incremental-implementation"; Dest="addy-incremental-impl"; Cat="sdlc" },
+    @{ Src="api-and-interface-design"; Dest="addy-api-design"; Cat="sdlc" },
+    @{ Src="doubt-driven-development"; Dest="addy-doubt-driven-dev"; Cat="sdlc" },
+    @{ Src="source-driven-development"; Dest="addy-source-driven-dev"; Cat="sdlc" },
+    @{ Src="browser-testing-with-devtools"; Dest="addy-browser-testing"; Cat="sdlc" },
+    @{ Src="security-and-hardening"; Dest="addy-security-hardening"; Cat="sdlc" },
+    @{ Src="performance-optimization"; Dest="addy-performance-opt"; Cat="sdlc" },
+    @{ Src="ci-cd-and-automation"; Dest="addy-ci-cd-automation"; Cat="sdlc" },
+    @{ Src="deprecation-and-migration"; Dest="addy-deprecation-migration"; Cat="sdlc" },
+    @{ Src="documentation-and-adrs"; Dest="addy-docs-adrs"; Cat="sdlc" },
+    @{ Src="observability-and-instrumentation"; Dest="addy-observability"; Cat="sdlc" },
+    @{ Src="context-engineering"; Dest="addy-context-engineering"; Cat="agents" }
 )
 
 $addySynced = 0

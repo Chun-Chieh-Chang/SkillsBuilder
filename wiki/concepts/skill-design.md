@@ -32,4 +32,4 @@ Skills are triggered via natural language keyword monitoring. Once a keyword is 
 
 ## References
 *   `raw/legacy/skill_usage_guide.md`: Original usage guide.
-*   `skills/skill-architect/references/patterns.md`: Detailed pattern matrix.
+*   `skills/core/skill-architect/references/patterns.md`: Detailed pattern matrix.

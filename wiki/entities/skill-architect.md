@@ -9,8 +9,8 @@ A core meta-skill in the `SkillsBuilder` project designed to generate high-fidel
 *   **Phase-Based Workflow**: Enforcing the **4-Phase cycle** (Discovery, Execution, Verification, and Archive/Wiki Synthesis).
 
 ## Integration
-*   **Location**: `skills/skill-architect/`
-*   **Reference**: `skills/skill-architect/references/patterns.md`
+*   **Location**: `skills/core/skill-architect/`
+*   **Reference**: `skills/core/skill-architect/references/patterns.md`
 
 ## Wiki Context
 The Skill Architect is now the primary driver for the **Knowledge Artifact** pattern, ensuring that all generated skills contribute to the project wiki.
